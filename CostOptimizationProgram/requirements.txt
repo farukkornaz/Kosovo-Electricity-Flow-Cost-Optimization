@@ -1,0 +1,5 @@
+ortools>=9.15
+numpy>=2.0
+networkx>=3.0
+matplotlib>=3.8
+pytest>=8.0

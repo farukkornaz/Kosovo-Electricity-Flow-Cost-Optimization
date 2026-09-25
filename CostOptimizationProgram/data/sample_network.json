@@ -1,0 +1,22 @@
+{
+  "name": "sample-synthetic",
+  "nodes": [
+    {"id": "TR", "name": "Türkiye",    "lat": 39.0, "lon": 35.0, "type": "demand", "demand": 1000},
+    {"id": "BG", "name": "Bulgaria",   "lat": 42.7, "lon": 25.3, "type": "supply", "max_supply": 700, "unit_price": 95.0},
+    {"id": "GR", "name": "Greece",     "lat": 39.1, "lon": 21.8, "type": "supply", "max_supply": 600, "unit_price": 105.0},
+    {"id": "RO", "name": "Romania",    "lat": 45.9, "lon": 25.0, "type": "supply", "max_supply": 900, "unit_price": 88.0},
+    {"id": "RS", "name": "Serbia",     "lat": 44.0, "lon": 20.9, "type": "supply", "max_supply": 500, "unit_price": 92.0},
+    {"id": "GE", "name": "Georgia",    "lat": 42.3, "lon": 43.4, "type": "supply", "max_supply": 300, "unit_price": 70.0},
+    {"id": "AZ", "name": "Azerbaijan", "lat": 40.1, "lon": 47.6, "type": "supply", "max_supply": 400, "unit_price": 75.0}
+  ],
+  "arcs": [
+    {"from": "BG", "to": "TR", "curve": {"type": "linear", "base_price": 8.0,  "slope": 0.03,  "capacity": 600}},
+    {"from": "GR", "to": "TR", "curve": {"type": "linear", "base_price": 12.0, "slope": 0.04,  "capacity": 400}},
+    {"from": "GE", "to": "TR", "curve": {"type": "linear", "base_price": 6.0,  "slope": 0.05,  "capacity": 350}},
+    {"from": "RO", "to": "BG", "curve": {"type": "linear", "base_price": 3.0,  "slope": 0.01,  "capacity": 800}},
+    {"from": "RS", "to": "BG", "curve": {"type": "linear", "base_price": 5.0,  "slope": 0.02,  "capacity": 400}},
+    {"from": "GR", "to": "BG", "curve": {"type": "linear", "base_price": 4.0,  "slope": 0.02,  "capacity": 500}},
+    {"from": "BG", "to": "GR", "curve": {"type": "linear", "base_price": 4.0,  "slope": 0.02,  "capacity": 500}},
+    {"from": "AZ", "to": "GE", "curve": {"type": "linear", "base_price": 4.0,  "slope": 0.015, "capacity": 500}}
+  ]
+}
