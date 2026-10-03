@@ -42,11 +42,13 @@ class PriceCurve(ABC):
         """Integer MW boundaries splitting [0, capacity] into near-equal segments."""
         if num_segments < 1:
             raise ValueError("num_segments must be >= 1")
+        if self.capacity == 0:
+            return np.array([0])
         num_segments = min(num_segments, self.capacity)
         return np.unique(np.round(np.linspace(0, self.capacity, num_segments + 1)).astype(int))
 
     def segments(self, num_segments: int = 10) -> list[CostSegment]:
-        """Split the curve into segments with increasing marginal unit cost."""
+        """Split the curve into segments with increasing marginal unit cost (none if closed)."""
         points = self.breakpoints(num_segments)
         segments = []
         for start, end in zip(points[:-1], points[1:]):
@@ -62,7 +64,7 @@ class LinearPriceCurve(PriceCurve):
 
     base_price: clearing price that would form without our bid (€/MWh).
     slope:      price increase per MW we buy (€/MWh per MW).
-    capacity:   auctioned line capacity (MW).
+    capacity:   auctioned line capacity / ATC (MW). 0 means the line is closed.
     """
 
     base_price: float
@@ -70,8 +72,8 @@ class LinearPriceCurve(PriceCurve):
     capacity: int
 
     def __post_init__(self):
-        if self.capacity <= 0:
-            raise ValueError("capacity must be positive")
+        if self.capacity < 0:
+            raise ValueError("capacity must be non-negative (0 = closed line)")
         if self.base_price < 0:
             raise ValueError("base_price must be non-negative")
         if self.slope < 0:
@@ -94,5 +96,5 @@ class LinearPriceCurve(PriceCurve):
     ) -> "LinearPriceCurve":
         """Random curve for testing: price rises by `max_price_increase` over the full capacity."""
         base_price = rng.uniform(*base_price_range)
-        slope = rng.uniform(*max_price_increase) / capacity
+        slope = rng.uniform(*max_price_increase) / capacity if capacity else 0.0
         return cls(round(base_price, 2), slope, capacity)

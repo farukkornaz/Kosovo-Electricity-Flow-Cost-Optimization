@@ -41,8 +41,13 @@ def test_more_segments_than_capacity():
     assert [s.capacity for s in curve.segments(10)] == [1, 1, 1]
 
 
+def test_zero_capacity_is_closed_line():
+    curve = LinearPriceCurve(base_price=10, slope=0.1, capacity=0)
+    assert curve.segments(10) == []
+
+
 @pytest.mark.parametrize("kwargs", [
-    dict(base_price=10, slope=0.1, capacity=0),
+    dict(base_price=10, slope=0.1, capacity=-1),
     dict(base_price=-1, slope=0.1, capacity=100),
     dict(base_price=10, slope=-0.1, capacity=100),
 ])
