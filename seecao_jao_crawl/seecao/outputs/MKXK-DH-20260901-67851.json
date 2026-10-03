@@ -1,0 +1,4017 @@
+{
+  "auctionData": {
+    "auctionIdentification": "MKXK-DH-20260901-67851",
+    "type": "Daily",
+    "outArea": "North Macedonia",
+    "inArea": "Kosovo",
+    "outAreaIcon": "mk",
+    "inAreaIcon": "xk",
+    "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+    "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+    "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+    "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+    "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+    "deliveryPeriodStart": "2026-08-31T22:00:00.000000Z",
+    "deliveryPeriodEnd": "2026-09-01T22:00:00.000000Z",
+    "resaleLimitDateTime": null,
+    "description": null,
+    "bids": [
+      {
+        "title": "00:00 - 01:00",
+        "position": 0,
+        "line": [
+          {
+            "capacity": 5,
+            "price": "400.00"
+          },
+          {
+            "capacity": 25,
+            "price": "300.00"
+          },
+          {
+            "capacity": 55,
+            "price": "200.00"
+          },
+          {
+            "capacity": 66,
+            "price": "151.00"
+          },
+          {
+            "capacity": 71,
+            "price": "95.23"
+          },
+          {
+            "capacity": 76,
+            "price": "80.00"
+          },
+          {
+            "capacity": 106,
+            "price": "31.00"
+          },
+          {
+            "capacity": 123,
+            "price": "25.00"
+          },
+          {
+            "capacity": 143,
+            "price": "18.04"
+          },
+          {
+            "capacity": 151,
+            "price": "18.00"
+          },
+          {
+            "capacity": 176,
+            "price": "15.56"
+          },
+          {
+            "capacity": 196,
+            "price": "15.50"
+          },
+          {
+            "capacity": 216,
+            "price": "13.53"
+          },
+          {
+            "capacity": 226,
+            "price": "12.50"
+          },
+          {
+            "capacity": 246,
+            "price": "10.15"
+          },
+          {
+            "capacity": 261,
+            "price": "8.11"
+          },
+          {
+            "capacity": 281,
+            "price": "7.61"
+          },
+          {
+            "capacity": 301,
+            "price": "7.20"
+          },
+          {
+            "capacity": 306,
+            "price": "5.71"
+          },
+          {
+            "capacity": 311,
+            "price": "4.28"
+          },
+          {
+            "capacity": 321,
+            "price": "3.99"
+          },
+          {
+            "capacity": 336,
+            "price": "3.88"
+          },
+          {
+            "capacity": 351,
+            "price": "2.55"
+          },
+          {
+            "capacity": 376,
+            "price": "2.16"
+          },
+          {
+            "capacity": 401,
+            "price": "1.21"
+          },
+          {
+            "capacity": 421,
+            "price": "0.43"
+          },
+          {
+            "capacity": 426,
+            "price": "0.41"
+          },
+          {
+            "capacity": 436,
+            "price": "0.10"
+          },
+          {
+            "capacity": 456,
+            "price": "0.09"
+          },
+          {
+            "capacity": 461,
+            "price": "0.08"
+          },
+          {
+            "capacity": 511,
+            "price": "0.01"
+          },
+          {
+            "capacity": 512,
+            "price": "0.01"
+          }
+        ],
+        "x": 295,
+        "y": "7.20"
+      },
+      {
+        "title": "01:00 - 02:00",
+        "position": 1,
+        "line": [
+          {
+            "capacity": 4,
+            "price": "400.00"
+          },
+          {
+            "capacity": 24,
+            "price": "300.00"
+          },
+          {
+            "capacity": 54,
+            "price": "200.00"
+          },
+          {
+            "capacity": 64,
+            "price": "151.00"
+          },
+          {
+            "capacity": 69,
+            "price": "95.23"
+          },
+          {
+            "capacity": 74,
+            "price": "80.00"
+          },
+          {
+            "capacity": 104,
+            "price": "31.00"
+          },
+          {
+            "capacity": 121,
+            "price": "25.00"
+          },
+          {
+            "capacity": 136,
+            "price": "24.39"
+          },
+          {
+            "capacity": 144,
+            "price": "24.00"
+          },
+          {
+            "capacity": 164,
+            "price": "18.31"
+          },
+          {
+            "capacity": 189,
+            "price": "15.56"
+          },
+          {
+            "capacity": 209,
+            "price": "15.50"
+          },
+          {
+            "capacity": 229,
+            "price": "13.74"
+          },
+          {
+            "capacity": 239,
+            "price": "12.50"
+          },
+          {
+            "capacity": 259,
+            "price": "10.30"
+          },
+          {
+            "capacity": 279,
+            "price": "9.60"
+          },
+          {
+            "capacity": 299,
+            "price": "7.73"
+          },
+          {
+            "capacity": 304,
+            "price": "5.79"
+          },
+          {
+            "capacity": 309,
+            "price": "4.35"
+          },
+          {
+            "capacity": 319,
+            "price": "3.99"
+          },
+          {
+            "capacity": 334,
+            "price": "3.88"
+          },
+          {
+            "capacity": 359,
+            "price": "2.88"
+          },
+          {
+            "capacity": 374,
+            "price": "2.55"
+          },
+          {
+            "capacity": 379,
+            "price": "1.22"
+          },
+          {
+            "capacity": 404,
+            "price": "1.21"
+          },
+          {
+            "capacity": 424,
+            "price": "0.58"
+          },
+          {
+            "capacity": 429,
+            "price": "0.24"
+          },
+          {
+            "capacity": 439,
+            "price": "0.10"
+          },
+          {
+            "capacity": 459,
+            "price": "0.09"
+          },
+          {
+            "capacity": 509,
+            "price": "0.01"
+          }
+        ],
+        "x": 295,
+        "y": "7.73"
+      },
+      {
+        "title": "02:00 - 03:00",
+        "position": 2,
+        "line": [
+          {
+            "capacity": 4,
+            "price": "400.00"
+          },
+          {
+            "capacity": 24,
+            "price": "300.00"
+          },
+          {
+            "capacity": 54,
+            "price": "200.00"
+          },
+          {
+            "capacity": 63,
+            "price": "151.00"
+          },
+          {
+            "capacity": 68,
+            "price": "95.23"
+          },
+          {
+            "capacity": 73,
+            "price": "80.00"
+          },
+          {
+            "capacity": 103,
+            "price": "31.00"
+          },
+          {
+            "capacity": 120,
+            "price": "25.00"
+          },
+          {
+            "capacity": 135,
+            "price": "21.97"
+          },
+          {
+            "capacity": 143,
+            "price": "18.60"
+          },
+          {
+            "capacity": 168,
+            "price": "15.56"
+          },
+          {
+            "capacity": 188,
+            "price": "15.50"
+          },
+          {
+            "capacity": 198,
+            "price": "12.50"
+          },
+          {
+            "capacity": 218,
+            "price": "12.48"
+          },
+          {
+            "capacity": 238,
+            "price": "9.36"
+          },
+          {
+            "capacity": 258,
+            "price": "7.44"
+          },
+          {
+            "capacity": 278,
+            "price": "7.02"
+          },
+          {
+            "capacity": 298,
+            "price": "5.27"
+          },
+          {
+            "capacity": 308,
+            "price": "3.99"
+          },
+          {
+            "capacity": 313,
+            "price": "3.95"
+          },
+          {
+            "capacity": 328,
+            "price": "3.88"
+          },
+          {
+            "capacity": 333,
+            "price": "2.96"
+          },
+          {
+            "capacity": 348,
+            "price": "2.55"
+          },
+          {
+            "capacity": 373,
+            "price": "2.23"
+          },
+          {
+            "capacity": 398,
+            "price": "1.21"
+          },
+          {
+            "capacity": 403,
+            "price": "1.10"
+          },
+          {
+            "capacity": 423,
+            "price": "0.45"
+          },
+          {
+            "capacity": 428,
+            "price": "0.22"
+          },
+          {
+            "capacity": 438,
+            "price": "0.10"
+          },
+          {
+            "capacity": 458,
+            "price": "0.09"
+          },
+          {
+            "capacity": 508,
+            "price": "0.01"
+          }
+        ],
+        "x": 298,
+        "y": "5.27"
+      },
+      {
+        "title": "03:00 - 04:00",
+        "position": 3,
+        "line": [
+          {
+            "capacity": 4,
+            "price": "400.00"
+          },
+          {
+            "capacity": 24,
+            "price": "300.00"
+          },
+          {
+            "capacity": 54,
+            "price": "200.00"
+          },
+          {
+            "capacity": 63,
+            "price": "151.00"
+          },
+          {
+            "capacity": 68,
+            "price": "95.23"
+          },
+          {
+            "capacity": 73,
+            "price": "80.00"
+          },
+          {
+            "capacity": 103,
+            "price": "31.00"
+          },
+          {
+            "capacity": 120,
+            "price": "25.00"
+          },
+          {
+            "capacity": 128,
+            "price": "20.40"
+          },
+          {
+            "capacity": 153,
+            "price": "15.56"
+          },
+          {
+            "capacity": 173,
+            "price": "15.50"
+          },
+          {
+            "capacity": 193,
+            "price": "15.24"
+          },
+          {
+            "capacity": 208,
+            "price": "13.85"
+          },
+          {
+            "capacity": 218,
+            "price": "12.50"
+          },
+          {
+            "capacity": 238,
+            "price": "11.43"
+          },
+          {
+            "capacity": 258,
+            "price": "8.57"
+          },
+          {
+            "capacity": 278,
+            "price": "8.16"
+          },
+          {
+            "capacity": 298,
+            "price": "6.43"
+          },
+          {
+            "capacity": 303,
+            "price": "4.82"
+          },
+          {
+            "capacity": 313,
+            "price": "3.99"
+          },
+          {
+            "capacity": 328,
+            "price": "3.88"
+          },
+          {
+            "capacity": 333,
+            "price": "3.62"
+          },
+          {
+            "capacity": 348,
+            "price": "2.55"
+          },
+          {
+            "capacity": 373,
+            "price": "2.45"
+          },
+          {
+            "capacity": 398,
+            "price": "1.21"
+          },
+          {
+            "capacity": 403,
+            "price": "0.69"
+          },
+          {
+            "capacity": 423,
+            "price": "0.49"
+          },
+          {
+            "capacity": 428,
+            "price": "0.14"
+          },
+          {
+            "capacity": 438,
+            "price": "0.10"
+          },
+          {
+            "capacity": 458,
+            "price": "0.09"
+          },
+          {
+            "capacity": 508,
+            "price": "0.01"
+          }
+        ],
+        "x": 298,
+        "y": "6.43"
+      },
+      {
+        "title": "04:00 - 05:00",
+        "position": 4,
+        "line": [
+          {
+            "capacity": 4,
+            "price": "400.00"
+          },
+          {
+            "capacity": 24,
+            "price": "300.00"
+          },
+          {
+            "capacity": 54,
+            "price": "200.00"
+          },
+          {
+            "capacity": 63,
+            "price": "151.00"
+          },
+          {
+            "capacity": 68,
+            "price": "95.23"
+          },
+          {
+            "capacity": 77,
+            "price": "80.00"
+          },
+          {
+            "capacity": 107,
+            "price": "31.00"
+          },
+          {
+            "capacity": 124,
+            "price": "25.00"
+          },
+          {
+            "capacity": 132,
+            "price": "24.60"
+          },
+          {
+            "capacity": 152,
+            "price": "15.95"
+          },
+          {
+            "capacity": 177,
+            "price": "15.56"
+          },
+          {
+            "capacity": 197,
+            "price": "15.50"
+          },
+          {
+            "capacity": 207,
+            "price": "12.50"
+          },
+          {
+            "capacity": 227,
+            "price": "11.96"
+          },
+          {
+            "capacity": 242,
+            "price": "11.85"
+          },
+          {
+            "capacity": 262,
+            "price": "9.84"
+          },
+          {
+            "capacity": 282,
+            "price": "8.97"
+          },
+          {
+            "capacity": 302,
+            "price": "6.73"
+          },
+          {
+            "capacity": 307,
+            "price": "5.05"
+          },
+          {
+            "capacity": 317,
+            "price": "3.99"
+          },
+          {
+            "capacity": 332,
+            "price": "3.88"
+          },
+          {
+            "capacity": 337,
+            "price": "3.79"
+          },
+          {
+            "capacity": 362,
+            "price": "2.95"
+          },
+          {
+            "capacity": 377,
+            "price": "2.55"
+          },
+          {
+            "capacity": 402,
+            "price": "1.21"
+          },
+          {
+            "capacity": 407,
+            "price": "0.59"
+          },
+          {
+            "capacity": 427,
+            "price": "0.59"
+          },
+          {
+            "capacity": 432,
+            "price": "0.12"
+          },
+          {
+            "capacity": 442,
+            "price": "0.10"
+          },
+          {
+            "capacity": 462,
+            "price": "0.09"
+          },
+          {
+            "capacity": 512,
+            "price": "0.01"
+          }
+        ],
+        "x": 298,
+        "y": "6.73"
+      },
+      {
+        "title": "05:00 - 06:00",
+        "position": 5,
+        "line": [
+          {
+            "capacity": 4,
+            "price": "400.00"
+          },
+          {
+            "capacity": 24,
+            "price": "300.00"
+          },
+          {
+            "capacity": 54,
+            "price": "200.00"
+          },
+          {
+            "capacity": 63,
+            "price": "151.00"
+          },
+          {
+            "capacity": 68,
+            "price": "95.23"
+          },
+          {
+            "capacity": 77,
+            "price": "80.00"
+          },
+          {
+            "capacity": 85,
+            "price": "33.00"
+          },
+          {
+            "capacity": 115,
+            "price": "31.00"
+          },
+          {
+            "capacity": 132,
+            "price": "25.00"
+          },
+          {
+            "capacity": 157,
+            "price": "15.56"
+          },
+          {
+            "capacity": 177,
+            "price": "15.50"
+          },
+          {
+            "capacity": 197,
+            "price": "14.90"
+          },
+          {
+            "capacity": 217,
+            "price": "13.20"
+          },
+          {
+            "capacity": 227,
+            "price": "12.50"
+          },
+          {
+            "capacity": 247,
+            "price": "11.18"
+          },
+          {
+            "capacity": 267,
+            "price": "8.38"
+          },
+          {
+            "capacity": 287,
+            "price": "6.29"
+          },
+          {
+            "capacity": 292,
+            "price": "4.72"
+          },
+          {
+            "capacity": 302,
+            "price": "3.99"
+          },
+          {
+            "capacity": 327,
+            "price": "3.96"
+          },
+          {
+            "capacity": 342,
+            "price": "3.88"
+          },
+          {
+            "capacity": 347,
+            "price": "3.54"
+          },
+          {
+            "capacity": 362,
+            "price": "2.55"
+          },
+          {
+            "capacity": 377,
+            "price": "2.39"
+          },
+          {
+            "capacity": 402,
+            "price": "1.21"
+          },
+          {
+            "capacity": 422,
+            "price": "0.79"
+          },
+          {
+            "capacity": 427,
+            "price": "0.12"
+          },
+          {
+            "capacity": 437,
+            "price": "0.10"
+          },
+          {
+            "capacity": 457,
+            "price": "0.09"
+          },
+          {
+            "capacity": 462,
+            "price": "0.02"
+          },
+          {
+            "capacity": 512,
+            "price": "0.01"
+          }
+        ],
+        "x": 295,
+        "y": "3.99"
+      },
+      {
+        "title": "06:00 - 07:00",
+        "position": 6,
+        "line": [
+          {
+            "capacity": 4,
+            "price": "400.00"
+          },
+          {
+            "capacity": 24,
+            "price": "300.00"
+          },
+          {
+            "capacity": 54,
+            "price": "200.00"
+          },
+          {
+            "capacity": 63,
+            "price": "151.00"
+          },
+          {
+            "capacity": 68,
+            "price": "95.23"
+          },
+          {
+            "capacity": 77,
+            "price": "80.00"
+          },
+          {
+            "capacity": 107,
+            "price": "31.00"
+          },
+          {
+            "capacity": 115,
+            "price": "30.00"
+          },
+          {
+            "capacity": 132,
+            "price": "25.00"
+          },
+          {
+            "capacity": 152,
+            "price": "18.15"
+          },
+          {
+            "capacity": 177,
+            "price": "15.56"
+          },
+          {
+            "capacity": 197,
+            "price": "15.50"
+          },
+          {
+            "capacity": 217,
+            "price": "13.61"
+          },
+          {
+            "capacity": 227,
+            "price": "12.50"
+          },
+          {
+            "capacity": 247,
+            "price": "12.00"
+          },
+          {
+            "capacity": 267,
+            "price": "10.21"
+          },
+          {
+            "capacity": 287,
+            "price": "7.66"
+          },
+          {
+            "capacity": 292,
+            "price": "5.74"
+          },
+          {
+            "capacity": 297,
+            "price": "4.31"
+          },
+          {
+            "capacity": 307,
+            "price": "3.99"
+          },
+          {
+            "capacity": 322,
+            "price": "3.88"
+          },
+          {
+            "capacity": 347,
+            "price": "3.60"
+          },
+          {
+            "capacity": 362,
+            "price": "2.55"
+          },
+          {
+            "capacity": 387,
+            "price": "1.21"
+          },
+          {
+            "capacity": 407,
+            "price": "0.72"
+          },
+          {
+            "capacity": 422,
+            "price": "0.32"
+          },
+          {
+            "capacity": 432,
+            "price": "0.10"
+          },
+          {
+            "capacity": 452,
+            "price": "0.09"
+          },
+          {
+            "capacity": 457,
+            "price": "0.02"
+          },
+          {
+            "capacity": 507,
+            "price": "0.01"
+          },
+          {
+            "capacity": 512,
+            "price": "0.00"
+          }
+        ],
+        "x": 295,
+        "y": "4.31"
+      },
+      {
+        "title": "07:00 - 08:00",
+        "position": 7,
+        "line": [
+          {
+            "capacity": 5,
+            "price": "400.00"
+          },
+          {
+            "capacity": 25,
+            "price": "300.00"
+          },
+          {
+            "capacity": 55,
+            "price": "200.00"
+          },
+          {
+            "capacity": 66,
+            "price": "151.00"
+          },
+          {
+            "capacity": 71,
+            "price": "95.23"
+          },
+          {
+            "capacity": 80,
+            "price": "80.00"
+          },
+          {
+            "capacity": 105,
+            "price": "33.63"
+          },
+          {
+            "capacity": 135,
+            "price": "31.00"
+          },
+          {
+            "capacity": 152,
+            "price": "27.00"
+          },
+          {
+            "capacity": 160,
+            "price": "21.00"
+          },
+          {
+            "capacity": 180,
+            "price": "15.50"
+          },
+          {
+            "capacity": 200,
+            "price": "14.08"
+          },
+          {
+            "capacity": 210,
+            "price": "12.50"
+          },
+          {
+            "capacity": 230,
+            "price": "10.56"
+          },
+          {
+            "capacity": 245,
+            "price": "9.99"
+          },
+          {
+            "capacity": 265,
+            "price": "8.40"
+          },
+          {
+            "capacity": 285,
+            "price": "7.92"
+          },
+          {
+            "capacity": 305,
+            "price": "5.94"
+          },
+          {
+            "capacity": 310,
+            "price": "4.46"
+          },
+          {
+            "capacity": 320,
+            "price": "3.99"
+          },
+          {
+            "capacity": 330,
+            "price": "3.88"
+          },
+          {
+            "capacity": 335,
+            "price": "3.34"
+          },
+          {
+            "capacity": 360,
+            "price": "2.61"
+          },
+          {
+            "capacity": 375,
+            "price": "2.55"
+          },
+          {
+            "capacity": 400,
+            "price": "2.52"
+          },
+          {
+            "capacity": 405,
+            "price": "0.50"
+          },
+          {
+            "capacity": 425,
+            "price": "0.50"
+          },
+          {
+            "capacity": 435,
+            "price": "0.10"
+          },
+          {
+            "capacity": 440,
+            "price": "0.10"
+          },
+          {
+            "capacity": 460,
+            "price": "0.09"
+          },
+          {
+            "capacity": 510,
+            "price": "0.01"
+          }
+        ],
+        "x": 295,
+        "y": "5.94"
+      },
+      {
+        "title": "08:00 - 09:00",
+        "position": 8,
+        "line": [
+          {
+            "capacity": 6,
+            "price": "400.00"
+          },
+          {
+            "capacity": 26,
+            "price": "300.00"
+          },
+          {
+            "capacity": 56,
+            "price": "200.00"
+          },
+          {
+            "capacity": 68,
+            "price": "151.00"
+          },
+          {
+            "capacity": 70,
+            "price": "120.00"
+          },
+          {
+            "capacity": 75,
+            "price": "95.23"
+          },
+          {
+            "capacity": 82,
+            "price": "80.00"
+          },
+          {
+            "capacity": 97,
+            "price": "51.47"
+          },
+          {
+            "capacity": 112,
+            "price": "46.00"
+          },
+          {
+            "capacity": 137,
+            "price": "42.69"
+          },
+          {
+            "capacity": 145,
+            "price": "37.20"
+          },
+          {
+            "capacity": 165,
+            "price": "18.54"
+          },
+          {
+            "capacity": 185,
+            "price": "14.88"
+          },
+          {
+            "capacity": 205,
+            "price": "13.90"
+          },
+          {
+            "capacity": 215,
+            "price": "13.13"
+          },
+          {
+            "capacity": 235,
+            "price": "10.43"
+          },
+          {
+            "capacity": 255,
+            "price": "7.82"
+          },
+          {
+            "capacity": 280,
+            "price": "6.70"
+          },
+          {
+            "capacity": 285,
+            "price": "5.86"
+          },
+          {
+            "capacity": 310,
+            "price": "4.46"
+          },
+          {
+            "capacity": 315,
+            "price": "4.40"
+          },
+          {
+            "capacity": 320,
+            "price": "2.57"
+          },
+          {
+            "capacity": 340,
+            "price": "0.89"
+          },
+          {
+            "capacity": 345,
+            "price": "0.51"
+          },
+          {
+            "capacity": 355,
+            "price": "0.10"
+          },
+          {
+            "capacity": 375,
+            "price": "0.09"
+          },
+          {
+            "capacity": 425,
+            "price": "0.01"
+          }
+        ],
+        "x": 304,
+        "y": "4.46"
+      },
+      {
+        "title": "09:00 - 10:00",
+        "position": 9,
+        "line": [
+          {
+            "capacity": 7,
+            "price": "400.00"
+          },
+          {
+            "capacity": 27,
+            "price": "300.00"
+          },
+          {
+            "capacity": 57,
+            "price": "200.00"
+          },
+          {
+            "capacity": 110,
+            "price": "151.00"
+          },
+          {
+            "capacity": 120,
+            "price": "120.00"
+          },
+          {
+            "capacity": 125,
+            "price": "95.23"
+          },
+          {
+            "capacity": 132,
+            "price": "80.00"
+          },
+          {
+            "capacity": 147,
+            "price": "74.35"
+          },
+          {
+            "capacity": 155,
+            "price": "57.00"
+          },
+          {
+            "capacity": 170,
+            "price": "50.00"
+          },
+          {
+            "capacity": 175,
+            "price": "50.00"
+          },
+          {
+            "capacity": 200,
+            "price": "47.77"
+          },
+          {
+            "capacity": 220,
+            "price": "24.31"
+          },
+          {
+            "capacity": 240,
+            "price": "22.80"
+          },
+          {
+            "capacity": 260,
+            "price": "18.23"
+          },
+          {
+            "capacity": 280,
+            "price": "13.67"
+          },
+          {
+            "capacity": 290,
+            "price": "13.13"
+          },
+          {
+            "capacity": 315,
+            "price": "10.60"
+          },
+          {
+            "capacity": 335,
+            "price": "10.26"
+          },
+          {
+            "capacity": 340,
+            "price": "7.69"
+          },
+          {
+            "capacity": 365,
+            "price": "6.84"
+          },
+          {
+            "capacity": 370,
+            "price": "5.77"
+          },
+          {
+            "capacity": 375,
+            "price": "3.72"
+          },
+          {
+            "capacity": 395,
+            "price": "1.37"
+          },
+          {
+            "capacity": 400,
+            "price": "0.74"
+          },
+          {
+            "capacity": 410,
+            "price": "0.10"
+          },
+          {
+            "capacity": 430,
+            "price": "0.09"
+          },
+          {
+            "capacity": 480,
+            "price": "0.01"
+          }
+        ],
+        "x": 284,
+        "y": "13.13"
+      },
+      {
+        "title": "10:00 - 11:00",
+        "position": 10,
+        "line": [
+          {
+            "capacity": 7,
+            "price": "400.00"
+          },
+          {
+            "capacity": 27,
+            "price": "300.00"
+          },
+          {
+            "capacity": 57,
+            "price": "200.00"
+          },
+          {
+            "capacity": 131,
+            "price": "151.00"
+          },
+          {
+            "capacity": 141,
+            "price": "120.00"
+          },
+          {
+            "capacity": 146,
+            "price": "95.23"
+          },
+          {
+            "capacity": 153,
+            "price": "80.00"
+          },
+          {
+            "capacity": 168,
+            "price": "74.98"
+          },
+          {
+            "capacity": 178,
+            "price": "70.00"
+          },
+          {
+            "capacity": 203,
+            "price": "51.16"
+          },
+          {
+            "capacity": 208,
+            "price": "50.00"
+          },
+          {
+            "capacity": 216,
+            "price": "42.00"
+          },
+          {
+            "capacity": 236,
+            "price": "40.76"
+          },
+          {
+            "capacity": 256,
+            "price": "30.57"
+          },
+          {
+            "capacity": 276,
+            "price": "22.92"
+          },
+          {
+            "capacity": 296,
+            "price": "17.19"
+          },
+          {
+            "capacity": 316,
+            "price": "16.80"
+          },
+          {
+            "capacity": 326,
+            "price": "13.13"
+          },
+          {
+            "capacity": 331,
+            "price": "12.90"
+          },
+          {
+            "capacity": 356,
+            "price": "11.36"
+          },
+          {
+            "capacity": 361,
+            "price": "9.67"
+          },
+          {
+            "capacity": 386,
+            "price": "5.04"
+          },
+          {
+            "capacity": 391,
+            "price": "3.75"
+          },
+          {
+            "capacity": 411,
+            "price": "1.01"
+          },
+          {
+            "capacity": 416,
+            "price": "0.75"
+          },
+          {
+            "capacity": 426,
+            "price": "0.10"
+          },
+          {
+            "capacity": 446,
+            "price": "0.09"
+          },
+          {
+            "capacity": 496,
+            "price": "0.01"
+          }
+        ],
+        "x": 284,
+        "y": "17.19"
+      },
+      {
+        "title": "11:00 - 12:00",
+        "position": 11,
+        "line": [
+          {
+            "capacity": 7,
+            "price": "400.00"
+          },
+          {
+            "capacity": 27,
+            "price": "300.00"
+          },
+          {
+            "capacity": 57,
+            "price": "200.00"
+          },
+          {
+            "capacity": 134,
+            "price": "151.00"
+          },
+          {
+            "capacity": 144,
+            "price": "120.00"
+          },
+          {
+            "capacity": 149,
+            "price": "95.23"
+          },
+          {
+            "capacity": 156,
+            "price": "80.00"
+          },
+          {
+            "capacity": 166,
+            "price": "80.00"
+          },
+          {
+            "capacity": 181,
+            "price": "67.25"
+          },
+          {
+            "capacity": 206,
+            "price": "51.16"
+          },
+          {
+            "capacity": 211,
+            "price": "50.00"
+          },
+          {
+            "capacity": 219,
+            "price": "48.00"
+          },
+          {
+            "capacity": 239,
+            "price": "38.66"
+          },
+          {
+            "capacity": 259,
+            "price": "29.00"
+          },
+          {
+            "capacity": 279,
+            "price": "21.75"
+          },
+          {
+            "capacity": 299,
+            "price": "19.20"
+          },
+          {
+            "capacity": 319,
+            "price": "16.31"
+          },
+          {
+            "capacity": 329,
+            "price": "13.13"
+          },
+          {
+            "capacity": 334,
+            "price": "12.23"
+          },
+          {
+            "capacity": 359,
+            "price": "11.36"
+          },
+          {
+            "capacity": 364,
+            "price": "9.18"
+          },
+          {
+            "capacity": 389,
+            "price": "5.76"
+          },
+          {
+            "capacity": 394,
+            "price": "3.36"
+          },
+          {
+            "capacity": 414,
+            "price": "1.15"
+          },
+          {
+            "capacity": 419,
+            "price": "0.67"
+          },
+          {
+            "capacity": 429,
+            "price": "0.10"
+          },
+          {
+            "capacity": 449,
+            "price": "0.09"
+          },
+          {
+            "capacity": 499,
+            "price": "0.01"
+          }
+        ],
+        "x": 284,
+        "y": "19.20"
+      },
+      {
+        "title": "12:00 - 13:00",
+        "position": 12,
+        "line": [
+          {
+            "capacity": 8,
+            "price": "400.00"
+          },
+          {
+            "capacity": 28,
+            "price": "300.00"
+          },
+          {
+            "capacity": 58,
+            "price": "200.00"
+          },
+          {
+            "capacity": 138,
+            "price": "151.00"
+          },
+          {
+            "capacity": 148,
+            "price": "120.00"
+          },
+          {
+            "capacity": 153,
+            "price": "95.23"
+          },
+          {
+            "capacity": 160,
+            "price": "80.00"
+          },
+          {
+            "capacity": 170,
+            "price": "77.00"
+          },
+          {
+            "capacity": 185,
+            "price": "61.26"
+          },
+          {
+            "capacity": 193,
+            "price": "55.80"
+          },
+          {
+            "capacity": 198,
+            "price": "50.00"
+          },
+          {
+            "capacity": 223,
+            "price": "45.69"
+          },
+          {
+            "capacity": 243,
+            "price": "43.94"
+          },
+          {
+            "capacity": 263,
+            "price": "32.96"
+          },
+          {
+            "capacity": 283,
+            "price": "24.72"
+          },
+          {
+            "capacity": 303,
+            "price": "22.32"
+          },
+          {
+            "capacity": 323,
+            "price": "18.54"
+          },
+          {
+            "capacity": 328,
+            "price": "13.90"
+          },
+          {
+            "capacity": 338,
+            "price": "13.13"
+          },
+          {
+            "capacity": 343,
+            "price": "10.43"
+          },
+          {
+            "capacity": 368,
+            "price": "10.14"
+          },
+          {
+            "capacity": 393,
+            "price": "6.70"
+          },
+          {
+            "capacity": 398,
+            "price": "3.06"
+          },
+          {
+            "capacity": 418,
+            "price": "1.34"
+          },
+          {
+            "capacity": 423,
+            "price": "0.61"
+          },
+          {
+            "capacity": 433,
+            "price": "0.10"
+          },
+          {
+            "capacity": 453,
+            "price": "0.09"
+          },
+          {
+            "capacity": 503,
+            "price": "0.01"
+          }
+        ],
+        "x": 284,
+        "y": "22.32"
+      },
+      {
+        "title": "13:00 - 14:00",
+        "position": 13,
+        "line": [
+          {
+            "capacity": 8,
+            "price": "400.00"
+          },
+          {
+            "capacity": 28,
+            "price": "300.00"
+          },
+          {
+            "capacity": 58,
+            "price": "200.00"
+          },
+          {
+            "capacity": 131,
+            "price": "151.00"
+          },
+          {
+            "capacity": 141,
+            "price": "120.00"
+          },
+          {
+            "capacity": 146,
+            "price": "95.23"
+          },
+          {
+            "capacity": 153,
+            "price": "80.00"
+          },
+          {
+            "capacity": 163,
+            "price": "77.00"
+          },
+          {
+            "capacity": 171,
+            "price": "60.00"
+          },
+          {
+            "capacity": 186,
+            "price": "58.91"
+          },
+          {
+            "capacity": 191,
+            "price": "50.00"
+          },
+          {
+            "capacity": 216,
+            "price": "43.63"
+          },
+          {
+            "capacity": 236,
+            "price": "42.46"
+          },
+          {
+            "capacity": 256,
+            "price": "31.85"
+          },
+          {
+            "capacity": 276,
+            "price": "24.00"
+          },
+          {
+            "capacity": 296,
+            "price": "23.88"
+          },
+          {
+            "capacity": 316,
+            "price": "17.91"
+          },
+          {
+            "capacity": 321,
+            "price": "13.43"
+          },
+          {
+            "capacity": 331,
+            "price": "13.13"
+          },
+          {
+            "capacity": 336,
+            "price": "10.08"
+          },
+          {
+            "capacity": 361,
+            "price": "9.69"
+          },
+          {
+            "capacity": 386,
+            "price": "7.20"
+          },
+          {
+            "capacity": 391,
+            "price": "2.95"
+          },
+          {
+            "capacity": 411,
+            "price": "1.44"
+          },
+          {
+            "capacity": 416,
+            "price": "0.59"
+          },
+          {
+            "capacity": 426,
+            "price": "0.10"
+          },
+          {
+            "capacity": 446,
+            "price": "0.09"
+          },
+          {
+            "capacity": 496,
+            "price": "0.01"
+          }
+        ],
+        "x": 284,
+        "y": "23.88"
+      },
+      {
+        "title": "14:00 - 15:00",
+        "position": 14,
+        "line": [
+          {
+            "capacity": 8,
+            "price": "400.00"
+          },
+          {
+            "capacity": 28,
+            "price": "300.00"
+          },
+          {
+            "capacity": 58,
+            "price": "200.00"
+          },
+          {
+            "capacity": 130,
+            "price": "151.00"
+          },
+          {
+            "capacity": 140,
+            "price": "120.00"
+          },
+          {
+            "capacity": 145,
+            "price": "95.23"
+          },
+          {
+            "capacity": 155,
+            "price": "90.00"
+          },
+          {
+            "capacity": 162,
+            "price": "80.00"
+          },
+          {
+            "capacity": 177,
+            "price": "68.84"
+          },
+          {
+            "capacity": 185,
+            "price": "66.00"
+          },
+          {
+            "capacity": 190,
+            "price": "50.00"
+          },
+          {
+            "capacity": 210,
+            "price": "42.46"
+          },
+          {
+            "capacity": 235,
+            "price": "42.27"
+          },
+          {
+            "capacity": 255,
+            "price": "31.85"
+          },
+          {
+            "capacity": 275,
+            "price": "26.40"
+          },
+          {
+            "capacity": 295,
+            "price": "23.88"
+          },
+          {
+            "capacity": 315,
+            "price": "17.91"
+          },
+          {
+            "capacity": 320,
+            "price": "13.43"
+          },
+          {
+            "capacity": 330,
+            "price": "13.13"
+          },
+          {
+            "capacity": 335,
+            "price": "10.08"
+          },
+          {
+            "capacity": 360,
+            "price": "9.38"
+          },
+          {
+            "capacity": 385,
+            "price": "7.92"
+          },
+          {
+            "capacity": 390,
+            "price": "3.44"
+          },
+          {
+            "capacity": 410,
+            "price": "1.58"
+          },
+          {
+            "capacity": 415,
+            "price": "0.69"
+          },
+          {
+            "capacity": 425,
+            "price": "0.10"
+          },
+          {
+            "capacity": 445,
+            "price": "0.09"
+          },
+          {
+            "capacity": 495,
+            "price": "0.01"
+          }
+        ],
+        "x": 284,
+        "y": "23.88"
+      },
+      {
+        "title": "15:00 - 16:00",
+        "position": 15,
+        "line": [
+          {
+            "capacity": 8,
+            "price": "400.00"
+          },
+          {
+            "capacity": 28,
+            "price": "300.00"
+          },
+          {
+            "capacity": 58,
+            "price": "200.00"
+          },
+          {
+            "capacity": 126,
+            "price": "151.00"
+          },
+          {
+            "capacity": 136,
+            "price": "120.00"
+          },
+          {
+            "capacity": 141,
+            "price": "95.23"
+          },
+          {
+            "capacity": 148,
+            "price": "80.00"
+          },
+          {
+            "capacity": 158,
+            "price": "73.00"
+          },
+          {
+            "capacity": 173,
+            "price": "69.95"
+          },
+          {
+            "capacity": 181,
+            "price": "51.00"
+          },
+          {
+            "capacity": 186,
+            "price": "50.00"
+          },
+          {
+            "capacity": 211,
+            "price": "38.83"
+          },
+          {
+            "capacity": 231,
+            "price": "31.35"
+          },
+          {
+            "capacity": 251,
+            "price": "23.51"
+          },
+          {
+            "capacity": 271,
+            "price": "20.40"
+          },
+          {
+            "capacity": 291,
+            "price": "17.63"
+          },
+          {
+            "capacity": 311,
+            "price": "13.23"
+          },
+          {
+            "capacity": 321,
+            "price": "13.13"
+          },
+          {
+            "capacity": 326,
+            "price": "9.92"
+          },
+          {
+            "capacity": 351,
+            "price": "8.62"
+          },
+          {
+            "capacity": 356,
+            "price": "7.44"
+          },
+          {
+            "capacity": 381,
+            "price": "6.12"
+          },
+          {
+            "capacity": 386,
+            "price": "3.50"
+          },
+          {
+            "capacity": 406,
+            "price": "1.22"
+          },
+          {
+            "capacity": 411,
+            "price": "0.70"
+          },
+          {
+            "capacity": 421,
+            "price": "0.10"
+          },
+          {
+            "capacity": 441,
+            "price": "0.09"
+          },
+          {
+            "capacity": 491,
+            "price": "0.01"
+          }
+        ],
+        "x": 284,
+        "y": "17.63"
+      },
+      {
+        "title": "16:00 - 17:00",
+        "position": 16,
+        "line": [
+          {
+            "capacity": 8,
+            "price": "400.00"
+          },
+          {
+            "capacity": 28,
+            "price": "300.00"
+          },
+          {
+            "capacity": 58,
+            "price": "200.00"
+          },
+          {
+            "capacity": 134,
+            "price": "151.00"
+          },
+          {
+            "capacity": 144,
+            "price": "120.00"
+          },
+          {
+            "capacity": 149,
+            "price": "95.23"
+          },
+          {
+            "capacity": 158,
+            "price": "80.00"
+          },
+          {
+            "capacity": 163,
+            "price": "50.00"
+          },
+          {
+            "capacity": 173,
+            "price": "45.00"
+          },
+          {
+            "capacity": 181,
+            "price": "39.00"
+          },
+          {
+            "capacity": 196,
+            "price": "36.31"
+          },
+          {
+            "capacity": 216,
+            "price": "33.38"
+          },
+          {
+            "capacity": 241,
+            "price": "31.16"
+          },
+          {
+            "capacity": 261,
+            "price": "25.04"
+          },
+          {
+            "capacity": 281,
+            "price": "18.78"
+          },
+          {
+            "capacity": 301,
+            "price": "15.60"
+          },
+          {
+            "capacity": 321,
+            "price": "14.08"
+          },
+          {
+            "capacity": 331,
+            "price": "13.13"
+          },
+          {
+            "capacity": 336,
+            "price": "10.56"
+          },
+          {
+            "capacity": 341,
+            "price": "7.92"
+          },
+          {
+            "capacity": 366,
+            "price": "6.92"
+          },
+          {
+            "capacity": 391,
+            "price": "4.68"
+          },
+          {
+            "capacity": 396,
+            "price": "1.82"
+          },
+          {
+            "capacity": 416,
+            "price": "0.94"
+          },
+          {
+            "capacity": 421,
+            "price": "0.36"
+          },
+          {
+            "capacity": 431,
+            "price": "0.10"
+          },
+          {
+            "capacity": 451,
+            "price": "0.09"
+          },
+          {
+            "capacity": 501,
+            "price": "0.01"
+          }
+        ],
+        "x": 307,
+        "y": "14.08"
+      },
+      {
+        "title": "17:00 - 18:00",
+        "position": 17,
+        "line": [
+          {
+            "capacity": 9,
+            "price": "400.00"
+          },
+          {
+            "capacity": 29,
+            "price": "300.00"
+          },
+          {
+            "capacity": 59,
+            "price": "200.00"
+          },
+          {
+            "capacity": 140,
+            "price": "151.00"
+          },
+          {
+            "capacity": 150,
+            "price": "120.00"
+          },
+          {
+            "capacity": 155,
+            "price": "95.23"
+          },
+          {
+            "capacity": 164,
+            "price": "80.00"
+          },
+          {
+            "capacity": 169,
+            "price": "50.00"
+          },
+          {
+            "capacity": 181,
+            "price": "27.00"
+          },
+          {
+            "capacity": 206,
+            "price": "24.00"
+          },
+          {
+            "capacity": 231,
+            "price": "15.56"
+          },
+          {
+            "capacity": 251,
+            "price": "15.50"
+          },
+          {
+            "capacity": 271,
+            "price": "14.08"
+          },
+          {
+            "capacity": 279,
+            "price": "11.40"
+          },
+          {
+            "capacity": 299,
+            "price": "10.56"
+          },
+          {
+            "capacity": 309,
+            "price": "9.90"
+          },
+          {
+            "capacity": 329,
+            "price": "7.92"
+          },
+          {
+            "capacity": 349,
+            "price": "5.94"
+          },
+          {
+            "capacity": 369,
+            "price": "4.56"
+          },
+          {
+            "capacity": 374,
+            "price": "4.46"
+          },
+          {
+            "capacity": 384,
+            "price": "3.88"
+          },
+          {
+            "capacity": 389,
+            "price": "3.34"
+          },
+          {
+            "capacity": 414,
+            "price": "2.93"
+          },
+          {
+            "capacity": 429,
+            "price": "2.29"
+          },
+          {
+            "capacity": 454,
+            "price": "1.37"
+          },
+          {
+            "capacity": 474,
+            "price": "0.27"
+          },
+          {
+            "capacity": 479,
+            "price": "0.11"
+          },
+          {
+            "capacity": 489,
+            "price": "0.10"
+          },
+          {
+            "capacity": 509,
+            "price": "0.09"
+          },
+          {
+            "capacity": 514,
+            "price": "0.02"
+          },
+          {
+            "capacity": 564,
+            "price": "0.01"
+          }
+        ],
+        "x": 295,
+        "y": "10.56"
+      },
+      {
+        "title": "18:00 - 19:00",
+        "position": 18,
+        "line": [
+          {
+            "capacity": 8,
+            "price": "400.00"
+          },
+          {
+            "capacity": 28,
+            "price": "300.00"
+          },
+          {
+            "capacity": 58,
+            "price": "200.00"
+          },
+          {
+            "capacity": 80,
+            "price": "151.00"
+          },
+          {
+            "capacity": 90,
+            "price": "120.00"
+          },
+          {
+            "capacity": 95,
+            "price": "95.23"
+          },
+          {
+            "capacity": 100,
+            "price": "80.00"
+          },
+          {
+            "capacity": 105,
+            "price": "50.00"
+          },
+          {
+            "capacity": 117,
+            "price": "25.00"
+          },
+          {
+            "capacity": 142,
+            "price": "24.00"
+          },
+          {
+            "capacity": 162,
+            "price": "15.50"
+          },
+          {
+            "capacity": 187,
+            "price": "12.27"
+          },
+          {
+            "capacity": 197,
+            "price": "9.90"
+          },
+          {
+            "capacity": 207,
+            "price": "8.88"
+          },
+          {
+            "capacity": 215,
+            "price": "6.00"
+          },
+          {
+            "capacity": 235,
+            "price": "3.21"
+          },
+          {
+            "capacity": 260,
+            "price": "2.72"
+          },
+          {
+            "capacity": 280,
+            "price": "2.41"
+          },
+          {
+            "capacity": 300,
+            "price": "2.40"
+          },
+          {
+            "capacity": 320,
+            "price": "1.81"
+          },
+          {
+            "capacity": 340,
+            "price": "1.35"
+          },
+          {
+            "capacity": 345,
+            "price": "1.02"
+          },
+          {
+            "capacity": 350,
+            "price": "0.76"
+          },
+          {
+            "capacity": 375,
+            "price": "0.72"
+          },
+          {
+            "capacity": 390,
+            "price": "0.32"
+          },
+          {
+            "capacity": 410,
+            "price": "0.14"
+          },
+          {
+            "capacity": 420,
+            "price": "0.10"
+          },
+          {
+            "capacity": 440,
+            "price": "0.09"
+          },
+          {
+            "capacity": 445,
+            "price": "0.02"
+          },
+          {
+            "capacity": 495,
+            "price": "0.01"
+          },
+          {
+            "capacity": 500,
+            "price": "0.00"
+          }
+        ],
+        "x": 295,
+        "y": "2.40"
+      },
+      {
+        "title": "19:00 - 20:00",
+        "position": 19,
+        "line": [
+          {
+            "capacity": 8,
+            "price": "400.00"
+          },
+          {
+            "capacity": 28,
+            "price": "300.00"
+          },
+          {
+            "capacity": 58,
+            "price": "200.00"
+          },
+          {
+            "capacity": 70,
+            "price": "151.00"
+          },
+          {
+            "capacity": 80,
+            "price": "120.00"
+          },
+          {
+            "capacity": 85,
+            "price": "95.23"
+          },
+          {
+            "capacity": 90,
+            "price": "80.00"
+          },
+          {
+            "capacity": 95,
+            "price": "50.00"
+          },
+          {
+            "capacity": 107,
+            "price": "25.00"
+          },
+          {
+            "capacity": 132,
+            "price": "24.00"
+          },
+          {
+            "capacity": 152,
+            "price": "15.50"
+          },
+          {
+            "capacity": 177,
+            "price": "11.12"
+          },
+          {
+            "capacity": 187,
+            "price": "9.90"
+          },
+          {
+            "capacity": 197,
+            "price": "8.88"
+          },
+          {
+            "capacity": 205,
+            "price": "6.00"
+          },
+          {
+            "capacity": 225,
+            "price": "4.21"
+          },
+          {
+            "capacity": 245,
+            "price": "3.16"
+          },
+          {
+            "capacity": 270,
+            "price": "2.47"
+          },
+          {
+            "capacity": 290,
+            "price": "2.40"
+          },
+          {
+            "capacity": 310,
+            "price": "2.37"
+          },
+          {
+            "capacity": 330,
+            "price": "1.78"
+          },
+          {
+            "capacity": 335,
+            "price": "1.33"
+          },
+          {
+            "capacity": 340,
+            "price": "1.00"
+          },
+          {
+            "capacity": 365,
+            "price": "0.72"
+          },
+          {
+            "capacity": 380,
+            "price": "0.32"
+          },
+          {
+            "capacity": 400,
+            "price": "0.14"
+          },
+          {
+            "capacity": 410,
+            "price": "0.10"
+          },
+          {
+            "capacity": 430,
+            "price": "0.09"
+          },
+          {
+            "capacity": 435,
+            "price": "0.02"
+          },
+          {
+            "capacity": 485,
+            "price": "0.01"
+          },
+          {
+            "capacity": 490,
+            "price": "0.00"
+          }
+        ],
+        "x": 295,
+        "y": "2.37"
+      },
+      {
+        "title": "20:00 - 21:00",
+        "position": 20,
+        "line": [
+          {
+            "capacity": 8,
+            "price": "400.00"
+          },
+          {
+            "capacity": 28,
+            "price": "300.00"
+          },
+          {
+            "capacity": 58,
+            "price": "200.00"
+          },
+          {
+            "capacity": 68,
+            "price": "120.00"
+          },
+          {
+            "capacity": 73,
+            "price": "95.23"
+          },
+          {
+            "capacity": 78,
+            "price": "80.00"
+          },
+          {
+            "capacity": 83,
+            "price": "50.00"
+          },
+          {
+            "capacity": 95,
+            "price": "25.00"
+          },
+          {
+            "capacity": 120,
+            "price": "24.00"
+          },
+          {
+            "capacity": 140,
+            "price": "15.50"
+          },
+          {
+            "capacity": 165,
+            "price": "11.12"
+          },
+          {
+            "capacity": 175,
+            "price": "9.90"
+          },
+          {
+            "capacity": 185,
+            "price": "8.88"
+          },
+          {
+            "capacity": 193,
+            "price": "6.00"
+          },
+          {
+            "capacity": 213,
+            "price": "4.21"
+          },
+          {
+            "capacity": 233,
+            "price": "3.16"
+          },
+          {
+            "capacity": 258,
+            "price": "2.47"
+          },
+          {
+            "capacity": 278,
+            "price": "2.40"
+          },
+          {
+            "capacity": 298,
+            "price": "2.37"
+          },
+          {
+            "capacity": 318,
+            "price": "1.78"
+          },
+          {
+            "capacity": 323,
+            "price": "1.33"
+          },
+          {
+            "capacity": 328,
+            "price": "1.00"
+          },
+          {
+            "capacity": 343,
+            "price": "0.92"
+          },
+          {
+            "capacity": 368,
+            "price": "0.72"
+          },
+          {
+            "capacity": 388,
+            "price": "0.14"
+          },
+          {
+            "capacity": 398,
+            "price": "0.10"
+          },
+          {
+            "capacity": 418,
+            "price": "0.09"
+          },
+          {
+            "capacity": 423,
+            "price": "0.05"
+          },
+          {
+            "capacity": 473,
+            "price": "0.01"
+          },
+          {
+            "capacity": 478,
+            "price": "0.00"
+          }
+        ],
+        "x": 295,
+        "y": "2.37"
+      },
+      {
+        "title": "21:00 - 22:00",
+        "position": 21,
+        "line": [
+          {
+            "capacity": 8,
+            "price": "400.00"
+          },
+          {
+            "capacity": 28,
+            "price": "300.00"
+          },
+          {
+            "capacity": 58,
+            "price": "200.00"
+          },
+          {
+            "capacity": 68,
+            "price": "120.00"
+          },
+          {
+            "capacity": 73,
+            "price": "95.23"
+          },
+          {
+            "capacity": 78,
+            "price": "80.00"
+          },
+          {
+            "capacity": 83,
+            "price": "50.00"
+          },
+          {
+            "capacity": 95,
+            "price": "25.00"
+          },
+          {
+            "capacity": 120,
+            "price": "24.00"
+          },
+          {
+            "capacity": 140,
+            "price": "15.50"
+          },
+          {
+            "capacity": 165,
+            "price": "11.12"
+          },
+          {
+            "capacity": 175,
+            "price": "9.90"
+          },
+          {
+            "capacity": 185,
+            "price": "8.88"
+          },
+          {
+            "capacity": 193,
+            "price": "6.00"
+          },
+          {
+            "capacity": 213,
+            "price": "4.21"
+          },
+          {
+            "capacity": 233,
+            "price": "3.16"
+          },
+          {
+            "capacity": 258,
+            "price": "2.47"
+          },
+          {
+            "capacity": 278,
+            "price": "2.40"
+          },
+          {
+            "capacity": 298,
+            "price": "2.37"
+          },
+          {
+            "capacity": 318,
+            "price": "1.78"
+          },
+          {
+            "capacity": 323,
+            "price": "1.33"
+          },
+          {
+            "capacity": 328,
+            "price": "1.00"
+          },
+          {
+            "capacity": 353,
+            "price": "0.72"
+          },
+          {
+            "capacity": 368,
+            "price": "0.38"
+          },
+          {
+            "capacity": 388,
+            "price": "0.14"
+          },
+          {
+            "capacity": 398,
+            "price": "0.10"
+          },
+          {
+            "capacity": 418,
+            "price": "0.09"
+          },
+          {
+            "capacity": 423,
+            "price": "0.02"
+          },
+          {
+            "capacity": 473,
+            "price": "0.01"
+          },
+          {
+            "capacity": 478,
+            "price": "0.00"
+          }
+        ],
+        "x": 295,
+        "y": "2.37"
+      },
+      {
+        "title": "22:00 - 23:00",
+        "position": 22,
+        "line": [
+          {
+            "capacity": 6,
+            "price": "400.00"
+          },
+          {
+            "capacity": 26,
+            "price": "300.00"
+          },
+          {
+            "capacity": 56,
+            "price": "200.00"
+          },
+          {
+            "capacity": 69,
+            "price": "120.00"
+          },
+          {
+            "capacity": 74,
+            "price": "95.23"
+          },
+          {
+            "capacity": 79,
+            "price": "80.00"
+          },
+          {
+            "capacity": 91,
+            "price": "25.00"
+          },
+          {
+            "capacity": 116,
+            "price": "24.00"
+          },
+          {
+            "capacity": 136,
+            "price": "15.50"
+          },
+          {
+            "capacity": 161,
+            "price": "12.27"
+          },
+          {
+            "capacity": 171,
+            "price": "9.90"
+          },
+          {
+            "capacity": 181,
+            "price": "8.88"
+          },
+          {
+            "capacity": 189,
+            "price": "6.00"
+          },
+          {
+            "capacity": 209,
+            "price": "4.21"
+          },
+          {
+            "capacity": 234,
+            "price": "3.37"
+          },
+          {
+            "capacity": 254,
+            "price": "3.16"
+          },
+          {
+            "capacity": 274,
+            "price": "2.40"
+          },
+          {
+            "capacity": 294,
+            "price": "2.37"
+          },
+          {
+            "capacity": 314,
+            "price": "1.78"
+          },
+          {
+            "capacity": 319,
+            "price": "1.33"
+          },
+          {
+            "capacity": 324,
+            "price": "1.00"
+          },
+          {
+            "capacity": 349,
+            "price": "0.72"
+          },
+          {
+            "capacity": 364,
+            "price": "0.32"
+          },
+          {
+            "capacity": 384,
+            "price": "0.14"
+          },
+          {
+            "capacity": 394,
+            "price": "0.10"
+          },
+          {
+            "capacity": 414,
+            "price": "0.09"
+          },
+          {
+            "capacity": 419,
+            "price": "0.02"
+          },
+          {
+            "capacity": 469,
+            "price": "0.01"
+          },
+          {
+            "capacity": 474,
+            "price": "0.00"
+          }
+        ],
+        "x": 295,
+        "y": "1.78"
+      },
+      {
+        "title": "23:00 - 24:00",
+        "position": 23,
+        "line": [
+          {
+            "capacity": 5,
+            "price": "400.00"
+          },
+          {
+            "capacity": 25,
+            "price": "300.00"
+          },
+          {
+            "capacity": 55,
+            "price": "200.00"
+          },
+          {
+            "capacity": 60,
+            "price": "95.23"
+          },
+          {
+            "capacity": 65,
+            "price": "80.00"
+          },
+          {
+            "capacity": 77,
+            "price": "25.00"
+          },
+          {
+            "capacity": 102,
+            "price": "24.00"
+          },
+          {
+            "capacity": 122,
+            "price": "18.04"
+          },
+          {
+            "capacity": 142,
+            "price": "15.50"
+          },
+          {
+            "capacity": 167,
+            "price": "13.69"
+          },
+          {
+            "capacity": 187,
+            "price": "13.53"
+          },
+          {
+            "capacity": 207,
+            "price": "10.15"
+          },
+          {
+            "capacity": 217,
+            "price": "9.90"
+          },
+          {
+            "capacity": 227,
+            "price": "8.88"
+          },
+          {
+            "capacity": 247,
+            "price": "7.61"
+          },
+          {
+            "capacity": 255,
+            "price": "6.00"
+          },
+          {
+            "capacity": 260,
+            "price": "5.71"
+          },
+          {
+            "capacity": 265,
+            "price": "4.28"
+          },
+          {
+            "capacity": 290,
+            "price": "3.21"
+          },
+          {
+            "capacity": 310,
+            "price": "2.40"
+          },
+          {
+            "capacity": 335,
+            "price": "0.72"
+          },
+          {
+            "capacity": 350,
+            "price": "0.32"
+          },
+          {
+            "capacity": 370,
+            "price": "0.14"
+          },
+          {
+            "capacity": 380,
+            "price": "0.10"
+          },
+          {
+            "capacity": 400,
+            "price": "0.09"
+          },
+          {
+            "capacity": 405,
+            "price": "0.02"
+          },
+          {
+            "capacity": 455,
+            "price": "0.01"
+          },
+          {
+            "capacity": 460,
+            "price": "0.00"
+          }
+        ],
+        "x": 295,
+        "y": "2.40"
+      }
+    ],
+    "multiGraphics": true,
+    "table": [
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "00:00 - 01:00",
+        "pos": 1,
+        "offered": "295.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 512,
+        "allocated": 295,
+        "price": "7.20",
+        "income": 2124,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 12,
+        "numberOfSuccessfullParticipants": 10,
+        "numberOfAuctionBids": 32,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGSAENERGYMKDY",
+          "23X--201125-DC-P",
+          "33XGEN-I-ENERGYT",
+          "23X--201124-I--D",
+          "23X--231102--S-Z",
+          "23X--230207-ME-U"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "01:00 - 02:00",
+        "pos": 2,
+        "offered": "295.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 509,
+        "allocated": 295,
+        "price": "7.73",
+        "income": 2280.35,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 11,
+        "numberOfSuccessfullParticipants": 10,
+        "numberOfAuctionBids": 31,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGSAENERGYMKDY",
+          "23X--230207-ME-U",
+          "33XGEN-I-ENERGYT",
+          "23X--201125-DC-P",
+          "23X--201124-I--D",
+          "23X--231102--S-Z"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "02:00 - 03:00",
+        "pos": 3,
+        "offered": "298.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 508,
+        "allocated": 298,
+        "price": "5.27",
+        "income": 1570.4599999999998,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 11,
+        "numberOfSuccessfullParticipants": 10,
+        "numberOfAuctionBids": 31,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGSAENERGYMKDY",
+          "23X--230207-ME-U",
+          "33XGEN-I-ENERGYT",
+          "23X--201124-I--D",
+          "23X--231102--S-Z",
+          "23X--201125-DC-P"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "03:00 - 04:00",
+        "pos": 4,
+        "offered": "298.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 508,
+        "allocated": 298,
+        "price": "6.43",
+        "income": 1916.1399999999999,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 11,
+        "numberOfSuccessfullParticipants": 10,
+        "numberOfAuctionBids": 31,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGSAENERGYMKDY",
+          "33XGEN-I-ENERGYT",
+          "23X--201124-I--D",
+          "23X--231102--S-Z",
+          "23X--201125-DC-P",
+          "23X--230207-ME-U"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "04:00 - 05:00",
+        "pos": 5,
+        "offered": "298.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 512,
+        "allocated": 298,
+        "price": "6.73",
+        "income": 2005.5400000000002,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 11,
+        "numberOfSuccessfullParticipants": 10,
+        "numberOfAuctionBids": 31,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGSAENERGYMKDY",
+          "33XGEN-I-ENERGYT",
+          "23X--201125-DC-P",
+          "23X--201124-I--D",
+          "23X--231102--S-Z",
+          "23X--230207-ME-U"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "05:00 - 06:00",
+        "pos": 6,
+        "offered": "295.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 512,
+        "allocated": 295,
+        "price": "3.99",
+        "income": 1177.05,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 11,
+        "numberOfSuccessfullParticipants": 9,
+        "numberOfAuctionBids": 31,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGEN-I-ENERGYT",
+          "33XGSAENERGYMKDY",
+          "23X--201124-I--D",
+          "23X--231102--S-Z",
+          "23X--201125-DC-P"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "06:00 - 07:00",
+        "pos": 7,
+        "offered": "295.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 512,
+        "allocated": 295,
+        "price": "4.31",
+        "income": 1271.4499999999998,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 11,
+        "numberOfSuccessfullParticipants": 9,
+        "numberOfAuctionBids": 31,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGEN-I-ENERGYT",
+          "33XGSAENERGYMKDY",
+          "23X--201125-DC-P",
+          "23X--201124-I--D",
+          "23X--231102--S-Z"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "07:00 - 08:00",
+        "pos": 8,
+        "offered": "295.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 510,
+        "allocated": 295,
+        "price": "5.94",
+        "income": 1752.3000000000002,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 11,
+        "numberOfSuccessfullParticipants": 10,
+        "numberOfAuctionBids": 31,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "23X--201124-I--D",
+          "33XGSAENERGYMKDY",
+          "33XGEN-I-ENERGYT",
+          "23X--231102--S-Z",
+          "23X--201125-DC-P",
+          "23X--230207-ME-U"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "08:00 - 09:00",
+        "pos": 9,
+        "offered": "304.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 425,
+        "allocated": 304,
+        "price": "4.46",
+        "income": 1355.84,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 9,
+        "numberOfSuccessfullParticipants": 8,
+        "numberOfAuctionBids": 27,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "23X--230207-ME-U",
+          "23X--201124-I--D",
+          "33XGEN-I-ENERGYT",
+          "23X--201125-DC-P"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "09:00 - 10:00",
+        "pos": 10,
+        "offered": "284.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 480,
+        "allocated": 284,
+        "price": "13.13",
+        "income": 3728.92,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 9,
+        "numberOfSuccessfullParticipants": 8,
+        "numberOfAuctionBids": 28,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "23X--230207-ME-U",
+          "33XGEN-I-ENERGYT",
+          "23X--201124-I--D",
+          "23X--201125-DC-P"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "10:00 - 11:00",
+        "pos": 11,
+        "offered": "284.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 496,
+        "allocated": 284,
+        "price": "17.19",
+        "income": 4881.96,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 9,
+        "numberOfSuccessfullParticipants": 8,
+        "numberOfAuctionBids": 28,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "23X--230207-ME-U",
+          "23X--201124-I--D",
+          "33XGEN-I-ENERGYT",
+          "23X--201125-DC-P"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "11:00 - 12:00",
+        "pos": 12,
+        "offered": "284.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 499,
+        "allocated": 284,
+        "price": "19.20",
+        "income": 5452.8,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 9,
+        "numberOfSuccessfullParticipants": 8,
+        "numberOfAuctionBids": 28,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "23X--230207-ME-U",
+          "23X--201124-I--D",
+          "33XGEN-I-ENERGYT",
+          "23X--201125-DC-P"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "12:00 - 13:00",
+        "pos": 13,
+        "offered": "284.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 503,
+        "allocated": 284,
+        "price": "22.32",
+        "income": 6338.88,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 9,
+        "numberOfSuccessfullParticipants": 8,
+        "numberOfAuctionBids": 28,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "23X--230207-ME-U",
+          "33XGEN-I-ENERGYT",
+          "23X--201124-I--D",
+          "23X--201125-DC-P"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "13:00 - 14:00",
+        "pos": 14,
+        "offered": "284.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 496,
+        "allocated": 284,
+        "price": "23.88",
+        "income": 6781.92,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 9,
+        "numberOfSuccessfullParticipants": 8,
+        "numberOfAuctionBids": 28,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGEN-I-ENERGYT",
+          "23X--230207-ME-U",
+          "23X--201124-I--D",
+          "23X--201125-DC-P"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "14:00 - 15:00",
+        "pos": 15,
+        "offered": "284.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 495,
+        "allocated": 284,
+        "price": "23.88",
+        "income": 6781.92,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 9,
+        "numberOfSuccessfullParticipants": 8,
+        "numberOfAuctionBids": 28,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "23X--230207-ME-U",
+          "33XGEN-I-ENERGYT",
+          "23X--201125-DC-P",
+          "23X--201124-I--D"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "15:00 - 16:00",
+        "pos": 16,
+        "offered": "284.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 491,
+        "allocated": 284,
+        "price": "17.63",
+        "income": 5006.92,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 9,
+        "numberOfSuccessfullParticipants": 8,
+        "numberOfAuctionBids": 28,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "23X--230207-ME-U",
+          "33XGEN-I-ENERGYT",
+          "23X--201124-I--D",
+          "23X--201125-DC-P"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "16:00 - 17:00",
+        "pos": 17,
+        "offered": "307.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 501,
+        "allocated": 307,
+        "price": "14.08",
+        "income": 4322.56,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 9,
+        "numberOfSuccessfullParticipants": 8,
+        "numberOfAuctionBids": 28,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGEN-I-ENERGYT",
+          "23X--230207-ME-U",
+          "23X--201125-DC-P",
+          "23X--201124-I--D"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "17:00 - 18:00",
+        "pos": 18,
+        "offered": "295.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 564,
+        "allocated": 295,
+        "price": "10.56",
+        "income": 3115.2000000000003,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 11,
+        "numberOfSuccessfullParticipants": 9,
+        "numberOfAuctionBids": 31,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGSAENERGYMKDY",
+          "23X--201124-I--D",
+          "23X--231102--S-Z",
+          "23X--201125-DC-P",
+          "33XGEN-I-ENERGYT"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "18:00 - 19:00",
+        "pos": 19,
+        "offered": "295.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 500,
+        "allocated": 295,
+        "price": "2.40",
+        "income": 708,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 11,
+        "numberOfSuccessfullParticipants": 9,
+        "numberOfAuctionBids": 31,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGSAENERGYMKDY",
+          "23X--231102--S-Z",
+          "23X--201124-I--D",
+          "33XGEN-I-ENERGYT",
+          "23X--201125-DC-P"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "19:00 - 20:00",
+        "pos": 20,
+        "offered": "295.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 490,
+        "allocated": 295,
+        "price": "2.37",
+        "income": 699.15,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 11,
+        "numberOfSuccessfullParticipants": 9,
+        "numberOfAuctionBids": 31,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGSAENERGYMKDY",
+          "23X--231102--S-Z",
+          "23X--201124-I--D",
+          "33XGEN-I-ENERGYT",
+          "23X--201125-DC-P"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "20:00 - 21:00",
+        "pos": 21,
+        "offered": "295.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 478,
+        "allocated": 295,
+        "price": "2.37",
+        "income": 699.15,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 11,
+        "numberOfSuccessfullParticipants": 9,
+        "numberOfAuctionBids": 30,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGSAENERGYMKDY",
+          "23X--231102--S-Z",
+          "23X--201124-I--D",
+          "33XGEN-I-ENERGYT",
+          "23X--201125-DC-P"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "21:00 - 22:00",
+        "pos": 22,
+        "offered": "295.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 478,
+        "allocated": 295,
+        "price": "2.37",
+        "income": 699.15,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 11,
+        "numberOfSuccessfullParticipants": 9,
+        "numberOfAuctionBids": 30,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGSAENERGYMKDY",
+          "23X--231102--S-Z",
+          "23X--201124-I--D",
+          "33XGEN-I-ENERGYT",
+          "23X--201125-DC-P"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "22:00 - 23:00",
+        "pos": 23,
+        "offered": "295.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 474,
+        "allocated": 295,
+        "price": "1.78",
+        "income": 525.1,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 11,
+        "numberOfSuccessfullParticipants": 9,
+        "numberOfAuctionBids": 29,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGSAENERGYMKDY",
+          "23X--231102--S-Z",
+          "23X--201124-I--D",
+          "33XGEN-I-ENERGYT",
+          "23X--201125-DC-P"
+        ],
+        "cancelled": false
+      },
+      {
+        "auctionId": "MKXK-DH-20260901-67851",
+        "type": "Daily",
+        "border": "MK - XK",
+        "deliveryPeriodStart": "01.09.2026",
+        "deliveryPeriodEnd": "02.09.2026",
+        "year": "2026",
+        "month": "Sep",
+        "notificationDateTime": "2026-08-31T07:32:00.000000Z",
+        "contestationEndDateTime": "2026-08-31T08:00:00.000000Z",
+        "publicationDateTime": "2026-08-31T08:00:00.000000Z",
+        "biddingPeriodStart": "2026-08-31T07:00:00.000000Z",
+        "biddingPeriodEnd": "2026-08-31T07:30:00.000000Z",
+        "timetable": "23:00 - 24:00",
+        "pos": 24,
+        "offered": "295.00",
+        "atc": 0,
+        "return": 0,
+        "requested": 460,
+        "allocated": 295,
+        "price": "2.40",
+        "income": 708,
+        "offeredInReduction": "--",
+        "allocatedInReduction": "--",
+        "numberOfParticipants": 11,
+        "numberOfSuccessfullParticipants": 9,
+        "numberOfAuctionBids": 28,
+        "participantsSold": [
+          "33XEDSMACEDONIA3",
+          "33X-EFT-SKOPJE-J",
+          "33XETMT-ENERGY-U",
+          "33X-TETRA-SKOP-M",
+          "33XGSAENERGYMKDY",
+          "23X--201125-DC-P",
+          "23X--231102--S-Z",
+          "23X--201124-I--D",
+          "33XGEN-I-ENERGYT"
+        ],
+        "cancelled": false
+      }
+    ],
+    "lastUpdate": "2026-08-31 09:33",
+    "maintancePeriods": [],
+    "hasTard": true,
+    "isCancelled": false
+  }
+}
