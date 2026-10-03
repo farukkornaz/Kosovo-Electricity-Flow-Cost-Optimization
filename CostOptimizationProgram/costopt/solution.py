@@ -44,7 +44,7 @@ class ArcResult:
 
     @property
     def utilization(self) -> float:
-        return self.flow / self.capacity
+        return self.flow / self.capacity if self.capacity else 0.0
 
 
 @dataclass(frozen=True)
@@ -134,6 +134,9 @@ class SolutionResult:
             )
         lines += ["", "Arc         Flow /  Cap   Use  Clearing P     Cost"]
         for a in self.arcs:
+            if a.capacity == 0:
+                lines.append(f"  {a.arc_id:8} closed (ATC 0)")
+                continue
             lines.append(
                 f"  {a.arc_id:8} {a.flow:5} / {a.capacity:4}  {a.utilization:4.0%}  "
                 f"{a.clearing_price:10.2f}  {a.cost:9,.2f}"

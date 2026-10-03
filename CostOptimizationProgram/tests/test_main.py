@@ -14,7 +14,7 @@ OUTPUTS = ["model_map.png", "arc_curves.png", "solution_map.png", "solution_path
            "path_costs.png", "solution.json"]
 
 
-@pytest.mark.parametrize("model_file", ["sample_network.json", "scenario_gr_demand.json"])
+@pytest.mark.parametrize("model_file", ["sample_network.json", "scenario_gr_demand.json", "scenario_xk_demand.json"])
 def test_run_writes_all_outputs(tmp_path, model_file):
     result = run(DATA / model_file, tmp_path)
     assert result.status is SolveStatus.OPTIMAL

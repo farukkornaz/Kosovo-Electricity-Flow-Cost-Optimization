@@ -8,6 +8,7 @@ solver translates it (super source, curve segments, integer scaling).
               It can also pass through power bought elsewhere.
 - DemandNode: the single zone whose `demand` MW must be delivered.
 - Arc:        a one-directional line; its auction price curve also sets its capacity.
+              Capacity 0 (ATC 0) means the line is closed: kept in the data, never used.
               A two-way interconnector is modeled as two arcs.
 """
 from dataclasses import dataclass
@@ -65,6 +66,10 @@ class Arc:
     @property
     def capacity(self) -> int:
         return self.curve.capacity
+
+    @property
+    def is_closed(self) -> bool:
+        return self.capacity == 0
 
 
 class NetworkModel:
@@ -153,6 +158,9 @@ class NetworkModel:
                 lines.append(f"  [node]   {node.id:4} {node.name}")
         for arc in self._arcs.values():
             curve = arc.curve
+            if arc.is_closed:
+                lines.append(f"  {arc.id:8} closed (ATC 0)")
+                continue
             lines.append(
                 f"  {arc.id:8} cap {arc.capacity:5} MW, "
                 f"price {curve.clearing_price(0):.2f} -> {curve.clearing_price(arc.capacity):.2f} €/MWh"

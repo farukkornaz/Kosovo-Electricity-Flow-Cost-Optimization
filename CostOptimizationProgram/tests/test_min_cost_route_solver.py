@@ -51,6 +51,34 @@ def test_pay_as_clear_splits_over_parallel_routes():
     assert result.transport_cost == pytest.approx(1500)
 
 
+def test_closed_line_forces_detour():
+    # The direct A->D line is cheaper but closed (ATC 0), so everything goes A->B->D.
+    model = NetworkModel()
+    model.add_node(SupplyNode("A", "A", 0, 0, max_supply=100, unit_price=50))
+    model.add_node(Node("B", "B", 0, 1))
+    model.add_node(DemandNode("D", "D", 0, 2, demand=80))
+    model.add_arc(Arc("A", "D", flat(1, 0)))
+    model.add_arc(Arc("A", "B", flat(10, 100)))
+    model.add_arc(Arc("B", "D", flat(10, 100)))
+
+    result = MinCostRouteSolver().solve(model)
+    assert result.status is SolveStatus.OPTIMAL
+    assert result.arc("A->D").flow == 0
+    assert result.arc("A->D").utilization == 0
+    assert [p.nodes for p in result.paths] == [("A", "B", "D")]
+    assert "A->D     closed (ATC 0)" in result.summary()
+
+
+def test_all_lines_closed_is_infeasible():
+    model = NetworkModel()
+    model.add_node(SupplyNode("A", "A", 0, 0, max_supply=100, unit_price=50))
+    model.add_node(DemandNode("D", "D", 0, 1, demand=80))
+    model.add_arc(Arc("A", "D", flat(1, 0)))
+    result = MinCostRouteSolver().solve(model)
+    assert result.status is SolveStatus.INFEASIBLE
+    assert result.delivered == 0
+
+
 def test_infeasible_delivers_max():
     model = NetworkModel()
     model.add_node(SupplyNode("A", "A", 0, 0, max_supply=500, unit_price=50))

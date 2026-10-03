@@ -16,6 +16,13 @@ def test_load_sample():
     assert isinstance(model.node("BG"), SupplyNode)
 
 
+def test_xk_scenario_closed_borders():
+    model = load_model(SAMPLE.parent / "scenario_xk_demand.json")
+    assert model.demand_node.id == "XK"
+    closed = sorted(a.id for a in model.arcs if a.is_closed)
+    assert closed == ["AL->MK", "MK->AL", "RS->XK", "XK->RS"]
+
+
 def test_roundtrip(tmp_path):
     model = load_model(SAMPLE)
     out = tmp_path / "out.json"

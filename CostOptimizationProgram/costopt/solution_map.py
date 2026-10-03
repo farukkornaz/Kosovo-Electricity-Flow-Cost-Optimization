@@ -19,18 +19,24 @@ from matplotlib.lines import Line2D
 from costopt.data_loader import load_model
 from costopt.map import (
     AQUA, ARC_COLOR, BASELINE, BLUE, GRID, INK, INK_SECONDARY, MUTED, SURFACE,
-    draw_arcs, draw_nodes, finish_map, node_legend_handles,
+    closed_legend_handle, map_figsize, draw_arcs, draw_closed_arcs, draw_lines, draw_nodes, finish_map,
+    node_legend_handles, split_pairs,
 )
 from costopt.min_cost_route_solver import MinCostRouteSolver
 from costopt.model import DemandNode, NetworkModel, SupplyNode
 from costopt.solution import RoutePath, SolutionResult, SolveStatus
 
-SMALL_NODE_SIZE = 350
+SMALL_NODE_SIZE = 250
+PANEL_WIDTH = 5.5  # inches, per small-multiple map
 
 
 def _check_drawable(result: SolutionResult):
     if result.status is SolveStatus.ERROR:
         raise ValueError(f"Nothing to draw, solver failed: {result.message}")
+
+
+def _reverse_id(arc) -> str:
+    return f"{arc.to_node}->{arc.from_node}"
 
 
 def _path_arc_ids(path: RoutePath) -> set[str]:
@@ -47,15 +53,23 @@ def _title(model: NetworkModel, result: SolutionResult) -> str:
 def draw_solution(model: NetworkModel, result: SolutionResult, ax=None, title: str | None = None):
     _check_drawable(result)
     if ax is None:
-        _, ax = plt.subplots(figsize=(16, 9))
+        _, ax = plt.subplots(figsize=map_figsize(model))
 
     used = [a for a in model.arcs if result.arc(a.id).flow > 0]
-    unused = [a for a in model.arcs if result.arc(a.id).flow == 0]
+    used_ids = {a.id for a in used}
+    # A line used in one direction is drawn straight; its unused reverse direction is left out.
+    one_way_used = {a.id for a in used if _reverse_id(a) not in used_ids}
+    unused = [a for a in model.arcs
+              if result.arc(a.id).flow == 0 and not a.is_closed and _reverse_id(a) not in used_ids]
     max_flow = max((result.arc(a.id).flow for a in used), default=1)
 
-    draw_arcs(ax, model, unused, widths=[1] * len(unused), color=BASELINE, style="dashed", arrowsize=10)
-    draw_arcs(
-        ax, model, used,
+    draw_closed_arcs(ax, model)
+    unused_pairs, unused_rest = split_pairs(unused)  # unused both ways -> one plain dashed line
+    draw_lines(ax, model, unused_pairs, widths=[1] * len(unused_pairs), color=BASELINE, style="dashed",
+               two_way_arrows=False)
+    draw_arcs(ax, model, unused_rest, widths=[1] * len(unused_rest), color=BASELINE, style="dashed", arrowsize=10)
+    labels = draw_arcs(
+        ax, model, used, straight=one_way_used,
         widths=[1.5 + 5 * result.arc(a.id).flow / max_flow for a in used],
         labels={
             a.id: (
@@ -78,14 +92,14 @@ def draw_solution(model: NetworkModel, result: SolutionResult, ax=None, title: s
             texts[node.id] = f"{node.name}\n{result.delivered} / {result.demand} MW delivered"
         else:
             texts[node.id] = node.name
-    finish_map(ax, model, texts, faded=unused_suppliers)
+    finish_map(ax, model, texts, faded=unused_suppliers, arc_labels=labels)
 
     ax.legend(
         handles=node_legend_handles() + [
             Line2D([], [], marker="o", ls="", ms=10, mfc="white", mec=BLUE, mew=1.5, label="supply, not used"),
             Line2D([], [], color=ARC_COLOR, lw=3, label="flow/cap (use) · clearing price"),
             Line2D([], [], color=BASELINE, lw=1, ls="--", label="arc, not used"),
-        ],
+        ] + ([closed_legend_handle()] if any(a.is_closed for a in model.arcs) else []),
         loc="upper right", fontsize=8,
     )
     ax.set_title(title or _title(model, result))
@@ -97,16 +111,22 @@ def draw_paths(model: NetworkModel, result: SolutionResult, cols: int = 3):
     _check_drawable(result)
     paths = result.paths
     rows = max(1, math.ceil(len(paths) / cols))
-    fig, axes = plt.subplots(rows, cols, figsize=(5.5 * cols, 3.4 * rows), squeeze=False)
+    width, height = map_figsize(model)
+    panel_height = min(6.0, max(3.4, PANEL_WIDTH * height / width))  # panels follow the map's shape
+    fig, axes = plt.subplots(rows, cols, figsize=(PANEL_WIDTH * cols, panel_height * rows), squeeze=False)
 
     for ax, path in zip(axes.flat, paths):
         on_path = _path_arc_ids(path)
-        off = [a for a in model.arcs if a.id not in on_path]
+        off = [a for a in model.arcs
+               if a.id not in on_path and _reverse_id(a) not in on_path and not a.is_closed]
         on = [a for a in model.arcs if a.id in on_path]
-        draw_arcs(ax, model, off, widths=[0.8] * len(off), color=BASELINE,
+        off_pairs, off_rest = split_pairs(off)
+        draw_lines(ax, model, off_pairs, widths=[0.8] * len(off_pairs), color=BASELINE,
+                   two_way_arrows=False, node_size=SMALL_NODE_SIZE)
+        draw_arcs(ax, model, off_rest, widths=[0.8] * len(off_rest), color=BASELINE,
                   node_size=SMALL_NODE_SIZE, arrowsize=6)
         draw_arcs(ax, model, on, widths=[3] * len(on), color=BLUE,
-                  node_size=SMALL_NODE_SIZE, arrowsize=12)
+                  node_size=SMALL_NODE_SIZE, arrowsize=12, straight={a.id for a in on})
         draw_nodes(ax, model, faded={n.id for n in model.nodes} - set(path.nodes), node_size=SMALL_NODE_SIZE)
         finish_map(ax, model, axis_labels=False)
         ax.set_title(

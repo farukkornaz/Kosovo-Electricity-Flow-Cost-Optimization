@@ -1,0 +1,817 @@
+{
+  "status": "optimal",
+  "message": "demand fully met",
+  "demand_node": "XK",
+  "demand": 400,
+  "delivered": 400,
+  "supplies": [
+    {
+      "node_id": "AL",
+      "quantity": 0,
+      "max_supply": 300,
+      "unit_price": 263.94,
+      "cost": 0.0
+    },
+    {
+      "node_id": "MK",
+      "quantity": 199,
+      "max_supply": 200,
+      "unit_price": 202.5,
+      "cost": 40297.5
+    },
+    {
+      "node_id": "ME",
+      "quantity": 200,
+      "max_supply": 200,
+      "unit_price": 227.5,
+      "cost": 45500.0
+    },
+    {
+      "node_id": "RS",
+      "quantity": 0,
+      "max_supply": 700,
+      "unit_price": 222.32,
+      "cost": 0.0
+    },
+    {
+      "node_id": "BA",
+      "quantity": 0,
+      "max_supply": 500,
+      "unit_price": 273.65,
+      "cost": 0.0
+    },
+    {
+      "node_id": "BG",
+      "quantity": 0,
+      "max_supply": 800,
+      "unit_price": 267.67,
+      "cost": 0.0
+    },
+    {
+      "node_id": "GR",
+      "quantity": 0,
+      "max_supply": 600,
+      "unit_price": 289.22,
+      "cost": 0.0
+    },
+    {
+      "node_id": "RO",
+      "quantity": 0,
+      "max_supply": 900,
+      "unit_price": 208.69,
+      "cost": 0.0
+    },
+    {
+      "node_id": "HU",
+      "quantity": 0,
+      "max_supply": 800,
+      "unit_price": 242.19,
+      "cost": 0.0
+    },
+    {
+      "node_id": "HR",
+      "quantity": 1,
+      "max_supply": 600,
+      "unit_price": 202.98,
+      "cost": 202.98
+    },
+    {
+      "node_id": "TR",
+      "quantity": 0,
+      "max_supply": 800,
+      "unit_price": 221.86,
+      "cost": 0.0
+    }
+  ],
+  "arcs": [
+    {
+      "arc_id": "AL->GR",
+      "from_node": "AL",
+      "to_node": "GR",
+      "flow": 0,
+      "capacity": 707,
+      "clearing_price": 0.0,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "GR->AL",
+      "from_node": "GR",
+      "to_node": "AL",
+      "flow": 14,
+      "capacity": 143,
+      "clearing_price": 47.07837,
+      "cost": 659.09718,
+      "segment_flows": [
+        14,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "AL->ME",
+      "from_node": "AL",
+      "to_node": "ME",
+      "flow": 14,
+      "capacity": 237,
+      "clearing_price": 3.4552259999999997,
+      "cost": 48.373163999999996,
+      "segment_flows": [
+        14,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "ME->AL",
+      "from_node": "ME",
+      "to_node": "AL",
+      "flow": 0,
+      "capacity": 263,
+      "clearing_price": 0.06,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "AL->XK",
+      "from_node": "AL",
+      "to_node": "XK",
+      "flow": 0,
+      "capacity": 0,
+      "clearing_price": 0.0,
+      "cost": 0.0,
+      "segment_flows": []
+    },
+    {
+      "arc_id": "XK->AL",
+      "from_node": "XK",
+      "to_node": "AL",
+      "flow": 0,
+      "capacity": 0,
+      "clearing_price": 0.0,
+      "cost": 0.0,
+      "segment_flows": []
+    },
+    {
+      "arc_id": "BA->HR",
+      "from_node": "BA",
+      "to_node": "HR",
+      "flow": 0,
+      "capacity": 500,
+      "clearing_price": 0.0,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "HR->BA",
+      "from_node": "HR",
+      "to_node": "BA",
+      "flow": 1,
+      "capacity": 500,
+      "clearing_price": 3.2243869999999997,
+      "cost": 3.2243869999999997,
+      "segment_flows": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "BA->ME",
+      "from_node": "BA",
+      "to_node": "ME",
+      "flow": 1,
+      "capacity": 347,
+      "clearing_price": 38.239782,
+      "cost": 38.239782,
+      "segment_flows": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "ME->BA",
+      "from_node": "ME",
+      "to_node": "BA",
+      "flow": 0,
+      "capacity": 453,
+      "clearing_price": 0.0,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "BG->MK",
+      "from_node": "BG",
+      "to_node": "MK",
+      "flow": 0,
+      "capacity": 330,
+      "clearing_price": 0.22,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "MK->BG",
+      "from_node": "MK",
+      "to_node": "BG",
+      "flow": 14,
+      "capacity": 470,
+      "clearing_price": 0.020832,
+      "cost": 0.291648,
+      "segment_flows": [
+        14,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "BG->RO",
+      "from_node": "BG",
+      "to_node": "RO",
+      "flow": 0,
+      "capacity": 0,
+      "clearing_price": 0.0,
+      "cost": 0.0,
+      "segment_flows": []
+    },
+    {
+      "arc_id": "RO->BG",
+      "from_node": "RO",
+      "to_node": "BG",
+      "flow": 0,
+      "capacity": 0,
+      "clearing_price": 0.0,
+      "cost": 0.0,
+      "segment_flows": []
+    },
+    {
+      "arc_id": "BG->RS",
+      "from_node": "BG",
+      "to_node": "RS",
+      "flow": 14,
+      "capacity": 343,
+      "clearing_price": 1.4045699999999999,
+      "cost": 19.66398,
+      "segment_flows": [
+        14,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "RS->BG",
+      "from_node": "RS",
+      "to_node": "BG",
+      "flow": 0,
+      "capacity": 457,
+      "clearing_price": 0.01,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "GR->MK",
+      "from_node": "GR",
+      "to_node": "MK",
+      "flow": 0,
+      "capacity": 406,
+      "clearing_price": 0.5,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "MK->GR",
+      "from_node": "MK",
+      "to_node": "GR",
+      "flow": 14,
+      "capacity": 744,
+      "clearing_price": 0.007952,
+      "cost": 0.11132800000000001,
+      "segment_flows": [
+        14,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "GR->TR",
+      "from_node": "GR",
+      "to_node": "TR",
+      "flow": 0,
+      "capacity": 196,
+      "clearing_price": 0.09,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "TR->GR",
+      "from_node": "TR",
+      "to_node": "GR",
+      "flow": 0,
+      "capacity": 20,
+      "clearing_price": 29.63,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "HR->RS",
+      "from_node": "HR",
+      "to_node": "RS",
+      "flow": 0,
+      "capacity": 299,
+      "clearing_price": 5.22,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "RS->HR",
+      "from_node": "RS",
+      "to_node": "HR",
+      "flow": 0,
+      "capacity": 301,
+      "clearing_price": 1.47,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "HU->RO",
+      "from_node": "HU",
+      "to_node": "RO",
+      "flow": 0,
+      "capacity": 0,
+      "clearing_price": 0.0,
+      "cost": 0.0,
+      "segment_flows": []
+    },
+    {
+      "arc_id": "RO->HU",
+      "from_node": "RO",
+      "to_node": "HU",
+      "flow": 0,
+      "capacity": 0,
+      "clearing_price": 0.0,
+      "cost": 0.0,
+      "segment_flows": []
+    },
+    {
+      "arc_id": "HU->RS",
+      "from_node": "HU",
+      "to_node": "RS",
+      "flow": 0,
+      "capacity": 750,
+      "clearing_price": 1.54,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "RS->HU",
+      "from_node": "RS",
+      "to_node": "HU",
+      "flow": 0,
+      "capacity": 750,
+      "clearing_price": 0.0,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "ME->RS",
+      "from_node": "ME",
+      "to_node": "RS",
+      "flow": 0,
+      "capacity": 356,
+      "clearing_price": 0.09,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "RS->ME",
+      "from_node": "RS",
+      "to_node": "ME",
+      "flow": 14,
+      "capacity": 144,
+      "clearing_price": 56.58341,
+      "cost": 792.16774,
+      "segment_flows": [
+        14,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "ME->XK",
+      "from_node": "ME",
+      "to_node": "XK",
+      "flow": 229,
+      "capacity": 229,
+      "clearing_price": 61.967325,
+      "cost": 14190.517425,
+      "segment_flows": [
+        23,
+        23,
+        23,
+        23,
+        22,
+        23,
+        23,
+        23,
+        23,
+        23
+      ]
+    },
+    {
+      "arc_id": "XK->ME",
+      "from_node": "XK",
+      "to_node": "ME",
+      "flow": 0,
+      "capacity": 171,
+      "clearing_price": 3.88,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "MK->RS",
+      "from_node": "MK",
+      "to_node": "RS",
+      "flow": 0,
+      "capacity": 311,
+      "clearing_price": 0.33,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "RS->MK",
+      "from_node": "RS",
+      "to_node": "MK",
+      "flow": 0,
+      "capacity": 589,
+      "clearing_price": 0.04,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "MK->XK",
+      "from_node": "MK",
+      "to_node": "XK",
+      "flow": 171,
+      "capacity": 284,
+      "clearing_price": 156.20253599999998,
+      "cost": 26710.633655999998,
+      "segment_flows": [
+        28,
+        29,
+        28,
+        29,
+        28,
+        28,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "XK->MK",
+      "from_node": "XK",
+      "to_node": "MK",
+      "flow": 0,
+      "capacity": 416,
+      "clearing_price": 0.0,
+      "cost": 0.0,
+      "segment_flows": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "arc_id": "RO->RS",
+      "from_node": "RO",
+      "to_node": "RS",
+      "flow": 0,
+      "capacity": 0,
+      "clearing_price": 0.0,
+      "cost": 0.0,
+      "segment_flows": []
+    },
+    {
+      "arc_id": "RS->RO",
+      "from_node": "RS",
+      "to_node": "RO",
+      "flow": 0,
+      "capacity": 0,
+      "clearing_price": 0.0,
+      "cost": 0.0,
+      "segment_flows": []
+    }
+  ],
+  "paths": [
+    {
+      "nodes": [
+        "ME",
+        "XK"
+      ],
+      "flow": 200,
+      "supply_cost": 45500.0,
+      "transport_cost": 12393.465
+    },
+    {
+      "nodes": [
+        "MK",
+        "XK"
+      ],
+      "flow": 171,
+      "supply_cost": 34627.5,
+      "transport_cost": 26710.633655999998
+    },
+    {
+      "nodes": [
+        "MK",
+        "BG",
+        "RS",
+        "ME",
+        "XK"
+      ],
+      "flow": 14,
+      "supply_cost": 2835.0,
+      "transport_cost": 1679.665918
+    },
+    {
+      "nodes": [
+        "MK",
+        "GR",
+        "AL",
+        "ME",
+        "XK"
+      ],
+      "flow": 14,
+      "supply_cost": 2835.0,
+      "transport_cost": 1575.124222
+    },
+    {
+      "nodes": [
+        "HR",
+        "BA",
+        "ME",
+        "XK"
+      ],
+      "flow": 1,
+      "supply_cost": 202.98,
+      "transport_cost": 103.431494
+    }
+  ],
+  "objective": 128556.61,
+  "num_segments": 10,
+  "supply_cost": 86000.48,
+  "transport_cost": 42462.320289999996,
+  "total_cost": 128462.80028999998,
+  "unit_cost": 321.157000725
+}
