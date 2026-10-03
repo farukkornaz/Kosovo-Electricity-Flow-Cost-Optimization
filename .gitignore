@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Crawled auction data (regenerate with seecao_jao_crawl/main.py)
+seecao_jao_crawl/auctions.db
