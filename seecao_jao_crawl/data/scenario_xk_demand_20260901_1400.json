@@ -2,17 +2,17 @@
   "name": "scenario-xk-demand-20260901-1400",
   "nodes": [
     {"id": "XK", "name": "Kosovo", "lat": 42.6, "lon": 20.9, "type": "demand", "demand": 400},
-    {"id": "AL", "name": "Albania", "lat": 41.1, "lon": 20.0, "type": "supply", "max_supply": 300, "unit_price": 263.94},
-    {"id": "MK", "name": "North Macedonia", "lat": 41.6, "lon": 21.7, "type": "supply", "max_supply": 200, "unit_price": 202.5},
-    {"id": "ME", "name": "Montenegro", "lat": 42.7, "lon": 19.3, "type": "supply", "max_supply": 200, "unit_price": 227.5},
-    {"id": "RS", "name": "Serbia", "lat": 44.0, "lon": 21.6, "type": "supply", "max_supply": 700, "unit_price": 222.32},
-    {"id": "BA", "name": "Bosnia", "lat": 44.2, "lon": 17.8, "type": "supply", "max_supply": 500, "unit_price": 273.65},
-    {"id": "BG", "name": "Bulgaria", "lat": 42.7, "lon": 25.3, "type": "supply", "max_supply": 800, "unit_price": 267.67},
-    {"id": "GR", "name": "Greece", "lat": 39.1, "lon": 21.8, "type": "supply", "max_supply": 600, "unit_price": 289.22},
-    {"id": "RO", "name": "Romania", "lat": 45.9, "lon": 25.0, "type": "supply", "max_supply": 900, "unit_price": 208.69},
-    {"id": "HU", "name": "Hungary", "lat": 47.2, "lon": 19.4, "type": "supply", "max_supply": 800, "unit_price": 242.19},
-    {"id": "HR", "name": "Croatia", "lat": 45.6, "lon": 16.2, "type": "supply", "max_supply": 600, "unit_price": 202.98},
-    {"id": "TR", "name": "Türkiye", "lat": 40.9, "lon": 29.0, "type": "supply", "max_supply": 800, "unit_price": 221.86}
+    {"id": "AL", "name": "Albania", "lat": 41.1, "lon": 20.0, "type": "supply", "max_supply": 300, "unit_price": 136.14},
+    {"id": "MK", "name": "North Macedonia", "lat": 41.6, "lon": 21.7, "type": "supply", "max_supply": 200, "unit_price": 99.69},
+    {"id": "ME", "name": "Montenegro", "lat": 42.7, "lon": 19.3, "type": "supply", "max_supply": 200, "unit_price": 122.0},
+    {"id": "RS", "name": "Serbia", "lat": 44.0, "lon": 21.6, "type": "supply", "max_supply": 700, "unit_price": 100.07},
+    {"id": "BA", "name": "Bosnia", "lat": 44.2, "lon": 17.8, "type": "supply", "max_supply": 500, "unit_price": 263.94},
+    {"id": "BG", "name": "Bulgaria", "lat": 42.7, "lon": 25.3, "type": "supply", "max_supply": 800, "unit_price": 85.89},
+    {"id": "GR", "name": "Greece", "lat": 39.1, "lon": 21.8, "type": "supply", "max_supply": 600, "unit_price": 85.89},
+    {"id": "RO", "name": "Romania", "lat": 45.9, "lon": 25.0, "type": "supply", "max_supply": 900, "unit_price": 86.22},
+    {"id": "HU", "name": "Hungary", "lat": 47.2, "lon": 19.4, "type": "supply", "max_supply": 800, "unit_price": 87.32},
+    {"id": "HR", "name": "Croatia", "lat": 45.6, "lon": 16.2, "type": "supply", "max_supply": 600, "unit_price": 86.73},
+    {"id": "TR", "name": "Türkiye", "lat": 40.9, "lon": 29.0, "type": "supply", "max_supply": 800, "unit_price": 202.5}
   ],
   "arcs": [
     {"from": "AL", "to": "GR", "curve": {"type": "linear", "base_price": 0.0, "slope": 0.003466, "capacity": 707}},

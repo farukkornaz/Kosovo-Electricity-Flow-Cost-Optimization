@@ -4,7 +4,8 @@
 
 Every auctioned border direction between COUNTRIES becomes an arc whose linear price
 curve is fitted to that hour's bids. Borders without an explicit daily auction are
-kept as closed arcs (capacity 0). Spot prices are random placeholders for now.
+kept as closed arcs (capacity 0). Supply prices are that hour's spot prices; zones
+the price API doesn't cover get a random placeholder.
 """
 
 import argparse
@@ -35,7 +36,7 @@ COUNTRIES = {
 DEMAND_NODE = "XK"
 # No explicit daily auction on JAO/SEECAO (AL-XK: implicit; RO: market coupled).
 CLOSED_BORDERS = [("AL", "XK"), ("RO", "RS"), ("RO", "HU"), ("RO", "BG")]
-SPOT_PRICE_RANGE = (200.0, 300.0)
+PLACEHOLDER_PRICE_RANGE = (200.0, 300.0)  # for zones without spot prices (BA, TR)
 
 
 def fit_linear_curve(bids: list, capacity: int, clearing_price: float) -> dict:
@@ -63,15 +64,24 @@ def fit_linear_curve(bids: list, capacity: int, clearing_price: float) -> dict:
     return {"type": "linear", "base_price": round(clearing_price, 2), "slope": round(slope, 6), "capacity": capacity}
 
 
+def load_spot_prices(conn: sqlite3.Connection, day: date, timetable: str) -> dict[str, float]:
+    return dict(conn.execute(
+        "SELECT zone, price_eur_mwh FROM spot_prices WHERE delivery_date = ? AND timetable = ?",
+        (day.isoformat(), timetable),
+    ).fetchall())
+
+
 def build_scenario(conn: sqlite3.Connection, day: date, timetable: str, demand: int, seed: int) -> dict:
     rng = random.Random(seed)
+    spot = load_spot_prices(conn, day, timetable)
     nodes = []
     for node_id, (name, lat, lon, max_supply) in COUNTRIES.items():
         node = {"id": node_id, "name": name, "lat": lat, "lon": lon}
         if node_id == DEMAND_NODE:
             node |= {"type": "demand", "demand": demand}
         else:
-            node |= {"type": "supply", "max_supply": max_supply, "unit_price": round(rng.uniform(*SPOT_PRICE_RANGE), 2)}
+            price = spot[node_id] if node_id in spot else rng.uniform(*PLACEHOLDER_PRICE_RANGE)
+            node |= {"type": "supply", "max_supply": max_supply, "unit_price": round(price, 2)}
         nodes.append(node)
 
     curves = {}
@@ -113,17 +123,20 @@ def main() -> None:
     parser.add_argument("--date", required=True, type=date.fromisoformat, help="delivery day (CET), YYYY-MM-DD")
     parser.add_argument("--timetable", required=True, help="product hour (CET), e.g. 14:00-15:00")
     parser.add_argument("--demand", type=int, default=400, help="Kosovo demand in MW (default: 400)")
-    parser.add_argument("--seed", type=int, default=42, help="seed for the placeholder spot prices")
+    parser.add_argument("--seed", type=int, default=42, help="seed for placeholder prices of zones without spot prices")
     parser.add_argument("--db", type=Path, default=HERE / "auctions.db")
     parser.add_argument("-o", "--output", type=Path, help="default: data/scenario_xk_demand_<date>_<hhmm>.json")
     args = parser.parse_args()
 
     with sqlite3.connect(args.db) as conn:
         scenario = build_scenario(conn, args.date, args.timetable, args.demand, args.seed)
+        missing = [c for c in COUNTRIES if c != DEMAND_NODE and c not in load_spot_prices(conn, args.date, args.timetable)]
     output = args.output or HERE / "data" / f"scenario_xk_demand_{args.date:%Y%m%d}_{args.timetable[:5].replace(':', '')}.json"
     output.parent.mkdir(exist_ok=True)
     output.write_text(dumps(scenario), encoding="utf-8")
     print(f"Saved {output}: {len(scenario['nodes'])} nodes, {len(scenario['arcs'])} arcs")
+    if missing:
+        print(f"No spot price for {', '.join(missing)}: random placeholder used")
 
 
 if __name__ == "__main__":

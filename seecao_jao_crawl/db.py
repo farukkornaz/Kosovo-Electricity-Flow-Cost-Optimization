@@ -35,6 +35,15 @@ CREATE TABLE IF NOT EXISTS bids ({KEY_COLUMNS}
     awarded_quantity_mw REAL           -- JAO only
 );
 CREATE INDEX IF NOT EXISTS bids_auction_hour ON bids (source, auction_id, hour);
+CREATE TABLE IF NOT EXISTS spot_prices (
+    zone               TEXT    NOT NULL,  -- bidding zone, e.g. 'HU'
+    delivery_date      TEXT    NOT NULL,  -- CET/CEST delivery day, YYYY-MM-DD
+    hour               INTEGER NOT NULL,  -- 1-based product hour within the delivery day
+    timetable          TEXT    NOT NULL,  -- CET/CEST, e.g. '00:00-01:00'
+    delivery_start_utc TEXT    NOT NULL,
+    price_eur_mwh      REAL    NOT NULL,  -- day-ahead price, hourly mean of the 15-min prices
+    PRIMARY KEY (zone, delivery_start_utc)
+);
 """
 
 
@@ -53,11 +62,18 @@ def replace_auction(conn: sqlite3.Connection, source: str, auction_id: str, resu
         _insert(conn, "bids", bids)
 
 
-def _insert(conn: sqlite3.Connection, table: str, rows: list) -> None:
+def save_spot_prices(conn: sqlite3.Connection, rows: list) -> None:
+    """Upsert hourly spot prices; a re-fetched hour replaces the stored one."""
+    with conn:
+        _insert(conn, "spot_prices", rows, or_replace=True)
+
+
+def _insert(conn: sqlite3.Connection, table: str, rows: list, or_replace: bool = False) -> None:
     if not rows:
         return
     columns = list(rows[0])
+    verb = "INSERT OR REPLACE" if or_replace else "INSERT"
     conn.executemany(
-        f"INSERT INTO {table} ({', '.join(columns)}) VALUES ({', '.join('?' * len(columns))})",
+        f"{verb} INTO {table} ({', '.join(columns)}) VALUES ({', '.join('?' * len(columns))})",
         [tuple(row[c] for c in columns) for row in rows],
     )

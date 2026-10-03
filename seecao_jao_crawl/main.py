@@ -1,4 +1,4 @@
-"""Crawl one delivery day's daily capacity auctions from JAO and SEECAO into SQLite.
+"""Crawl one delivery day's daily capacity auctions (JAO, SEECAO) and hourly spot prices into SQLite.
 
     python main.py --date 2026-09-01 [--db auctions.db]
 """
@@ -8,6 +8,7 @@ from datetime import date
 from pathlib import Path
 
 import db
+import spot_prices
 from jao import crawler as jao
 from seecao import crawler as seecao
 
@@ -36,6 +37,11 @@ def main() -> None:
         results, bids = seecao.to_rows(seecao.fetch_auction(auction_id))
         db.replace_auction(conn, seecao.SOURCE, auction_id, results, bids)
         print(f"  {auction_id}: {len(results)} results, {len(bids)} bids")
+
+    prices = spot_prices.fetch_hourly(args.date)
+    db.save_spot_prices(conn, prices)
+    missing = sorted(set(spot_prices.ZONES) - {row["zone"] for row in prices})
+    print(f"Spot prices: {len(prices)} hourly prices" + (f", no data for {', '.join(missing)}" if missing else ""))
 
     conn.close()
     print(f"Saved {args.db}")
