@@ -1,0 +1,9 @@
+günlük ihaleler sadece.
+
+koso çevresinde olan bütün ülkeler lazım, bir kısmı jaoda bir kısmı seecaoda oldugundan ikisinden de alıcaz, bu iki veri kaynağı aşağı yukarı birbirine yakın verileri üretiyor bunlara bakarız.
+
+veride ne var sorusu, öncelikle iki tip veri olucak birisi ihale teklifleri, diğeri ihale sonuçları, ihale sonuçları verileri görece basit, elektrik aktarım ücretinin saatlik hangi ülkeden hangi ülkeye oldugu, tahsis edilen kapasite gibi her saat için tek satır olan verileri. İhale teklifleri ise bir saat için listelene teklifler yer alıyor sana belge atıcam daha iyi anlarsın.
+
+borsa fiyatları derken spot fiyatlardan mı bahsediyorsun? evet bunun kaynagı var ama entsoe değil bunun bağlantısını ben yapıcam sen yine şablon olarak bırakırsın dummy verileri ile doldur kendi belirlediğin değerleri ile şimdilik.
+
+kaç yıllık geçmiş veri sorusu için şöyle diyeyim öncelikle veriyi anlamaya çalışıyoruz. anladıktan sonra plan yapalım, o zaman 1-5 yıllık veri ile besleyebilirim.
