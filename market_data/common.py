@@ -1,10 +1,10 @@
-"""Helpers shared by the JAO and SEECAO crawlers."""
+"""Helpers shared by the crawlers and importers."""
 
 import json
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, time as day_time, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 USER_AGENT = (
@@ -40,13 +40,12 @@ def delivery_day(period_start_utc: datetime) -> str:
     return period_start_utc.astimezone(MARKET_TZ).date().isoformat()
 
 
-def auction_columns(source, auction_id, corridor, out_area, in_area, period_start_utc) -> dict:
-    """Columns identifying an auction, shared by its `results` and `bids` rows."""
+def auction_row(source, auction_id, corridor, out_area, in_area, period_start_utc) -> dict:
+    """The `auctions` row identifying one auction."""
     return {
         "source": source,
         "auction_id": auction_id,
         "corridor": corridor,
-        "border": f"{out_area}-{in_area}",
         "out_area": out_area,
         "in_area": in_area,
         "delivery_date": delivery_day(period_start_utc),
@@ -61,3 +60,18 @@ def hour_columns(period_start_utc: datetime, hour: int, timetable: str) -> dict:
         "timetable": timetable.replace(" ", ""),
         "delivery_start_utc": start.strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
+
+
+def day_hours(day: date) -> list[dict]:
+    """`hour_columns` of every product hour of a CET/CEST delivery day (23, 24 or 25 of them).
+
+    On the 25-hour day two hours share the timetable '02:00-03:00'; only `hour` and
+    `delivery_start_utc` tell them apart.
+    """
+    start = datetime.combine(day, day_time(), MARKET_TZ).astimezone(timezone.utc)
+    end = datetime.combine(day + timedelta(days=1), day_time(), MARKET_TZ).astimezone(timezone.utc)
+    hours = []
+    for hour in range(1, (end - start) // timedelta(hours=1) + 1):
+        local = (start + timedelta(hours=hour - 1)).astimezone(MARKET_TZ).hour
+        hours.append(hour_columns(start, hour, f"{local:02d}:00-{local + 1:02d}:00"))
+    return hours

@@ -1,42 +1,51 @@
-"""Build a single-hour CostOptimizationProgram scenario (Kosovo demand) from auctions.db.
+"""Build a single-hour CostOptimizationProgram scenario (Kosovo demand) from the market database.
 
     python build_scenario.py --date 2026-09-01 --timetable 14:00-15:00 [--demand 400] [--seed 42]
 
-Every auctioned border direction between COUNTRIES becomes an arc whose linear price
-curve is fitted to that hour's bids. Borders without an explicit daily auction are
-kept as closed arcs (capacity 0). Supply prices are that hour's spot prices; zones
-the price API doesn't cover get a random placeholder.
+Every border in network.BORDERS becomes two arcs, one per direction. A direction is
+open when the database holds a result for that hour: its linear price curve is fitted
+to that hour's bids, or is flat at the clearing price when there are none. Otherwise
+its capacity is 0. When both a platform and a MANUAL import cover a direction, the
+platform wins. Supply prices are that hour's spot prices (ENTSOE before MANUAL);
+zones without one get a random placeholder. A report lists what was used.
 """
 
 import argparse
 import json
 import random
 import sqlite3
+from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 
-HERE = Path(__file__).parent
+import db
+import network
 
-# id: (name, lat, lon, max_supply MW); coordinates and supplies as in
-# CostOptimizationProgram/data/scenario_xk_demand.json.
-COUNTRIES = {
-    "XK": ("Kosovo", 42.6, 20.9, None),
-    "AL": ("Albania", 41.1, 20.0, 300),
-    "MK": ("North Macedonia", 41.6, 21.7, 200),
-    "ME": ("Montenegro", 42.7, 19.3, 200),
-    "RS": ("Serbia", 44.0, 21.6, 700),
-    "BA": ("Bosnia", 44.2, 17.8, 500),
-    "BG": ("Bulgaria", 42.7, 25.3, 800),
-    "GR": ("Greece", 39.1, 21.8, 600),
-    "RO": ("Romania", 45.9, 25.0, 900),
-    "HU": ("Hungary", 47.2, 19.4, 800),
-    "HR": ("Croatia", 45.6, 16.2, 600),
-    "TR": ("Türkiye", 40.9, 29.0, 800),
-}
-DEMAND_NODE = "XK"
-# No explicit daily auction on JAO/SEECAO (AL-XK: implicit; RO: market coupled).
-CLOSED_BORDERS = [("AL", "XK"), ("RO", "RS"), ("RO", "HU"), ("RO", "BG")]
+HERE = Path(__file__).parent
 PLACEHOLDER_PRICE_RANGE = (200.0, 300.0)  # for zones without spot prices (BA, TR)
+
+
+@dataclass
+class Report:
+    """What build_scenario used, so missing data never goes unnoticed."""
+
+    open: list[str] = field(default_factory=list)            # 'MK->XK SEECAO'
+    flat: list[str] = field(default_factory=list)            # open, but no bids to fit a slope
+    closed: list[str] = field(default_factory=list)          # border without a known daily auction
+    missing: list[str] = field(default_factory=list)         # expected data not in the database
+    overridden: list[str] = field(default_factory=list)      # MANUAL rows a platform replaced
+    placeholder_prices: list[str] = field(default_factory=list)
+
+    def lines(self) -> list[str]:
+        sections = [
+            ("Open", self.open),
+            ("Open with flat curve (no bids)", self.flat),
+            ("Closed, no daily auction known", self.closed),
+            ("WARNING closed, expected data missing", self.missing),
+            ("MANUAL ignored, platform data used", self.overridden),
+            ("WARNING random placeholder spot price", self.placeholder_prices),
+        ]
+        return [f"{title}: {', '.join(items)}" for title, items in sections if items]
 
 
 def fit_linear_curve(bids: list, capacity: int, clearing_price: float) -> dict:
@@ -45,7 +54,8 @@ def fit_linear_curve(bids: list, capacity: int, clearing_price: float) -> dict:
     Our q MW is accepted first, so the other bidders share capacity - q, and the
     pay-as-clear price is the bid at which their cumulative demand reaches that.
     base_price is the published clearing price (q = 0); slope is the least-squares
-    fit of the resulting step curve over q = 0..capacity, clipped at 0.
+    fit of the resulting step curve over q = 0..capacity, clipped at 0. Without
+    bids the slope is 0.
     """
     bids = sorted(bids, key=lambda bid: -bid[1])
 
@@ -64,51 +74,102 @@ def fit_linear_curve(bids: list, capacity: int, clearing_price: float) -> dict:
     return {"type": "linear", "base_price": round(clearing_price, 2), "slope": round(slope, 6), "capacity": capacity}
 
 
-def load_spot_prices(conn: sqlite3.Connection, day: date, timetable: str) -> dict[str, float]:
-    return dict(conn.execute(
-        "SELECT zone, price_eur_mwh FROM spot_prices WHERE delivery_date = ? AND timetable = ?",
+CLOSED_CURVE = {"type": "linear", "base_price": 0.0, "slope": 0.0, "capacity": 0}
+
+
+def load_results(conn: sqlite3.Connection, day: date, timetable: str) -> dict[tuple[str, str], list[tuple]]:
+    """That hour's results between modeled countries, per direction: (source, auction_ref, hour, capacity, price, cancelled)."""
+    rows = conn.execute(
+        """SELECT a.out_area, a.in_area, a.source, r.auction_ref, r.hour,
+                  r.offered_capacity_mw, r.clearing_price_eur_mwh, r.cancelled
+           FROM results r JOIN auctions a ON a.id = r.auction_ref
+           WHERE a.delivery_date = ? AND r.timetable = ?""",
         (day.isoformat(), timetable),
-    ).fetchall())
+    ).fetchall()
+    by_direction = {}
+    for out_area, in_area, *rest in rows:
+        if not network.is_modeled(out_area, in_area):
+            continue
+        if network.border_of(out_area, in_area) is None:
+            raise ValueError(f"{out_area}-{in_area} has data but is not in network.BORDERS: add it there first")
+        by_direction.setdefault((out_area, in_area), []).append(tuple(rest))
+    hours = {row[2] for rows in by_direction.values() for row in rows}
+    if len(hours) > 1:
+        raise ValueError(f"{timetable} matches hours {sorted(hours)} on {day} (clock change day)")
+    return by_direction
 
 
-def build_scenario(conn: sqlite3.Connection, day: date, timetable: str, demand: int, seed: int) -> dict:
+def choose_result(direction: str, rows: list[tuple], report: Report) -> tuple:
+    """One result per direction: platform data over MANUAL."""
+    platform = [row for row in rows if row[0] != db.MANUAL]
+    if len(platform) > 1:
+        raise ValueError(f"{direction} auctioned by more than one platform: {sorted(row[0] for row in platform)}")
+    if platform and len(rows) > len(platform):
+        report.overridden.append(f"{direction} ({platform[0][0]})")
+    return (platform or rows)[0]
+
+
+def build_arcs(conn: sqlite3.Connection, day: date, timetable: str, report: Report) -> list[dict]:
+    results = load_results(conn, day, timetable)
+    arcs = []
+    for (a, b), expected in sorted(network.BORDERS.items()):
+        unused = []
+        for out_area, in_area in ((a, b), (b, a)):
+            direction = f"{out_area}->{in_area}"
+            arc = {"from": out_area, "to": in_area, "curve": CLOSED_CURVE}
+            arcs.append(arc)
+            rows = results.get((out_area, in_area))
+            if not rows:
+                unused.append(direction)
+                continue
+            source, auction_ref, hour, capacity, price, cancelled = choose_result(direction, rows, report)
+            if cancelled or capacity is None or price is None:
+                report.missing.append(f"{direction} ({source}: cancelled or no capacity/price)")
+                continue
+            bids = conn.execute(
+                "SELECT quantity_mw, price_eur_mwh FROM bids WHERE auction_ref = ? AND hour = ?",
+                (auction_ref, hour),
+            ).fetchall()
+            arc["curve"] = fit_linear_curve(bids, int(capacity), price)
+            (report.open if bids else report.flat).append(f"{direction} {source}")
+        if expected is None:
+            report.closed += [f"{a}-{b}"] if len(unused) == 2 else unused
+        else:
+            report.missing += [f"{direction} ({expected})" for direction in unused]
+    return arcs
+
+
+def load_spot_prices(conn: sqlite3.Connection, day: date, timetable: str) -> dict[str, float]:
+    """Zone -> that hour's spot price, ENTSOE before MANUAL."""
+    rows = conn.execute(
+        "SELECT zone, source, price_eur_mwh FROM spot_prices WHERE delivery_date = ? AND timetable = ?",
+        (day.isoformat(), timetable),
+    ).fetchall()
+    prices = {}
+    for zone, source, price in sorted(rows, key=lambda row: row[1] == db.MANUAL, reverse=True):
+        prices[zone] = price  # MANUAL rows sort first, so platform prices overwrite them
+    return prices
+
+
+def build_scenario(conn: sqlite3.Connection, day: date, timetable: str, demand: int, seed: int) -> tuple[dict, Report]:
     rng = random.Random(seed)
+    report = Report()
     spot = load_spot_prices(conn, day, timetable)
     nodes = []
-    for node_id, (name, lat, lon, max_supply) in COUNTRIES.items():
+    for node_id, (name, lat, lon, max_supply) in network.COUNTRIES.items():
         node = {"id": node_id, "name": name, "lat": lat, "lon": lon}
-        if node_id == DEMAND_NODE:
+        if node_id == network.DEMAND_NODE:
             node |= {"type": "demand", "demand": demand}
         else:
+            if node_id not in spot:
+                report.placeholder_prices.append(node_id)
             price = spot[node_id] if node_id in spot else rng.uniform(*PLACEHOLDER_PRICE_RANGE)
             node |= {"type": "supply", "max_supply": max_supply, "unit_price": round(price, 2)}
         nodes.append(node)
 
-    curves = {}
-    results = conn.execute(
-        """SELECT source, auction_id, hour, out_area, in_area, offered_capacity_mw, clearing_price_eur_mwh
-           FROM results WHERE delivery_date = ? AND timetable = ?""",
-        (day.isoformat(), timetable),
-    ).fetchall()
-    for source, auction_id, hour, out_area, in_area, capacity, price in results:
-        if out_area not in COUNTRIES or in_area not in COUNTRIES:
-            continue
-        if (out_area, in_area) in curves:
-            raise ValueError(f"{out_area}->{in_area} auctioned by more than one platform")
-        bids = conn.execute(
-            "SELECT quantity_mw, price_eur_mwh FROM bids WHERE source = ? AND auction_id = ? AND hour = ?",
-            (source, auction_id, hour),
-        ).fetchall()
-        curves[(out_area, in_area)] = fit_linear_curve(bids, int(capacity), price)
-    for a, b in CLOSED_BORDERS:
-        for pair in ((a, b), (b, a)):
-            curves[pair] = {"type": "linear", "base_price": 0.0, "slope": 0.0, "capacity": 0}
-
-    # List both directions of a border next to each other.
-    order = sorted(curves, key=lambda pair: (sorted(pair), pair))
-    arcs = [{"from": a, "to": b, "curve": curves[(a, b)]} for a, b in order]
+    arcs = build_arcs(conn, day, timetable, report)
     name = f"scenario-xk-demand-{day:%Y%m%d}-{timetable[:5].replace(':', '')}"
-    return {"name": name, "nodes": nodes, "arcs": arcs}
+    return {"name": name, "nodes": nodes, "arcs": arcs}, report
 
 
 def dumps(scenario: dict) -> str:
@@ -124,19 +185,18 @@ def main() -> None:
     parser.add_argument("--timetable", required=True, help="product hour (CET), e.g. 14:00-15:00")
     parser.add_argument("--demand", type=int, default=400, help="Kosovo demand in MW (default: 400)")
     parser.add_argument("--seed", type=int, default=42, help="seed for placeholder prices of zones without spot prices")
-    parser.add_argument("--db", type=Path, default=HERE / "auctions.db")
+    parser.add_argument("--db", type=Path, default=db.DEFAULT_PATH, help=f"SQLite file (default: {db.DEFAULT_PATH})")
     parser.add_argument("-o", "--output", type=Path, help="default: data/scenario_xk_demand_<date>_<hhmm>.json")
     args = parser.parse_args()
 
-    with sqlite3.connect(args.db) as conn:
-        scenario = build_scenario(conn, args.date, args.timetable, args.demand, args.seed)
-        missing = [c for c in COUNTRIES if c != DEMAND_NODE and c not in load_spot_prices(conn, args.date, args.timetable)]
+    conn = db.connect(args.db, create=False)
+    scenario, report = build_scenario(conn, args.date, args.timetable, args.demand, args.seed)
+    conn.close()
     output = args.output or HERE / "data" / f"scenario_xk_demand_{args.date:%Y%m%d}_{args.timetable[:5].replace(':', '')}.json"
     output.parent.mkdir(exist_ok=True)
     output.write_text(dumps(scenario), encoding="utf-8")
     print(f"Saved {output}: {len(scenario['nodes'])} nodes, {len(scenario['arcs'])} arcs")
-    if missing:
-        print(f"No spot price for {', '.join(missing)}: random placeholder used")
+    print("\n".join(report.lines()))
 
 
 if __name__ == "__main__":
