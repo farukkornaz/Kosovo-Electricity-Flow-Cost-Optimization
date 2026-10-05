@@ -217,5 +217,11 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-# Crawled auction data (regenerate with seecao_jao_crawl/main.py)
-seecao_jao_crawl/auctions.db
+# Crawled market data (regenerate with market_data/main.py)
+/market_data.db*
+
+# Generated run outputs (regenerate with CostOptimizationProgram/main.py)
+CostOptimizationProgram/output/
+
+# Platform Excel exports kept locally for comparison
+market_data/seecao_jao_samples/

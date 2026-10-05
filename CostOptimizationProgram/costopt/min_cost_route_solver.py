@@ -1,6 +1,6 @@
 """Cheapest way to deliver the demand, with OR-Tools SimpleMinCostFlow.
 
-Translation of the NetworkModel (see examples/Flows/minimum-cost-flow-2.py for the core idea):
+Translation of the NetworkModel (see or-tools-examples/Flows/minimum-cost-flow-2.py for the core idea):
 - A virtual super source supplies exactly the demand.
 - super source -> each supply node: capacity = max_supply, unit cost = unit_price.
 - Each arc becomes parallel sub-arcs, one per price curve segment, with increasing

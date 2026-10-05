@@ -1,7 +1,7 @@
 # CostOptimizationProgram — Yol Haritası
 
 Sınır ötesi elektrik ithalat/ihracat maliyet optimizasyonu.
-Çekirdek mantık: `examples/Flows/minimum-cost-flow-2.py` (süper kaynak + min cost flow).
+Çekirdek mantık: `../or-tools-examples/Flows/minimum-cost-flow-2.py` (süper kaynak + min cost flow).
 
 Gerçek veri henüz yok; tüm fiyat ve miktarlar yapay. Veri katmanı ayrı tutulduğu için
 ileride gerçek veriye geçişte model/solver kodu değişmeyecek.
