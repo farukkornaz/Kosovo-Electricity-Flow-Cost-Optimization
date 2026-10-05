@@ -1,3 +1,0 @@
-tamamdır şimdilik git ile işimiz bitti, yeni bir şeye odaklanacağız.
-
-CostOptimizationProgram data dosyalarında belki birşey fark etmişsindir, slop diye bir değişken var. bu ihale içine girdiğimizde kaç miktarın, fiyatın ne kadar artacağını hesaplamak için kullandığımız bir değişken. fakat sallamasyon bir değişken. benim istediğim son bir yılın cbc f
