@@ -12,7 +12,7 @@ def write(tmp_path, name, text):
     return path
 
 
-def test_results_bids_and_spot_round_trip(tmp_path):
+def test_results_bids_and_spot_round_trip(tmp_path, conn):
     _, results = read_csv(write(tmp_path, "r.csv",
         "border,delivery_date,timetable,offered_capacity_mw,clearing_price_eur_mwh\n"
         "BA-RS,2026-09-01,*,300,4.5\n"))
@@ -31,11 +31,9 @@ def test_results_bids_and_spot_round_trip(tmp_path):
     assert auction["auction_id"] == "MANUAL-BA-RS-2026-09-01"
     assert len(result_rows) == 24 and len(bid_rows) == 2
 
-    conn = db.connect(tmp_path / "market.db")
     db.save_auction(conn, *auctions[0])
     db.save_spot_prices(conn, to_spot_prices(spot))
     scenario, report = build_scenario(conn, DAY, "14:00-15:00", demand=400, seed=1)
-    conn.close()
 
     ba_rs = next(a["curve"] for a in scenario["arcs"] if (a["from"], a["to"]) == ("BA", "RS"))
     assert ba_rs["capacity"] == 300 and ba_rs["slope"] > 0

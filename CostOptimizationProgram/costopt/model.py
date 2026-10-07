@@ -4,7 +4,8 @@ The model only describes the problem. It knows nothing about OR-Tools; the
 solver translates it (super source, curve segments, integer scaling).
 
 - Node:       a zone that power can pass through.
-- SupplyNode: a zone we can buy from, up to `max_supply` MW at a fixed `unit_price`.
+- SupplyNode: a zone we can buy from, up to `max_supply` MW at a fixed `unit_price`
+  (negative when the spot price is, e.g. a midday solar surplus).
               It can also pass through power bought elsewhere.
 - DemandNode: the single zone whose `demand` MW must be delivered.
 - Arc:        a one-directional line; its auction price curve also sets its capacity.
@@ -35,13 +36,11 @@ class Node:
 @dataclass(frozen=True)
 class SupplyNode(Node):
     max_supply: int     # MW
-    unit_price: float   # €/MWh
+    unit_price: float   # €/MWh, may be negative
 
     def __post_init__(self):
         if self.max_supply <= 0:
             raise ValueError(f"{self.id}: max_supply must be positive")
-        if self.unit_price < 0:
-            raise ValueError(f"{self.id}: unit_price must be non-negative")
 
 
 @dataclass(frozen=True)

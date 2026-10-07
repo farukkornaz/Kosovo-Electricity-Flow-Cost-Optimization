@@ -13,10 +13,11 @@ zones without one get a random placeholder. A report lists what was used.
 import argparse
 import json
 import random
-import sqlite3
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
+
+import psycopg
 
 import db
 import network
@@ -77,14 +78,14 @@ def fit_linear_curve(bids: list, capacity: int, clearing_price: float) -> dict:
 CLOSED_CURVE = {"type": "linear", "base_price": 0.0, "slope": 0.0, "capacity": 0}
 
 
-def load_results(conn: sqlite3.Connection, day: date, timetable: str) -> dict[tuple[str, str], list[tuple]]:
+def load_results(conn: psycopg.Connection, day: date, timetable: str) -> dict[tuple[str, str], list[tuple]]:
     """That hour's results between modeled countries, per direction: (source, auction_ref, hour, capacity, price, cancelled)."""
     rows = conn.execute(
         """SELECT a.out_area, a.in_area, a.source, r.auction_ref, r.hour,
                   r.offered_capacity_mw, r.clearing_price_eur_mwh, r.cancelled
            FROM results r JOIN auctions a ON a.id = r.auction_ref
-           WHERE a.delivery_date = ? AND r.timetable = ?""",
-        (day.isoformat(), timetable),
+           WHERE a.delivery_date = %s AND r.timetable = %s""",
+        (day, timetable),
     ).fetchall()
     by_direction = {}
     for out_area, in_area, *rest in rows:
@@ -100,16 +101,19 @@ def load_results(conn: sqlite3.Connection, day: date, timetable: str) -> dict[tu
 
 
 def choose_result(direction: str, rows: list[tuple], report: Report) -> tuple:
-    """One result per direction: platform data over MANUAL."""
+    """One result per direction: platform data over MANUAL, a re-run over the auction it replaced."""
     platform = [row for row in rows if row[0] != db.MANUAL]
-    if len(platform) > 1:
-        raise ValueError(f"{direction} auctioned by more than one platform: {sorted(row[0] for row in platform)}")
+    live = [row for row in platform if not row[5]]
+    if len(live) > 1:
+        raise ValueError(f"{direction} has more than one uncancelled platform auction: {sorted(row[0] for row in live)}")
+    # A cancelled auction is usually re-run the same day (JAO HR-RS on 2026-08-17).
+    platform = live or platform[:1]
     if platform and len(rows) > len(platform):
         report.overridden.append(f"{direction} ({platform[0][0]})")
     return (platform or rows)[0]
 
 
-def build_arcs(conn: sqlite3.Connection, day: date, timetable: str, report: Report) -> list[dict]:
+def build_arcs(conn: psycopg.Connection, day: date, timetable: str, report: Report) -> list[dict]:
     results = load_results(conn, day, timetable)
     arcs = []
     for (a, b), expected in sorted(network.BORDERS.items()):
@@ -127,7 +131,7 @@ def build_arcs(conn: sqlite3.Connection, day: date, timetable: str, report: Repo
                 report.missing.append(f"{direction} ({source}: cancelled or no capacity/price)")
                 continue
             bids = conn.execute(
-                "SELECT quantity_mw, price_eur_mwh FROM bids WHERE auction_ref = ? AND hour = ?",
+                "SELECT quantity_mw, price_eur_mwh FROM bids WHERE auction_ref = %s AND hour = %s",
                 (auction_ref, hour),
             ).fetchall()
             arc["curve"] = fit_linear_curve(bids, int(capacity), price)
@@ -139,11 +143,11 @@ def build_arcs(conn: sqlite3.Connection, day: date, timetable: str, report: Repo
     return arcs
 
 
-def load_spot_prices(conn: sqlite3.Connection, day: date, timetable: str) -> dict[str, float]:
+def load_spot_prices(conn: psycopg.Connection, day: date, timetable: str) -> dict[str, float]:
     """Zone -> that hour's spot price, ENTSOE before MANUAL."""
     rows = conn.execute(
-        "SELECT zone, source, price_eur_mwh FROM spot_prices WHERE delivery_date = ? AND timetable = ?",
-        (day.isoformat(), timetable),
+        "SELECT zone, source, price_eur_mwh FROM spot_prices WHERE delivery_date = %s AND timetable = %s",
+        (day, timetable),
     ).fetchall()
     prices = {}
     for zone, source, price in sorted(rows, key=lambda row: row[1] == db.MANUAL, reverse=True):
@@ -151,7 +155,7 @@ def load_spot_prices(conn: sqlite3.Connection, day: date, timetable: str) -> dic
     return prices
 
 
-def build_scenario(conn: sqlite3.Connection, day: date, timetable: str, demand: int, seed: int) -> tuple[dict, Report]:
+def build_scenario(conn: psycopg.Connection, day: date, timetable: str, demand: int, seed: int) -> tuple[dict, Report]:
     rng = random.Random(seed)
     report = Report()
     spot = load_spot_prices(conn, day, timetable)
@@ -185,7 +189,7 @@ def main() -> None:
     parser.add_argument("--timetable", required=True, help="product hour (CET), e.g. 14:00-15:00")
     parser.add_argument("--demand", type=int, default=400, help="Kosovo demand in MW (default: 400)")
     parser.add_argument("--seed", type=int, default=42, help="seed for placeholder prices of zones without spot prices")
-    parser.add_argument("--db", type=Path, default=db.DEFAULT_PATH, help=f"SQLite file (default: {db.DEFAULT_PATH})")
+    parser.add_argument("--db", help="PostgreSQL URL (default: DATABASE_URL or the credentials in .env)")
     parser.add_argument("-o", "--output", type=Path, help="default: data/scenario_xk_demand_<date>_<hhmm>.json")
     args = parser.parse_args()
 

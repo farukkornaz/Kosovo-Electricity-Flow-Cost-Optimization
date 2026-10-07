@@ -25,8 +25,8 @@ anlatarak uygula.
   hata verir; bu bilinçli bir tercih, hiçbir sınır habersizce modele girmesin diye.
 - **Kural:** listedeki bir sınır yönü, DB'de o saat için verisi varsa açık olur; yoksa
   kapasitesi 0 olur (kapalı).
-- **Elle toplanan veri `market_data/manual/*.csv` olarak saklanır ve commit edilir.** DB git'te
-  yok; crawl ve `import_manual.py` ile yeniden kurulur. Bu CSV'ler o verinin tek kopyası.
+- **Elle toplanan veri `market_data/manual/*.csv` olarak saklanır ve commit edilir.** DB
+  (Docker'daki PostgreSQL) git'te yok; crawl ve `import_manual.py` ile yeniden kurulur. Bu CSV'ler o verinin tek kopyası.
 - **Platform verisi `MANUAL` verinin önüne geçer.** Aynı yön ve saat için ikisi de varsa
   platform kullanılır ve raporda `MANUAL ignored, platform data used` yazar.
 
@@ -90,9 +90,8 @@ RS-BA,2026-09-01,*,250,1.20
   ```python
   import sys; sys.path.insert(0, "market_data")
   import db
-  conn = db.connect(db.DEFAULT_PATH)   # foreign_keys açık: results/bids de silinir
-  with conn:
-      conn.execute("DELETE FROM auctions WHERE source = 'MANUAL' AND auction_id = ?", ("MANUAL-BA-RS-2026-09-01",))
+  conn = db.connect()   # ON DELETE CASCADE: results/bids de silinir
+  conn.execute("DELETE FROM auctions WHERE source = 'MANUAL' AND auction_id = %s", ("MANUAL-BA-RS-2026-09-01",))
   ```
 
   Silmeden önce kullanıcıya hangi kaydın silineceğini göster ve onay al.
@@ -100,8 +99,9 @@ RS-BA,2026-09-01,*,250,1.20
 ### 3. Doğrula
 
 ```python
-import sqlite3
-conn = sqlite3.connect("file:market_data.db?mode=ro", uri=True)
+import sys; sys.path.insert(0, "market_data")
+import db, psycopg
+conn = psycopg.connect(db.database_url())
 print(conn.execute("""SELECT border, delivery_date, count(*), min(offered_capacity_mw), max(clearing_price_eur_mwh)
                       FROM results_v WHERE source = 'MANUAL' GROUP BY 1, 2""").fetchall())
 ```

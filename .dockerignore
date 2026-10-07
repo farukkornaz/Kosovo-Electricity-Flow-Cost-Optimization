@@ -1,0 +1,10 @@
+.git
+.venv
+**/__pycache__
+**/.pytest_cache
+market_data.db*
+CostOptimizationProgram/output
+market_data/seecao_jao_samples
+*.log
+.env
+backups/

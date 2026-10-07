@@ -64,7 +64,7 @@ def to_rows(auction: dict, bids: list) -> tuple[dict, list, list]:
             "participants": product["bidderPartyCount"],
             "awarded_participants": product["winnerPartyCount"],
             "comment": comment or None,
-            "cancelled": int(auction["cancelled"]),
+            "cancelled": bool(auction["cancelled"]),
         })
 
     bid_rows = []

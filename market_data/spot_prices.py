@@ -17,6 +17,8 @@ API_URL = os.environ.get("PRICE_API_URL", "http://127.0.0.1:8000")
 ZONES = ["AL", "BG", "GR", "HR", "HU", "ME", "MK", "RO", "RS", "XK"]
 # The API refuses longer ranges; a month per request keeps responses small.
 MAX_DAYS_PER_REQUEST = 31
+# The API queries ENTSO-E zone by zone on a cache miss: a month of 10 zones took 76 s.
+REQUEST_TIMEOUT = 600
 
 
 def is_up(api_url: str = API_URL) -> bool:
@@ -41,7 +43,7 @@ def _fetch_range(start: date, end: date, zones: list[str], api_url: str) -> list
         "zones": ",".join(zones), "start": start.isoformat(), "end": end.isoformat(), "resolution": "hourly",
     })
     try:
-        response = fetch_json(f"{api_url}/prices?{query}", {"Accept": "application/json"})
+        response = fetch_json(f"{api_url}/prices?{query}", {"Accept": "application/json"}, timeout=REQUEST_TIMEOUT)
     except urllib.error.HTTPError as exc:
         if exc.code == 404:  # nothing published for the period
             return []

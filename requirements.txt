@@ -1,0 +1,2 @@
+-r market_data/requirements.txt
+-r CostOptimizationProgram/requirements.txt

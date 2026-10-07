@@ -1,6 +1,6 @@
 """Crawl daily capacity auctions (JAO, SEECAO) and hourly spot prices into the market database.
 
-    python main.py --from 2026-09-01 [--to 2026-09-30] [--refresh] [--db PATH] [--price-api URL]
+    python main.py --from 2026-09-01 [--to 2026-09-30] [--refresh] [--db URL] [--price-api URL]
 
 Only auctions between network.COUNTRIES are stored. What is already in the database
 is skipped unless --refresh is given, so an interrupted backfill resumes where it
@@ -9,9 +9,7 @@ auctions are still crawled.
 """
 
 import argparse
-import urllib.error
 from datetime import date, timedelta
-from pathlib import Path
 
 import db
 import network
@@ -67,8 +65,8 @@ def crawl_spot_prices(conn, start: date, end: date, refresh: bool, api_url: str)
         return
     try:
         rows = spot_prices.fetch_hourly(missing[0], missing[-1], api_url=api_url)
-    except urllib.error.URLError as exc:
-        print(f"WARNING: price API failed ({exc}), spot prices skipped")
+    except OSError as exc:  # URLError, HTTPError, TimeoutError
+        print(f"WARNING: price API failed ({exc!r}), spot prices skipped; re-run to fetch them")
         return
     db.save_spot_prices(conn, rows)
     found = {row["zone"] for row in rows}
@@ -83,7 +81,7 @@ def main() -> None:
                         help="first delivery day (CET), YYYY-MM-DD")
     parser.add_argument("--to", dest="end", type=date.fromisoformat, help="last delivery day, inclusive (default: --from)")
     parser.add_argument("--refresh", action="store_true", help="re-download what is already stored")
-    parser.add_argument("--db", type=Path, default=db.DEFAULT_PATH, help=f"SQLite file (default: {db.DEFAULT_PATH})")
+    parser.add_argument("--db", help="PostgreSQL URL (default: DATABASE_URL or the credentials in .env)")
     parser.add_argument("--price-api", default=spot_prices.API_URL, help=f"price API (default: {spot_prices.API_URL})")
     args = parser.parse_args()
     end = args.end or args.start
@@ -96,8 +94,8 @@ def main() -> None:
     while day <= end:
         print(f"{day}: {crawl_auctions(conn, day, args.refresh)}", flush=True)
         day += timedelta(days=1)
+    print(f"Saved to {db.describe(conn)}")
     conn.close()
-    print(f"Saved {args.db}")
 
 
 if __name__ == "__main__":

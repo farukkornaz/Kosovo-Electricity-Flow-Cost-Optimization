@@ -1,5 +1,24 @@
+import io
+import urllib.request
+
+import common
 from jao import crawler as jao
 from seecao import crawler as seecao
+
+
+def test_fetch_json_retries_a_reset_connection(monkeypatch):
+    calls = []
+
+    def urlopen(request, timeout):
+        calls.append(request.full_url)
+        if len(calls) == 1:
+            raise ConnectionResetError(104, "Connection reset by peer")
+        return io.BytesIO(b'{"ok": true}')
+
+    monkeypatch.setattr(urllib.request, "urlopen", urlopen)
+    monkeypatch.setattr(common.time, "sleep", lambda seconds: None)
+    assert common.fetch_json("https://example.test", {}) == {"ok": True}
+    assert len(calls) == 2
 
 
 def test_jao_to_rows():

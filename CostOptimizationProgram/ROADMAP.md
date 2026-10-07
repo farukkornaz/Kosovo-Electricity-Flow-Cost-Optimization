@@ -102,3 +102,26 @@ Her arc (hat kapasitesi ihalesi) için **bizim alım miktarımıza bağlı takas
 - **Çift yönlü hatlar / ihracat senaryoları**, birden fazla talep noktası.
 - **Gerçek veri**: ENTSO-E Transparency (fiyat, NTC), JAO (kapasite ihaleleri); `data_loader` genişletilir.
 - Senaryo analizi ve raporlama (CSV/Excel çıktı).
+
+---
+
+## Proje geneli — bekleyen işler
+
+Altyapı ayarları (Docker, PostgreSQL, 2026 Ağustos–Eylül verisi) bitmeden bunlara geçilmeyecek.
+
+### `auction_analysis/` — ihale fiyatı tahmini (yeni klasör, kökte)
+- Amaç: JAO/SEECAO günlük ihale takas fiyatlarını (`clearing_price_eur_mwh`) farklı modellerle
+  tahmin etmek ve modelleri karşılaştırmak (benchmark).
+- İlk aday model **LSTM**. Duruma göre başka modeller de denenecek; basit referans modeller
+  (dünün/geçen haftanın aynı saati gibi) benchmark'ın tabanı olmalı.
+- **Feature analizi önemli**, modelden önce yapılacak. Aday feature'lar: aynı sınırın gecikmeli
+  fiyatları, sunulan kapasite, katılımcı sayısı, talep/kapasite oranı, iki uçtaki spot fiyat
+  farkı, saat / haftanın günü / tatil, komşu sınırların fiyatları, teklif eğrisinin şekli.
+- Veri PostgreSQL'den (`results_v`, `bids_v`, `spot_prices`). İki aylık veri başlangıç için;
+  model eğitimi için daha uzun geçmiş gerekebilir.
+
+### Diğer notlar
+- **Slope kalibrasyonu:** fiyat eğrisinin eğimini yaklaşık bir yıllık tekliflerden kalibre etmek.
+- **Kapalı sınırlar:** RS-XK, AL-XK, BA-RS, BG-GR vb. için elle ya da başka kaynaktan veri.
+- **BA ve TR spot fiyatları:** API'de yok; şu an senaryoda yer tutucu fiyat kullanılıyor.
+- **`max_supply`** değerleri (`market_data/network.py`) yer tutucu; gerçek veriyle değişmeli.

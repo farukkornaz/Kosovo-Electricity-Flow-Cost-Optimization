@@ -3,16 +3,9 @@ import pytest
 import db
 import network
 from build_scenario import build_scenario, fit_linear_curve
-from helpers import DAY, store
+from helpers import DAY, auction, result, store
 
 HOUR = "14:00-15:00"
-
-
-@pytest.fixture
-def conn(tmp_path):
-    conn = db.connect(tmp_path / "market.db")
-    yield conn
-    conn.close()
 
 
 def arcs_by_id(scenario):
@@ -57,6 +50,17 @@ def test_platform_wins_over_manual(conn):
 
     assert arcs_by_id(scenario)["MK->XK"]["capacity"] == 200
     assert report.overridden == ["MK->XK (SEECAO)"]
+
+
+def test_rerun_replaces_the_cancelled_auction(conn):
+    cancelled = auction("JAO", "HR", "RS") | {"auction_id": "HR-RS-D-01"}
+    rerun = auction("JAO", "HR", "RS") | {"auction_id": "HR-RS-D-02"}
+    db.save_auction(conn, cancelled, [result(15, 100, 1.0, cancelled=True)], [])
+    db.save_auction(conn, rerun, [result(15, 200, 2.0)], [])
+    scenario, report = build_scenario(conn, DAY, HOUR, demand=400, seed=1)
+
+    assert arcs_by_id(scenario)["HR->RS"]["capacity"] == 200
+    assert "HR->RS JAO" in report.flat
 
 
 def test_unlisted_border_is_an_error(conn):

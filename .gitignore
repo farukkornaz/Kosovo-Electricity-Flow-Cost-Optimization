@@ -225,3 +225,6 @@ CostOptimizationProgram/output/
 
 # Platform Excel exports kept locally for comparison
 market_data/seecao_jao_samples/
+
+# Database backups (pg_dump, see README)
+backups/

@@ -1,18 +1,11 @@
-import sqlite3
 from datetime import date
 
+import psycopg
 import pytest
 
 import db
 from common import day_hours
 from helpers import auction, bid, result, store
-
-
-@pytest.fixture
-def conn(tmp_path):
-    conn = db.connect(tmp_path / "market.db")
-    yield conn
-    conn.close()
 
 
 def test_day_hours_follow_clock_changes():
@@ -45,13 +38,24 @@ def test_views_give_flat_rows(conn):
     assert conn.execute("SELECT border, timetable, quantity_mw FROM bids_v").fetchone() == ("MK-XK", "14:00-15:00", 50)
 
 
-def test_old_schema_is_refused(tmp_path):
-    path = tmp_path / "old.db"
-    sqlite3.connect(path).execute("CREATE TABLE results (source TEXT)").connection.close()
+def test_typed_columns(conn):
+    store(conn, "SEECAO", "MK", "XK")
+    day, start, cancelled = conn.execute(
+        "SELECT delivery_date, delivery_start_utc, cancelled FROM results_v").fetchone()
+    assert day == date(2026, 9, 1)
+    assert start.isoformat() == "2026-09-01T12:00:00+00:00"
+    assert cancelled is False
+
+
+def test_unknown_tables_are_refused(empty_schema):
+    with psycopg.connect(empty_schema, autocommit=True) as other:
+        other.execute("CREATE TABLE auctions (source TEXT)")
     with pytest.raises(RuntimeError, match="schema version 0"):
-        db.connect(path)
+        db.connect(empty_schema)
 
 
-def test_missing_file_is_not_created_when_reading(tmp_path):
-    with pytest.raises(FileNotFoundError):
-        db.connect(tmp_path / "none.db", create=False)
+def test_schema_is_not_created_when_reading(empty_schema):
+    with pytest.raises(LookupError, match="crawl first"):
+        db.connect(empty_schema, create=False)
+    with db.connect(empty_schema) as conn:
+        assert conn.execute("SELECT count(*) FROM auctions").fetchone()[0] == 0

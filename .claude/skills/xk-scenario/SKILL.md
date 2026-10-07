@@ -1,7 +1,7 @@
 ---
 name: xk-scenario
 description: >
-  Belirli bir gün ve saat için Kosova (XK) talep senaryosunu market_data.db'den kurma,
+  Belirli bir gün ve saat için Kosova (XK) talep senaryosunu piyasa veritabanından kurma,
   OR-Tools min cost flow ile çözme ve sonucu yorumlama: build_scenario.py raporu,
   CostOptimizationProgram/main.py çıktıları (solution.json, haritalar, yol maliyetleri),
   birden fazla saati, günü ya da talep miktarını karşılaştırma. Use this whenever the user
@@ -12,7 +12,7 @@ description: >
 
 # Kosova senaryosu: kur, çöz, yorumla
 
-Zincir: `market_data.db` → `market_data/build_scenario.py` → senaryo JSON →
+Zincir: PostgreSQL (`docker compose up -d db`) → `market_data/build_scenario.py` → senaryo JSON →
 `CostOptimizationProgram/main.py` → `CostOptimizationProgram/output/<senaryo adı>/`.
 
 DB'de o gün yoksa önce `market-data-crawl`, bir sınır kapalı görünüyor ve açılması gerekiyorsa
@@ -95,7 +95,7 @@ from build_scenario import build_scenario
 from costopt.data_loader import model_from_dict
 from costopt.min_cost_route_solver import MinCostRouteSolver
 
-conn = db.connect(db.DEFAULT_PATH, create=False)
+conn = db.connect(create=False)
 for h in range(24):
     timetable = f"{h:02d}:00-{h + 1:02d}:00"
     scenario, report = build_scenario(conn, date(2026, 9, 1), timetable, demand=400, seed=42)
