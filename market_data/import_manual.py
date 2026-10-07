@@ -1,6 +1,6 @@
 """Import hand-collected data the crawlers can't fetch: auction results, bids and spot prices.
 
-    python import_manual.py [FILE.csv ...] [--db PATH]
+    python import_manual.py [FILE.csv ...] [--db URL]
 
 Without FILEs every CSV in manual/ is imported. Keep the files there and commit them:
 the database is rebuilt by crawling (main.py) and then re-running this script.
@@ -107,7 +107,7 @@ def to_auctions(result_rows: list[dict], bid_rows: list[dict]) -> list[tuple[dic
                 "clearing_price_eur_mwh": _number(row, "clearing_price_eur_mwh"),
                 **{column: _number(row, column, required=False) for column in OPTIONAL_RESULT_COLUMNS},
                 "comment": None,
-                "cancelled": 0,
+                "cancelled": False,
             }
     for row in bid_rows:
         _, results, bids = auction_for(row)
@@ -143,7 +143,7 @@ def to_spot_prices(rows: list[dict]) -> list[dict]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("files", nargs="*", type=Path, help=f"CSV files (default: every CSV in {MANUAL_DIR.name}/)")
-    parser.add_argument("--db", type=Path, default=db.DEFAULT_PATH, help=f"SQLite file (default: {db.DEFAULT_PATH})")
+    parser.add_argument("--db", help="PostgreSQL URL (default: DATABASE_URL or the credentials in .env)")
     args = parser.parse_args()
 
     files = args.files or sorted(MANUAL_DIR.glob("*.csv"))
@@ -160,8 +160,8 @@ def main() -> None:
     for auction, results, bids in auctions:
         db.save_auction(conn, auction, results, bids)
     db.save_spot_prices(conn, spot)
+    print(f"Saved to {db.describe(conn)}: {len(auctions)} manual auctions, {len(spot)} manual spot prices")
     conn.close()
-    print(f"Saved {args.db}: {len(auctions)} manual auctions, {len(spot)} manual spot prices")
 
 
 if __name__ == "__main__":

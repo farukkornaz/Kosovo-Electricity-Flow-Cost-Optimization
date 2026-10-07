@@ -2,7 +2,7 @@
 name: market-data-crawl
 description: >
   JAO ve SEECAO günlük kapasite ihalelerini (sonuçlar + teklifler) ve saatlik spot
-  fiyatları market_data.db'ye çekme: tek gün, tarih aralığı / backfill, yarıda kalan
+  fiyatları PostgreSQL piyasa veritabanına çekme: tek gün, tarih aralığı / backfill, yarıda kalan
   çekimi sürdürme, yerel fiyat API'sini başlatma, crawler hatalarını çözme, yeni bir
   ihale platformu için crawler yazma. Use this whenever the user wants to crawl, fetch,
   download, refresh or backfill auction or spot price data ("veri çek", "geçmiş veri",
@@ -14,8 +14,15 @@ description: >
 # Piyasa verisi çekme (market_data/main.py)
 
 `market_data/main.py` bir tarih aralığındaki günlük ihaleleri (JAO + SEECAO) ve saatlik
-spot fiyatları kökteki `market_data.db`'ye yazar. Şema ve sorgular için `market-data-db`,
+spot fiyatları Docker'daki PostgreSQL veritabanına (`DATABASE_URL`, `--db`) yazar. Şema ve sorgular için `market-data-db`,
 crawler'ın çekemediği veri için `add-border-data` skill'ine bak.
+
+## Ön koşul: veritabanı
+
+```bash
+docker compose ps                 # db "healthy" olmalı
+docker compose up -d db           # değilse başlat
+```
 
 ## Ön koşul: fiyat API'si
 
@@ -34,6 +41,8 @@ Adres `PRICE_API_URL` ortam değişkeni ya da `--price-api` ile değişir.
 
 ## Komutlar (kök dizinden)
 
+`.venv/bin/python` yerine `docker compose run --rm app python` de olur (aynı DB ve API'ye bağlanır).
+
 ```bash
 .venv/bin/python market_data/main.py --from 2026-09-01                  # tek gün (--date de olur)
 .venv/bin/python market_data/main.py --from 2025-10-01 --to 2026-09-30  # aralık
@@ -49,21 +58,27 @@ Adres `PRICE_API_URL` ortam değişkeni ya da `--price-api` ile değişir.
 
 ### Uzun backfill
 
-Ölçüm: bir gün ~2 dakika (neredeyse tamamı ağ beklemesi), yani bir yıl ~12 saat.
-Böyle bir çekimi Bash aracında `run_in_background` ile ya da log dosyasına yazarak başlat:
+Ölçüm: bir gün 30 sn – 2 dk (neredeyse tamamı ağ beklemesi), yani bir yıl 3-12 saat.
+Uzun çekimi ayrı (detached) bir container'da başlat; oturum ya da VS Code kapansa da sürer:
 
 ```bash
-nohup .venv/bin/python market_data/main.py --from 2025-10-01 --to 2026-09-30 > crawl.log 2>&1 &
+docker compose run -d --name kfo-crawl app python market_data/main.py --from 2025-10-01 --to 2026-09-30
+docker logs -f kfo-crawl        # ilerleme (gün başına bir satır)
+docker wait kfo-crawl           # bitişi bekle (Bash'te run_in_background ile), sonra: docker rm kfo-crawl
 ```
 
 Önce kısa bir aralıkla (2-3 gün) dene ve sonucu doğrula. Spot fiyatlar başta tek seferde
-çekilir (API isteği başına en fazla 31 gün; API'nin üst sınırı 366 gün).
+çekilir (API isteği başına en fazla 31 gün; API'nin üst sınırı 366 gün). API önbelleğinde
+olmayan bir ay ENTSO-E'den zon zon sorulur ve ~75 sn sürer; bu yüzden istek zaman aşımı
+600 sn (`spot_prices.REQUEST_TIMEOUT`). Spot çekimi başarısız olursa uyarı basılır, ihaleler
+yine çekilir; aynı komutu tekrar çalıştırmak eksik spot günlerini tamamlar.
 
 ## Çekimden sonra doğrula
 
 ```python
-import sqlite3
-conn = sqlite3.connect("file:market_data.db?mode=ro", uri=True)
+import sys; sys.path.insert(0, "market_data")
+import db, psycopg
+conn = psycopg.connect(db.database_url())
 print(conn.execute("""SELECT delivery_date, source, count(*) FROM auctions
                       GROUP BY 1, 2 ORDER BY 1, 2""").fetchall())
 print(conn.execute("""SELECT delivery_date, count(DISTINCT zone) FROM spot_prices
@@ -90,10 +105,16 @@ Kod bunları zaten hallediyor; bir şey bozulduğunda nereye bakacağını bilme
   (fiyat azalan, `capacity` birikimli toplam); ardışık noktaların farkı tek tek teklifleri
   verir. Sayılar string gelir, `'--'` = yok. `Authorization: Bearer false` başlığı sitenin
   kendi gönderdiği değerdir.
-- **Hatalar:** ağ hataları ve 5xx üç kez, artan beklemeyle tekrar denenir (`common.fetch_json`).
-  4xx hemen yükselir.
-- `RuntimeError: ... schema version X, expected 2` → eski şemalı bir DB. Dosyayı kenara
-  taşı (silme) ve yeniden çek. v1 yedeği `market_data.db.v1.bak` olarak duruyor.
+- **Hatalar:** ağ hataları (bağlantı kopması, zaman aşımı) ve 5xx üç kez, artan beklemeyle
+  tekrar denenir (`common.fetch_json`). 4xx hemen yükselir.
+- **JAO erişimi kesebilir:** 2026-10-07'de 2 aylık çekimin sonunda (~30 dk'da ~1.700 istek)
+  `ConnectionResetError` gelmeye başladı ve `https://www.jao.eu/` bu makineden hiç açılmadı
+  (SEECAO normaldi), büyük ihtimalle geçici bir IP engeli. Böyle olursa JAO'ya istek atmayı
+  bırak, seyrek aralıkla (5 dk'da bir `curl`) erişimi kontrol et, açılınca aynı komutla devam
+  et. Bir yıllık backfill'i aylık parçalara böl.
+- `RuntimeError: ... schema version X, expected 3` → veritabanında başka bir şemanın tabloları
+  var. Silmeden önce kullanıcıya sor; `docker compose down -v` bütün veriyi siler.
+- `connection refused` → `docker compose up -d db`.
 - Sitedeki tabloyla karşılaştırmak için platform Excel export'ları
   `market_data/seecao_jao_samples/` altında.
 

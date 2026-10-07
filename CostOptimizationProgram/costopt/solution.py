@@ -199,7 +199,8 @@ def build_solution(
 ) -> SolutionResult:
     """Turn raw solver flows into a SolutionResult with true costs and paths."""
     supplies = tuple(
-        SupplyResult(n.id, supply_flows[n.id], n.max_supply, n.unit_price, supply_flows[n.id] * n.unit_price)
+        # + 0.0 turns the -0.0 of an unused negative-price supplier into 0.0
+        SupplyResult(n.id, supply_flows[n.id], n.max_supply, n.unit_price, supply_flows[n.id] * n.unit_price + 0.0)
         for n in model.supply_nodes
     )
     arcs = []

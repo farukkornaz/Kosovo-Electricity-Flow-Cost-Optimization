@@ -1,5 +1,6 @@
 """Helpers shared by the crawlers and importers."""
 
+import http.client
 import json
 import time
 import urllib.error
@@ -15,18 +16,18 @@ USER_AGENT = (
 MARKET_TZ = ZoneInfo("Europe/Brussels")
 
 
-def fetch_json(url: str, headers: dict, body: dict | None = None, retries: int = 3):
+def fetch_json(url: str, headers: dict, body: dict | None = None, retries: int = 3, timeout: float = 60):
     """GET (or POST when `body` is given) and decode JSON, retrying network and 5xx errors."""
     data = None if body is None else json.dumps(body).encode("utf-8")
     for attempt in range(retries):
         request = urllib.request.Request(url, data=data, headers=headers)
         try:
-            with urllib.request.urlopen(request, timeout=60) as response:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
                 return json.load(response)
         except urllib.error.HTTPError as exc:
             if exc.code < 500 or attempt == retries - 1:
                 raise
-        except (urllib.error.URLError, TimeoutError):
+        except (OSError, http.client.HTTPException):  # URLError, timeouts, connection resets
             if attempt == retries - 1:
                 raise
         time.sleep(2**attempt)

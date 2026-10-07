@@ -51,6 +51,10 @@ model ve veri kodu değişmez (ROADMAP'in temel ilkesi).
 - `SolutionResult` maliyetleri son akışlardan **gerçek** pay-as-clear ile hesaplar. `objective`
   ise segment yaklaşımıdır ve biraz yüksek olabilir. Yol maliyetleri her hattın maliyetini akışa
   oranla paylaştırır, yani yolların toplamı `total_cost`'a tam eşittir.
+- `unit_price` negatif olabilir (öğle saatlerinde güneş fazlası: GR, HU, RO, HR, BG'de görüldü).
+  Süper kaynak tam talep kadar arz ürettiği ve ona giren hat olmadığı için negatif döngü
+  oluşmaz; solver negatif fiyatlı arzı önce, `max_supply`'a kadar kullanır. Hat eğrileri
+  (`base_price`, `slope`) ise negatif olamaz.
 - `capacity == 0` kapalı hat demektir; `segments()` boş döner, haritada kesikli çizilir.
 - Tek talep düğümü varsayımı `validate()` ve `demand_node` içinde kodlu.
 

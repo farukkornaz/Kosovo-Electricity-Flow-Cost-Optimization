@@ -32,6 +32,23 @@ def test_cheapest_supplier_first():
     assert result.objective == pytest.approx(result.total_cost)
 
 
+def test_negative_spot_price_is_bought_first_but_only_up_to_demand():
+    # A pays us 2 €/MWh: 80 MW * -2 = -160 €, the other 20 MW from B at 50 = 1000 €.
+    # The super source supplies exactly the demand, so A isn't drained beyond it.
+    model = NetworkModel()
+    model.add_node(SupplyNode("A", "A", 0, 0, max_supply=80, unit_price=-2))
+    model.add_node(SupplyNode("B", "B", 0, 1, max_supply=500, unit_price=50))
+    model.add_node(DemandNode("D", "D", 1, 0, demand=100))
+    model.add_arc(Arc("A", "D", flat(0, 1000)))
+    model.add_arc(Arc("B", "D", flat(0, 1000)))
+
+    result = MinCostRouteSolver().solve(model)
+    assert result.status == SolveStatus.OPTIMAL
+    assert result.supply("A").quantity == 80
+    assert result.supply("B").quantity == 20
+    assert result.total_cost == pytest.approx(-160 + 1000)
+
+
 def test_pay_as_clear_splits_over_parallel_routes():
     # One route: 100 MW * P(100) = 100 * 20 = 2000 €.
     # Two identical routes, 50 MW each: 2 * 50 * P(50) = 2 * 50 * 15 = 1500 €.

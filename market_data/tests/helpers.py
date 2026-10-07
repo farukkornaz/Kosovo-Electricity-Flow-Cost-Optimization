@@ -27,7 +27,7 @@ def result(hour, capacity, price, day=DAY, **extra):
         "participants": None,
         "awarded_participants": None,
         "comment": None,
-        "cancelled": 0,
+        "cancelled": False,
         **extra,
     }
 

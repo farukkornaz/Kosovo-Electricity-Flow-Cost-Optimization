@@ -1,0 +1,44 @@
+# docker compose up -d db                                  start PostgreSQL (data in the pgdata volume)
+# docker compose run --rm app python market_data/main.py --from 2026-09-01
+# docker compose run --rm app python -m pytest -q market_data
+#
+# Credentials live in .env (not in git; copy .env.example). The app reads the same
+# file through the mounted project directory (market_data/db.py).
+name: kosovoflowopt
+
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?copy .env.example to .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?copy .env.example to .env}
+      POSTGRES_DB: ${POSTGRES_DB:?copy .env.example to .env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+      - ./docker/initdb:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  app:
+    build: .
+    profiles: ["app"]  # run on demand with `docker compose run`, not started by `up`
+    # Host network: reaches the database on localhost:5432 and the price API, which
+    # runs outside Docker on 127.0.0.1:8000, exactly like the local .venv does.
+    network_mode: host
+    user: "${UID:-1000}:${GID:-1000}"
+    environment:
+      PRICE_API_URL: http://127.0.0.1:8000
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
