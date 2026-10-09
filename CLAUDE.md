@@ -13,12 +13,12 @@ OR-Tools min cost flow.
 docker-compose.yml          db: PostgreSQL 18 (pgdata volume) · app: Python ortamı (isteğe bağlı)
 Dockerfile, docker/initdb/  app imajı; test veritabanını (market_data_test) kuran init script'i
 market_data/                veri katmanı → PostgreSQL (market_data veritabanı)
-  main.py                   JAO + SEECAO + spot fiyat crawler'ı (--from/--to)
+  main.py                   JAO + SEECAO + NOSBiH + spot fiyat crawler'ı (--from/--to, --source)
   import_manual.py          manual/*.csv → DB (source = MANUAL)
   build_scenario.py         DB → tek saatlik senaryo JSON (data/)
   network.py                modellenen ülkeler ve sınırlar: TEK liste
-  db.py                     şema (v3, Postgres), kayıt fonksiyonları, results_v / bids_v view'ları
-  jao/ seecao/              platform crawler'ları; spot_prices.py: yerel fiyat API istemcisi
+  db.py                     şema (v4, Postgres), kayıt fonksiyonları, results_v / bids_v view'ları
+  jao/ seecao/ nosbih/      platform crawler'ları (NOSBiH: BA-RS, sadece sonuç); spot_prices.py: yerel fiyat API istemcisi
   manual/                   elle toplanan CSV'ler (commit edilir, DB'nin tek kaynağı)
   seecao_jao_samples/       platformların Excel export'ları (git'te yok)
 CostOptimizationProgram/    optimizasyon: costopt/ paketi, main.py, data/ (sentetik), output/ (git'te yok)

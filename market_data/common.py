@@ -12,18 +12,17 @@ USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36"
 )
-# Both platforms publish product hours in CET/CEST.
+# Every platform publishes product hours in CET/CEST.
 MARKET_TZ = ZoneInfo("Europe/Brussels")
 
 
-def fetch_json(url: str, headers: dict, body: dict | None = None, retries: int = 3, timeout: float = 60):
-    """GET (or POST when `body` is given) and decode JSON, retrying network and 5xx errors."""
-    data = None if body is None else json.dumps(body).encode("utf-8")
+def fetch(url: str, headers: dict, data: bytes | None = None, retries: int = 3, timeout: float = 60) -> bytes:
+    """GET (or POST when `data` is given) the response body, retrying network and 5xx errors."""
     for attempt in range(retries):
         request = urllib.request.Request(url, data=data, headers=headers)
         try:
             with urllib.request.urlopen(request, timeout=timeout) as response:
-                return json.load(response)
+                return response.read()
         except urllib.error.HTTPError as exc:
             if exc.code < 500 or attempt == retries - 1:
                 raise
@@ -31,6 +30,12 @@ def fetch_json(url: str, headers: dict, body: dict | None = None, retries: int =
             if attempt == retries - 1:
                 raise
         time.sleep(2**attempt)
+
+
+def fetch_json(url: str, headers: dict, body: dict | None = None, retries: int = 3, timeout: float = 60):
+    """GET (or POST `body` as JSON) and decode the JSON response; see fetch."""
+    data = None if body is None else json.dumps(body).encode("utf-8")
+    return json.loads(fetch(url, headers, data, retries, timeout))
 
 
 def parse_utc(text: str) -> datetime:
@@ -75,4 +80,18 @@ def day_hours(day: date) -> list[dict]:
     for hour in range(1, (end - start) // timedelta(hours=1) + 1):
         local = (start + timedelta(hours=hour - 1)).astimezone(MARKET_TZ).hour
         hours.append(hour_columns(start, hour, f"{local:02d}:00-{local + 1:02d}:00"))
+    return hours
+
+
+def hours_by_clock_end(day: date) -> dict[tuple[int, bool], dict]:
+    """`day_hours` keyed by (clock hour the product ends at, repeated), the way platforms label hours.
+
+    JAO 'B04' and NOSBiH '04H' are 03:00-04:00. The 23-hour day has no hour ending at
+    03:00; the 25-hour day has two, and the platforms flag the second as the repeat
+    (JAO 'B03DST', NOSBiH '03BH').
+    """
+    hours = {}
+    for columns in day_hours(day):
+        end = int(columns["timetable"][-5:-3])  # '02:00-03:00' -> 3
+        hours[end, (end, False) in hours] = columns
     return hours

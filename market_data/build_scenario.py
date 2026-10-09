@@ -3,11 +3,12 @@
     python build_scenario.py --date 2026-09-01 --timetable 14:00-15:00 [--demand 400] [--seed 42]
 
 Every border in network.BORDERS becomes two arcs, one per direction. A direction is
-open when the database holds a result for that hour: its linear price curve is fitted
-to that hour's bids, or is flat at the clearing price when there are none. Otherwise
-its capacity is 0. When both a platform and a MANUAL import cover a direction, the
-platform wins. Supply prices are that hour's spot prices (ENTSOE before MANUAL);
-zones without one get a random placeholder. A report lists what was used.
+open when the database holds a result for that hour with capacity above 0: its linear
+price curve is fitted to that hour's bids, or is flat at the clearing price when there
+are none. Otherwise its capacity is 0. When both a platform and a MANUAL import cover a
+direction, the platform wins. Supply prices are that hour's spot prices (ENTSOE before
+MANUAL); zones without one get a random placeholder. A report lists what was used, and
+warns when the arcs into Kosovo cannot carry the demand.
 """
 
 import argparse
@@ -32,19 +33,23 @@ class Report:
 
     open: list[str] = field(default_factory=list)            # 'MK->XK SEECAO'
     flat: list[str] = field(default_factory=list)            # open, but no bids to fit a slope
+    zero: list[str] = field(default_factory=list)            # auction held, but 0 MW offered
     closed: list[str] = field(default_factory=list)          # border without a known daily auction
     missing: list[str] = field(default_factory=list)         # expected data not in the database
     overridden: list[str] = field(default_factory=list)      # MANUAL rows a platform replaced
     placeholder_prices: list[str] = field(default_factory=list)
+    infeasible: list[str] = field(default_factory=list)      # why the demand cannot be met
 
     def lines(self) -> list[str]:
         sections = [
             ("Open", self.open),
             ("Open with flat curve (no bids)", self.flat),
+            ("Closed, 0 MW offered", self.zero),
             ("Closed, no daily auction known", self.closed),
             ("WARNING closed, expected data missing", self.missing),
             ("MANUAL ignored, platform data used", self.overridden),
             ("WARNING random placeholder spot price", self.placeholder_prices),
+            ("WARNING infeasible", self.infeasible),
         ]
         return [f"{title}: {', '.join(items)}" for title, items in sections if items]
 
@@ -135,7 +140,10 @@ def build_arcs(conn: psycopg.Connection, day: date, timetable: str, report: Repo
                 (auction_ref, hour),
             ).fetchall()
             arc["curve"] = fit_linear_curve(bids, int(capacity), price)
-            (report.open if bids else report.flat).append(f"{direction} {source}")
+            if arc["curve"]["capacity"] == 0:
+                report.zero.append(f"{direction} {source}")
+            else:
+                (report.open if bids else report.flat).append(f"{direction} {source}")
         if expected is None:
             report.closed += [f"{a}-{b}"] if len(unused) == 2 else unused
         else:
@@ -172,6 +180,10 @@ def build_scenario(conn: psycopg.Connection, day: date, timetable: str, demand: 
         nodes.append(node)
 
     arcs = build_arcs(conn, day, timetable, report)
+    # An upper bound: the arcs further out can cut the flow below it.
+    import_capacity = sum(arc["curve"]["capacity"] for arc in arcs if arc["to"] == network.DEMAND_NODE)
+    if import_capacity < demand:
+        report.infeasible.append(f"only {import_capacity} MW can flow into {network.DEMAND_NODE}, demand {demand} MW")
     name = f"scenario-xk-demand-{day:%Y%m%d}-{timetable[:5].replace(':', '')}"
     return {"name": name, "nodes": nodes, "arcs": arcs}, report
 

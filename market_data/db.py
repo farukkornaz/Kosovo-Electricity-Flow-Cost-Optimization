@@ -1,11 +1,12 @@
 """PostgreSQL market database: daily auction results and bids, and hourly spot prices.
 
-Each auction is stored once in `auctions`; `results` (one row per product hour) and
-`bids` point to it by `auction_ref`, so a bid row holds only the bid itself. The
+Each auction is stored once in `auctions`; `results` (one row per product hour) point
+to it by `auction_ref`, and `bids` to their result hour by (`auction_ref`, `hour`), so a
+bid row holds only the bid itself. The
 `results_v` and `bids_v` views join them back into flat rows for analysis, and
 `results_v` adds the congestion income (allocated capacity x clearing price).
 
-`source` says where a row came from: a platform ('JAO', 'SEECAO'), the local price
+`source` says where a row came from: a platform ('JAO', 'SEECAO', 'NOSBIH'), the local price
 API ('ENTSOE'), or a hand-collected file ('MANUAL', see import_manual.py).
 
 The server runs in Docker (`docker compose up -d db`). Credentials come from the
@@ -21,15 +22,16 @@ import psycopg
 from psycopg.conninfo import make_conninfo
 
 ENV_FILE = Path(__file__).resolve().parent.parent / ".env"
-# 1 and 2 were SQLite files (market_data.db); 3 is the first PostgreSQL schema.
-SCHEMA_VERSION = 3
+# 1 and 2 were SQLite files (market_data.db); 3 is the first PostgreSQL schema;
+# 4 ties each bid to its result hour, not only to the auction.
+SCHEMA_VERSION = 4
 MANUAL = "MANUAL"
 
 SCHEMA = """
 CREATE TABLE schema_version (version INTEGER NOT NULL);
 CREATE TABLE auctions (
     id            INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    source        TEXT NOT NULL,  -- 'JAO' | 'SEECAO' | 'MANUAL'
+    source        TEXT NOT NULL,  -- 'JAO' | 'SEECAO' | 'NOSBIH' | 'MANUAL'
     auction_id    TEXT NOT NULL,  -- platform's id
     corridor      TEXT NOT NULL,  -- platform's code, e.g. 'HU-RS', 'IF1-FR-GB', 'MK-XK'
     out_area      TEXT NOT NULL,
@@ -56,13 +58,14 @@ CREATE TABLE results (
     PRIMARY KEY (auction_ref, hour)
 );
 CREATE TABLE bids (
-    auction_ref         INTEGER  NOT NULL REFERENCES auctions (id) ON DELETE CASCADE,
+    auction_ref         INTEGER  NOT NULL,
     hour                SMALLINT NOT NULL,
     seq                 INTEGER  NOT NULL,          -- 1 = highest price within the hour
     quantity_mw         DOUBLE PRECISION NOT NULL,
     price_eur_mwh       DOUBLE PRECISION NOT NULL,
     awarded_quantity_mw DOUBLE PRECISION,           -- JAO only
-    PRIMARY KEY (auction_ref, hour, seq)
+    PRIMARY KEY (auction_ref, hour, seq),
+    FOREIGN KEY (auction_ref, hour) REFERENCES results (auction_ref, hour) ON DELETE CASCADE
 );
 CREATE TABLE spot_prices (
     source             TEXT     NOT NULL,  -- 'ENTSOE' | 'MANUAL'
@@ -93,6 +96,14 @@ JOIN auctions a ON a.id = b.auction_ref
 LEFT JOIN results r ON r.auction_ref = b.auction_ref AND r.hour = b.hour;
 """
 
+# Upgrades from the keyed version to the next one, applied by connect().
+MIGRATIONS = {
+    3: """
+ALTER TABLE bids DROP CONSTRAINT bids_auction_ref_fkey;
+ALTER TABLE bids ADD FOREIGN KEY (auction_ref, hour) REFERENCES results (auction_ref, hour) ON DELETE CASCADE;
+""",
+}
+
 
 def database_url(dbname: str | None = None) -> str:
     """DATABASE_URL, or a URL built from POSTGRES_USER / _PASSWORD / _DB (and _HOST, _PORT).
@@ -120,7 +131,8 @@ def database_url(dbname: str | None = None) -> str:
 def connect(url: str | None = None, create: bool = True) -> psycopg.Connection:
     """Open the database (default: database_url()) in autocommit mode, creating the schema in an empty one.
 
-    Writes that must be atomic run in `with conn.transaction():`.
+    An older schema is upgraded with MIGRATIONS. Writes that must be atomic run in
+    `with conn.transaction():`.
     """
     conn = psycopg.connect(url or database_url(), autocommit=True)
     version = schema_version(conn)
@@ -132,9 +144,15 @@ def connect(url: str | None = None, create: bool = True) -> psycopg.Connection:
         with conn.transaction():
             conn.execute(SCHEMA)
             conn.execute("INSERT INTO schema_version VALUES (%s)", (SCHEMA_VERSION,))
-    elif version != SCHEMA_VERSION:
-        conn.close()
-        raise RuntimeError(f"{where} has schema version {version}, expected {SCHEMA_VERSION}")
+    else:
+        while version in MIGRATIONS:
+            with conn.transaction():
+                conn.execute(MIGRATIONS[version])
+                version += 1
+                conn.execute("INSERT INTO schema_version VALUES (%s)", (version,))
+        if version != SCHEMA_VERSION:
+            conn.close()
+            raise RuntimeError(f"{where} has schema version {version}, expected {SCHEMA_VERSION}")
     return conn
 
 
@@ -167,8 +185,8 @@ def save_auction(conn: psycopg.Connection, auction: dict, results: list, bids: l
                RETURNING id""",
             auction,
         ).fetchone()[0]
-        for table in ("results", "bids"):
-            conn.execute(f"DELETE FROM {table} WHERE auction_ref = %s", (ref,))
+        # The results take their bids along (ON DELETE CASCADE).
+        conn.execute("DELETE FROM results WHERE auction_ref = %s", (ref,))
         _insert(conn, "results", [{"auction_ref": ref, **row} for row in results])
 
         seq = Counter()

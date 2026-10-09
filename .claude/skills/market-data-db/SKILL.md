@@ -2,7 +2,7 @@
 name: market-data-db
 description: >
   Piyasa veritabanının (PostgreSQL, Docker) şeması ve analizi: ihale sonuçları (results), teklifler (bids),
-  spot fiyatlar (spot_prices); kolonların JAO / SEECAO / MANUAL kaynağına göre anlamı,
+  spot fiyatlar (spot_prices); kolonların JAO / SEECAO / NOSBIH / MANUAL kaynağına göre anlamı,
   CET/UTC ve saat numaraları, hazır SQL ve pandas sorguları (bir saatin teklif eğrisi,
   takas fiyatı ve kapasite serileri, congestion income, spot farkı ile ihale fiyatı
   karşılaştırması). Use this whenever the user asks what is in the data, wants analysis,
@@ -16,8 +16,9 @@ description: >
 
 Docker'daki PostgreSQL 18, veritabanı `market_data` (`docker compose up -d db`; veri
 `kosovoflowopt_pgdata` volume'ünde, yeniden üretilebilir ama uzun sürer). Şemanın kaynağı
-`market_data/db.py`, şu anki sürüm **3** (`schema_version` tablosu; 1 ve 2 eski SQLite
-dosyalarıydı). Veri çekmek için `market-data-crawl`, elle veri eklemek için `add-border-data`
+`market_data/db.py`, şu anki sürüm **4** (`schema_version` tablosu; 1 ve 2 eski SQLite
+dosyalarıydı, 4 her teklifi sonucunun saatine bağladı). `db.connect()` eski bir sürümü
+`db.MIGRATIONS` ile kendiliğinden yükseltir. Veri çekmek için `market-data-crawl`, elle veri eklemek için `add-border-data`
 skill'ine bak.
 
 ## Bağlanma
@@ -53,7 +54,7 @@ düz satırlara geri birleştirir. Ham tablolara sadece yazarken ya da performan
 |---|---|---|---|
 | `auctions` | ihale başına 1 | `id`; `(source, auction_id)` tekil | source, auction_id, corridor, out_area, in_area, `border` (üretilen kolon: `out-in`, indeksli), delivery_date |
 | `results` | ihale-saat başına 1 | `(auction_ref, hour)` | timetable, delivery_start_utc, offered/requested/allocated_capacity_mw, clearing_price_eur_mwh, participants, awarded_participants, comment, cancelled |
-| `bids` | teklif başına 1 | `(auction_ref, hour, seq)` | quantity_mw, price_eur_mwh, awarded_quantity_mw; `seq` 1 = o saatin en yüksek fiyatı |
+| `bids` | teklif başına 1 | `(auction_ref, hour, seq)`; `(auction_ref, hour)` → `results` | quantity_mw, price_eur_mwh, awarded_quantity_mw; `seq` 1 = o saatin en yüksek fiyatı. Her teklif bir sonuç saatine ait; sonucu olmayan saate teklif yazılamaz |
 | `spot_prices` | kaynak-zon-saat başına 1 | `(source, zone, delivery_start_utc)` | delivery_date, hour, timetable, price_eur_mwh (15 dk fiyatlarının saatlik ortalaması) |
 
 - Tipler: `delivery_date` `DATE`, `delivery_start_utc` `TIMESTAMPTZ`, miktar/fiyatlar
@@ -64,7 +65,7 @@ düz satırlara geri birleştirir. Ham tablolara sadece yazarken ya da performan
 
 ## Kaynaklar ve kolon anlamları
 
-`source`: `JAO`, `SEECAO` (platformlar), `ENTSOE` (yerel fiyat API'si), `MANUAL` (elle import).
+`source`: `JAO`, `SEECAO`, `NOSBIH` (platformlar), `ENTSOE` (yerel fiyat API'si), `MANUAL` (elle import).
 
 - `corridor`: platformun kendi kodu. JAO'da `border`'dan farklı olabilir (`IF1-FR-GB`); filtrelemek için `border` / `out_area` / `in_area` kullan.
 - `comment` sadece JAO'da dolu. `awarded_quantity_mw` sadece JAO'da var; SEECAO'da NULL.
@@ -77,6 +78,10 @@ düz satırlara geri birleştirir. Ham tablolara sadece yazarken ya da performan
 - İptal edilen bir ihale aynı gün yeniden açılabilir (JAO HR-RS / RS-HR, 2026-08-17: `-01`
   iptal, `-02` geçerli). İkisi de saklanır; analizde `WHERE NOT cancelled` kullan. Senaryo
   kurucu iptal edilmemiş olanı seçer.
+- `NOSBIH` (BA-RS / RS-BA, 2026-08-01'den beri): teklif yok, sadece sonuç. `participants` NULL;
+  `awarded_participants` = kapasite alan trader sayısı (XML'de `CapacityTradersWithAllocationsCount`,
+  sitede "Number of Participants" yazsa da). Sitedeki teklif sayısı (`TotalBidsCount`) saklanmıyor.
+  İki yön tek ihale kodu taşır; `auction_id` yönü ekler: `BA-RS-D-20261007/RS-BA`.
 - `MANUAL` satırlarda genellikle teklif yoktur, `requested`/`allocated`/`participants` boş olabilir.
 - Yalnızca modellenen 12 ülke arasındaki ihaleler saklanıyor. 2026-09-01'in tüm JAO
   koridorlarını içeren eski veri `market_data.db.v1.bak` dosyasında (SQLite, eski şema).

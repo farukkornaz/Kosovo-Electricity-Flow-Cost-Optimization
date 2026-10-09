@@ -122,6 +122,12 @@ Altyapı ayarları (Docker, PostgreSQL, 2026 Ağustos–Eylül verisi) bitmeden 
 
 ### Diğer notlar
 - **Slope kalibrasyonu:** fiyat eğrisinin eğimini yaklaşık bir yıllık tekliflerden kalibre etmek.
-- **Kapalı sınırlar:** RS-XK, AL-XK, BA-RS, BG-GR vb. için elle ya da başka kaynaktan veri.
+- **Teklifsiz hatlar (BA↔RS, NOSBIH):** NOSBiH teklif yayınlamıyor. Hat takas fiyatında düz
+  eğriyle açılıyor (slope 0) ve olduğundan ucuz görünüyor. Solver onu dolambaçlı yollarda
+  kullanıyor (ör. `AL→ME→BA→RS→MK→XK`, Eylül–Ekim örneklerinde 8–32 MW). Slope kalibrasyonunda, teklifli sınırlarda
+  hesaplanan slope'un talep/kapasite oranı (`requested_capacity_mw / offered_capacity_mw`)
+  ve takas fiyatıyla ilişkisine bakılacak. İlişki güçlüyse BA↔RS'in slope'u bu ilişkiden
+  tahmin edilir. Zayıfsa düz eğri kalır ve bu sınırlama raporda görünmeye devam eder.
+- **Kapalı sınırlar:** RS-XK, AL-XK, BG-GR vb. için elle ya da başka kaynaktan veri.
 - **BA ve TR spot fiyatları:** API'de yok; şu an senaryoda yer tutucu fiyat kullanılıyor.
 - **`max_supply`** değerleri (`market_data/network.py`) yer tutucu; gerçek veriyle değişmeli.

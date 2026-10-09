@@ -28,6 +28,28 @@ def test_save_auction_replaces_and_numbers_bids(conn):
     assert db.has_auction(conn, "JAO", "JAO-HU-RS-2026-09-01")
 
 
+def test_a_bid_needs_its_result_hour(conn):
+    rows = (auction("SEECAO", "MK", "XK"), [result(1, 100, 5.0)], [bid(2, 10, 2.0)])
+    with pytest.raises(psycopg.errors.ForeignKeyViolation):
+        db.save_auction(conn, *rows)
+    assert not db.has_auction(conn, "SEECAO", "SEECAO-MK-XK-2026-09-01")
+
+
+def test_version_3_is_upgraded(empty_schema):
+    with db.connect(empty_schema) as conn:
+        store(conn, "SEECAO", "MK", "XK", bids=[(50, 4.0)])
+        # Back to version 3, where bids pointed only to the auction.
+        conn.execute("ALTER TABLE bids DROP CONSTRAINT bids_auction_ref_hour_fkey")
+        conn.execute("ALTER TABLE bids ADD FOREIGN KEY (auction_ref) REFERENCES auctions (id) ON DELETE CASCADE")
+        conn.execute("UPDATE schema_version SET version = 3")
+
+    with db.connect(empty_schema) as conn:
+        assert db.schema_version(conn) == db.SCHEMA_VERSION
+        assert conn.execute("SELECT count(*) FROM bids").fetchone()[0] == 1
+        with pytest.raises(psycopg.errors.ForeignKeyViolation):
+            conn.execute("INSERT INTO bids SELECT auction_ref, hour + 1, 1, 10, 2 FROM bids")
+
+
 def test_views_give_flat_rows(conn):
     store(conn, "SEECAO", "MK", "XK", capacity=200, price=3.0, bids=[(50, 4.0)])
     conn.execute("UPDATE results SET allocated_capacity_mw = 200")

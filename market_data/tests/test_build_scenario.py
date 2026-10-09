@@ -27,20 +27,40 @@ def test_every_border_becomes_two_arcs(conn):
     assert all(curve["capacity"] == 0 for curve in arcs_by_id(scenario).values())
     assert "RS-XK" in report.closed
     assert "MK->XK (SEECAO)" in report.missing
+    assert report.infeasible == ["only 0 MW can flow into XK, demand 400 MW"]
 
 
 def test_data_opens_a_direction(conn):
     store(conn, "SEECAO", "MK", "XK", capacity=200, price=5.0, bids=[(150, 20.0), (100, 5.0)])
-    store(conn, db.MANUAL, "BA", "RS", capacity=300, price=4.0)
+    store(conn, db.MANUAL, "BG", "GR", capacity=300, price=4.0)
     scenario, report = build_scenario(conn, DAY, HOUR, demand=400, seed=1)
 
     arcs = arcs_by_id(scenario)
     assert arcs["MK->XK"]["capacity"] == 200 and arcs["MK->XK"]["slope"] > 0
-    assert arcs["BA->RS"] == {"type": "linear", "base_price": 4.0, "slope": 0.0, "capacity": 300}
+    assert arcs["BG->GR"] == {"type": "linear", "base_price": 4.0, "slope": 0.0, "capacity": 300}
     assert arcs["XK->MK"]["capacity"] == 0
     assert "MK->XK SEECAO" in report.open
-    assert "BA->RS MANUAL" in report.flat
-    assert "RS->BA" in report.closed
+    assert "BG->GR MANUAL" in report.flat
+    assert "GR->BG" in report.closed
+
+
+def test_zero_capacity_is_reported_closed(conn):
+    store(conn, "SEECAO", "MK", "XK", capacity=0, price=0.0)
+    scenario, report = build_scenario(conn, DAY, HOUR, demand=400, seed=1)
+
+    assert arcs_by_id(scenario)["MK->XK"]["capacity"] == 0
+    assert report.zero == ["MK->XK SEECAO"]
+    assert "MK->XK SEECAO" not in report.flat
+
+
+def test_demand_above_import_capacity_is_warned(conn):
+    store(conn, "SEECAO", "MK", "XK", capacity=200, price=5.0)
+    store(conn, "SEECAO", "ME", "XK", capacity=100, price=5.0)
+
+    _, report = build_scenario(conn, DAY, HOUR, demand=400, seed=1)
+    assert report.infeasible == ["only 300 MW can flow into XK, demand 400 MW"]
+    _, report = build_scenario(conn, DAY, HOUR, demand=300, seed=1)
+    assert report.infeasible == []
 
 
 def test_platform_wins_over_manual(conn):
