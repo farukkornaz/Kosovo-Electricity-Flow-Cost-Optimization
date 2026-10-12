@@ -2,7 +2,7 @@
 name: add-border-data
 description: >
   Crawler'ların çekemediği veriyi elle ya da başka bir kaynaktan DB'ye ekleyip senaryoya
-  yansıtma: kapalı ya da eksik bir sınırın (ör. BA-RS, RS-XK, AL-XK, BG-GR) kapasite ve
+  yansıtma: kapalı ya da eksik bir sınırın (ör. RS-XK, AL-XK, BG-GR, AL-MK) kapasite ve
   takas fiyatı, o sınırın teklifleri, API'de olmayan zonların (BA, TR) spot fiyatları;
   network.py'ye yeni sınır ya da ülke ekleme. Use this whenever the user says a border is
   missing or closed in the scenario, wants to add capacity/price data from an Excel file,
@@ -54,15 +54,15 @@ bids:    border,delivery_date,timetable,quantity_mw,price_eur_mwh
 spot:    zone,delivery_date,timetable,price_eur_mwh
 ```
 
-Örnek (`manual/ba_rs_2026-09.csv`):
+Örnek (`manual/bg_gr_2026-09.csv`):
 
 ```csv
 border,delivery_date,timetable,offered_capacity_mw,clearing_price_eur_mwh
-BA-RS,2026-09-01,*,300,4.50
-RS-BA,2026-09-01,*,250,1.20
+BG-GR,2026-09-01,*,300,4.50
+GR-BG,2026-09-01,*,250,1.20
 ```
 
-- `border` **yönlüdür**: `BA-RS` = BA'dan RS'ye. Ters yön kendi satırını ister. Sınır
+- `border` **yönlüdür**: `BG-GR` = BG'den GR'ye. Ters yön kendi satırını ister. Sınır
   `BORDERS`'ta herhangi bir yönüyle bulunmalıdır.
 - `timetable` CET/CEST `'HH:00-HH:00'` biçimindedir; `*` o günün bütün saatleri demektir
   (günlük sabit kapasite gibi veriler için).
@@ -78,11 +78,11 @@ RS-BA,2026-09-01,*,250,1.20
 
 ```bash
 .venv/bin/python market_data/import_manual.py                          # manual/ altındaki tüm CSV'ler
-.venv/bin/python market_data/import_manual.py market_data/manual/ba_rs_2026-09.csv
+.venv/bin/python market_data/import_manual.py market_data/manual/bg_gr_2026-09.csv
 ```
 
 - Script önce her şeyi doğrular, sonra yazar. Hatalar dosya ve satır numarasını gösterir
-  (`ba_rs.csv:3: border 'AL-BG' is not in network.BORDERS`).
+  (`bg_gr.csv:3: border 'AL-BG' is not in network.BORDERS`).
 - Her yön ve gün bir `MANUAL` ihalesidir (`auction_id = MANUAL-<out>-<in>-<tarih>`);
   aynı yön-günü yeniden import etmek öncekinin yerine geçer.
 - CSV'den bir satırı silmek DB'den silmez. Silmek için:
@@ -91,7 +91,7 @@ RS-BA,2026-09-01,*,250,1.20
   import sys; sys.path.insert(0, "market_data")
   import db
   conn = db.connect()   # ON DELETE CASCADE: results/bids de silinir
-  conn.execute("DELETE FROM auctions WHERE source = 'MANUAL' AND auction_id = %s", ("MANUAL-BA-RS-2026-09-01",))
+  conn.execute("DELETE FROM auctions WHERE source = 'MANUAL' AND auction_id = %s", ("MANUAL-BG-GR-2026-09-01",))
   ```
 
   Silmeden önce kullanıcıya hangi kaydın silineceğini göster ve onay al.
@@ -113,7 +113,7 @@ print(conn.execute("""SELECT border, delivery_date, count(*), min(offered_capaci
 ```
 
 Raporda sınırın yeri değişmeli: `Closed, no daily auction known` satırından
-`Open: BA->RS MANUAL` satırına ya da teklif yoksa `Open with flat curve (no bids)` satırına
+`Open: BG->GR MANUAL` satırına ya da teklif yoksa `Open with flat curve (no bids)` satırına
 geçer. Spot için `WARNING random placeholder spot price` satırından ilgili zon düşer.
 Çözüm ve yorum için `xk-scenario` skill'ine bak.
 
@@ -121,7 +121,7 @@ geçer. Spot için `WARNING random placeholder spot price` satırından ilgili z
 
 ```python
 BORDERS = {
-    ("BA", "RS"): None,   # no daily auction found on JAO/SEECAO
+    ("BG", "GR"): None,   # no daily auction found on JAO/SEECAO
     ("MK", "XK"): "SEECAO",
 }
 ```

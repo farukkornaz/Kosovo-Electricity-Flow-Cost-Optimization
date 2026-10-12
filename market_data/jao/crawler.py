@@ -4,7 +4,7 @@ import re
 import urllib.error
 from datetime import date, timedelta
 
-from common import USER_AGENT, auction_row, delivery_day, fetch_json, hour_columns, parse_utc
+from common import USER_AGENT, auction_row, delivery_day, fetch_json, hours_by_clock_end, parse_utc
 
 SOURCE = "JAO"
 API_URL = "https://www.jao.eu/api/v1/auction/calls"
@@ -48,6 +48,17 @@ def to_rows(auction: dict, bids: list) -> tuple[dict, list, list]:
     """Map a `getauctions` entry and its `getbids` list to (auction, results, bids) rows."""
     start = parse_utc(auction["marketPeriodStart"])
     auction_cols = auction_row(SOURCE, auction["identification"], auction["corridorCode"], *areas(auction), start)
+    day = date.fromisoformat(auction_cols["delivery_date"])
+    hours = hours_by_clock_end(day)
+
+    def hour_of(product_identification: str) -> dict:
+        """Products are named by the clock hour they end at: 'B07-------' is 06:00-07:00.
+        The 25-hour day repeats 02:00-03:00 as 'B03' then 'B03DST'; the 23-hour day has no 'B03'."""
+        match = re.fullmatch(r"B(\d{2})(DST)?-*", product_identification)
+        key = (int(match[1]), match[2] is not None) if match else None
+        if key not in hours:
+            raise ValueError(f"{auction['identification']}: product {product_identification} is not an hour of {day}")
+        return hours[key]
 
     # Participant counts live on `products`; capacities and price on `results`.
     products = {p["productIdentification"]: p for p in auction["products"]}
@@ -56,7 +67,7 @@ def to_rows(auction: dict, bids: list) -> tuple[dict, list, list]:
         product = products[result["productIdentification"]]
         comment = "; ".join(filter(None, (result["comment"], result["additionalMessage"])))
         result_rows.append({
-            **hour_columns(start, _product_hour(result["productIdentification"]), result["productHour"]),
+            **hour_of(result["productIdentification"]),
             "offered_capacity_mw": result["offeredCapacity"],
             "requested_capacity_mw": result["requestedCapacity"],
             "allocated_capacity_mw": result["allocatedCapacity"],
@@ -75,14 +86,9 @@ def to_rows(auction: dict, bids: list) -> tuple[dict, list, list]:
         if bid["currency"] != "EUR":
             raise ValueError(f"{auction['identification']}: unexpected currency {bid['currency']}")
         bid_rows.append({
-            "hour": _product_hour(bid["productIdentification"]),
+            "hour": hour_of(bid["productIdentification"])["hour"],
             "quantity_mw": bid["quantity"],
             "price_eur_mwh": bid["price"],
             "awarded_quantity_mw": bid["awardedQuantity"],
         })
     return auction_cols, sorted(result_rows, key=lambda r: r["hour"]), bid_rows
-
-
-def _product_hour(product_identification: str) -> int:
-    """'B07-------' -> 7."""
-    return int(re.match(r"B(\d+)", product_identification).group(1))

@@ -1,7 +1,7 @@
 ---
 name: market-data-crawl
 description: >
-  JAO ve SEECAO günlük kapasite ihalelerini (sonuçlar + teklifler) ve saatlik spot
+  JAO, SEECAO ve NOSBiH (BA-RS) günlük kapasite ihalelerini (sonuçlar + teklifler) ve saatlik spot
   fiyatları PostgreSQL piyasa veritabanına çekme: tek gün, tarih aralığı / backfill, yarıda kalan
   çekimi sürdürme, yerel fiyat API'sini başlatma, crawler hatalarını çözme, yeni bir
   ihale platformu için crawler yazma. Use this whenever the user wants to crawl, fetch,
@@ -13,7 +13,7 @@ description: >
 
 # Piyasa verisi çekme (market_data/main.py)
 
-`market_data/main.py` bir tarih aralığındaki günlük ihaleleri (JAO + SEECAO) ve saatlik
+`market_data/main.py` bir tarih aralığındaki günlük ihaleleri (JAO + SEECAO + NOSBiH) ve saatlik
 spot fiyatları Docker'daki PostgreSQL veritabanına (`DATABASE_URL`, `--db`) yazar. Şema ve sorgular için `market-data-db`,
 crawler'ın çekemediği veri için `add-border-data` skill'ine bak.
 
@@ -47,6 +47,7 @@ Adres `PRICE_API_URL` ortam değişkeni ya da `--price-api` ile değişir.
 .venv/bin/python market_data/main.py --from 2026-09-01                  # tek gün (--date de olur)
 .venv/bin/python market_data/main.py --from 2025-10-01 --to 2026-09-30  # aralık
 .venv/bin/python market_data/main.py --from 2026-09-01 --refresh        # saklananı da yeniden indir
+.venv/bin/python market_data/main.py --from 2026-09-01 --source NOSBIH  # sadece bu platform (tekrarlanabilir)
 ```
 
 - DB'de olan ihale (source + auction_id) ve spot fiyatı olan gün **atlanır**, bu yüzden
@@ -54,7 +55,9 @@ Adres `PRICE_API_URL` ortam değişkeni ya da `--price-api` ile değişir.
   transaction'ında yazılır; yarım ihale kalmaz.
 - Sadece iki ucu da `network.COUNTRIES` içinde olan ihaleler saklanır (JAO'nun FR-GB,
   CH-IT gibi koridorları atlanır). Yeni ülke eklemek → `add-border-data`.
-- Çıktı her gün için tek satır: `2026-09-01: JAO 12, SEECAO 16` (atlananlar parantezde).
+- Çıktı her gün için tek satır: `2026-09-01: JAO 12, SEECAO 16, NOSBIH 2` (atlananlar parantezde).
+- `--source` sadece seçilen platformları çeker; spot fiyatlar yine kontrol edilir. Tek bir
+  platformu backfill ederken ya da JAO erişimi kestiğinde ötekilere istek atmamak için kullan.
 
 ### Uzun backfill
 
@@ -85,7 +88,7 @@ print(conn.execute("""SELECT delivery_date, count(DISTINCT zone) FROM spot_price
                       GROUP BY 1 ORDER BY 1""").fetchall())
 ```
 
-Normal bir günde ~12 JAO, ~16 SEECAO ihalesi ve 10 spot zonu var (BA ve TR API'de yok).
+Normal bir günde ~12 JAO, ~16 SEECAO, 2 NOSBiH ihalesi ve 10 spot zonu var (BA ve TR API'de yok).
 Bir sınırın verisinin beklenip gelmediğini en kolay `build_scenario.py` raporundaki
 `WARNING closed, expected data missing` satırı gösterir.
 
@@ -93,8 +96,18 @@ Bir sınırın verisinin beklenip gelmediğini en kolay `build_scenario.py` rapo
 
 Kod bunları zaten hallediyor; bir şey bozulduğunda nereye bakacağını bilmek için:
 
-- **Saat:** iki platform da ürün saatlerini CET/CEST (Europe/Brussels) yayınlar. `hour`
-  1'den başlar; yaz saatine geçiş günü 23, kışa geçiş günü 25 saattir.
+- **Saat:** bütün platformlar ürün saatlerini CET/CEST (Europe/Brussels) yayınlar. `hour`
+  1'den başlar; yaz saatine geçiş günü 23, kışa geçiş günü 25 saattir. Her kaynak kendi saat
+  etiketini `common.day_hours(day)`'e eşler; `hour`, `timetable` ve `delivery_start_utc` hep
+  oradan gelir. JAO ve NOSBiH saati bitişine göre adlandırır (`common.hours_by_clock_end`):
+  JAO `B04-------` = 03:00-04:00, 25 saatlik günde tekrar eden saat `B03` + `B03DST----`
+  (`02:00-03:00*`), 23 saatlik günde `B03` yok. SEECAO'da `pos` günün saat sırasıdır; 25 saatlik
+  günde timetable `02:00 - 03:00 (1)` / `(2)` gelir, kullanılmaz. 2025-10-26 ve 2026-03-29
+  günleriyle doğrulandı. `B03DST`'nin (ve NOSBiH `03BH`'nin) ikinci 02:00-03:00 olduğu
+  varsayımdır; ürün başına UTC saati yayınlanmıyor. JAO onu zaman sıralı listelerde `B03`'ten
+  sonra veriyor ve `*` ile işaretliyor; NOSBiH'in `B`'si büyük ihtimalle Avrupa'daki `3A`/`3B`
+  (ikinci saat `3B`) geleneği, XML'deki sırası ise alfabetik ve ipucu vermiyor. Yanlışsa sadece
+  o günün 3. ve 4. saatlerinin değerleri yer değiştirir.
 - **JAO** (`jao/crawler.py`): `getauctions` UTC dönem başlangıcına göre filtreler; bu yüzden
   `fromdate = gün - 1` ile sorulur ve sonuç teslim gününe göre süzülür. Hiç ihale yoksa
   400 "No Data found" döner (boş liste sayılır). `corridorCode` önek taşıyabilir
@@ -105,6 +118,15 @@ Kod bunları zaten hallediyor; bir şey bozulduğunda nereye bakacağını bilme
   (fiyat azalan, `capacity` birikimli toplam); ardışık noktaların farkı tek tek teklifleri
   verir. Sayılar string gelir, `'--'` = yok. `Authorization: Bearer false` başlığı sitenin
   kendi gönderdiği değerdir.
+- **NOSBiH** (`nosbih/crawler.py`): BA-RS ihalesini Bosna ISO'su kendi sitesinde yapar.
+  `admin-ajax.php`'ye form POST'u (`action=auction`, `auction=date=dd.mm.yyyy.`) günün HTML
+  tablosunu döndürür; içindeki `.xml` linki iki yönü birden kapsayan `AuctionSummary` dosyasıdır.
+  Veri XML'den okunur, çünkü HTML tablosu saat değişimi günlerinde saatleri kaydırıyor ve
+  düşürüyor (2025-10-26: 25 yerine 23 satır; 2026-03-29: 23 yerine 22). XML ürün kodları saati
+  bitişine göre sayar (`01H` = 00:00-01:00); 25 saatlik günde tekrar eden saat `03H` + `03BH`,
+  23 saatlik günde `03H` yok. Teklif yayınlanmıyor (dizin listesi 403, tahmin edilen dosya
+  adları 404). Veri yoksa tablo "Sorry, we didn't find any data" der → boş liste. Gün başına
+  2 istek, ~1 sn.
 - **Hatalar:** ağ hataları (bağlantı kopması, zaman aşımı) ve 5xx üç kez, artan beklemeyle
   tekrar denenir (`common.fetch_json`). 4xx hemen yükselir.
 - **JAO erişimi kesebilir:** 2026-10-07'de 2 aylık çekimin sonunda (~30 dk'da ~1.700 istek)
@@ -112,7 +134,7 @@ Kod bunları zaten hallediyor; bir şey bozulduğunda nereye bakacağını bilme
   (SEECAO normaldi), büyük ihtimalle geçici bir IP engeli. Böyle olursa JAO'ya istek atmayı
   bırak, seyrek aralıkla (5 dk'da bir `curl`) erişimi kontrol et, açılınca aynı komutla devam
   et. Bir yıllık backfill'i aylık parçalara böl.
-- `RuntimeError: ... schema version X, expected 3` → veritabanında başka bir şemanın tabloları
+- `RuntimeError: ... schema version X, expected 4` → veritabanında başka bir şemanın tabloları
   var. Silmeden önce kullanıcıya sor; `docker compose down -v` bütün veriyi siler.
 - `connection refused` → `docker compose up -d db`.
 - Sitedeki tabloyla karşılaştırmak için platform Excel export'ları
@@ -126,11 +148,14 @@ ya da elle derlenen veri için `add-border-data`'daki CSV yolu daha basit.
 1. `market_data/<platform>/crawler.py`: `SOURCE = "<PLATFORM>"`, gün için ihaleleri bulan bir
    fonksiyon, ihaleyi indiren bir fonksiyon ve `to_rows(...) -> (auction, results, bids)`.
    - `auction`: `common.auction_row(source, auction_id, corridor, out_area, in_area, period_start_utc)`
-   - `results`: saat başına `{**common.hour_columns(start, hour, timetable), offered_capacity_mw,
-     requested_capacity_mw, allocated_capacity_mw, clearing_price_eur_mwh, participants,
-     awarded_participants, comment, cancelled}`
-   - `bids`: `{hour, quantity_mw, price_eur_mwh, awarded_quantity_mw}`; sıra numarasını
-     (`seq`) `db.save_auction` verir.
+   - `results`: saat başına `{**saat_kolonları, offered_capacity_mw, requested_capacity_mw,
+     allocated_capacity_mw, clearing_price_eur_mwh, participants, awarded_participants,
+     comment, cancelled}`. Saat kolonlarını platformun saat etiketini `common.day_hours(day)`
+     ya da `common.hours_by_clock_end(day)` sonucuna eşleyerek al; saati başlangıçtan sayıp
+     hesaplama, saat değişimi günlerinde kayar.
+   - `bids`: `{hour, quantity_mw, price_eur_mwh, awarded_quantity_mw}`; `hour` bir sonuç
+     satırının saati olmalı (yoksa kayıt hata verir). Sıra numarasını (`seq`) `db.save_auction` verir.
+   - Testine 25 ve 23 saatlik bir gün ekle (2025-10-26, 2026-03-29).
 2. `main.py`'de `crawl_auctions` içine JAO/SEECAO'daki kalıpla ekle: `network.is_modeled`
    filtresi, `db.has_auction` ile atlama, `db.save_auction`.
 3. `network.BORDERS`'ta ilgili sınırların beklenen kaynağını `"<PLATFORM>"` yap; böylece

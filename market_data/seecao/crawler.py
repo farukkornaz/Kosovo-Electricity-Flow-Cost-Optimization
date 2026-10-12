@@ -4,7 +4,7 @@ import functools
 import urllib.parse
 from datetime import date
 
-from common import USER_AGENT, auction_row, fetch_json, hour_columns, parse_utc
+from common import USER_AGENT, auction_row, day_hours, fetch_json, parse_utc
 
 SOURCE = "SEECAO"
 API_URL = "https://api.seecao.com/api"
@@ -48,10 +48,13 @@ def to_rows(auction: dict) -> tuple[dict, list, list] | None:
     out_area, in_area = (part.strip() for part in auction["table"][0]["border"].split("-"))
     start = parse_utc(auction["deliveryPeriodStart"])
     auction_cols = auction_row(SOURCE, auction["auctionIdentification"], f"{out_area}-{in_area}", out_area, in_area, start)
+    # `pos` numbers the day's hours from 1. The timetable is not used: on the 25-hour day it
+    # reads '02:00 - 03:00 (1)' and '02:00 - 03:00 (2)'.
+    hours = {columns["hour"]: columns for columns in day_hours(date.fromisoformat(auction_cols["delivery_date"]))}
 
     result_rows = [
         {
-            **hour_columns(start, result["pos"], result["timetable"]),
+            **hours[result["pos"]],
             "offered_capacity_mw": _number(result["offered"]),
             "requested_capacity_mw": _number(result["requested"]),
             "allocated_capacity_mw": _number(result["allocated"]),

@@ -40,10 +40,12 @@ DB'de o gün yoksa önce `market-data-crawl`, bir sınır kapalı görünüyor v
 |---|---|---|
 | `Open: MK->XK SEECAO` | Yön açık, eğri o saatin tekliflerinden çıkarıldı | – |
 | `Open with flat curve (no bids)` | Yön açık ama teklif yok, slope 0 | Sonucu yorumlarken hattın olduğundan ucuz görünebileceğini söyle |
+| `Closed, 0 MW offered` | İhale yapıldı ama o saat 0 MW sunuldu → kapasite 0 | Bilgi amaçlı; çözücü de `closed (ATC 0)` der |
 | `Closed, no daily auction known` | `network.BORDERS`'ta kaynak `None`, veri yok → kapasite 0 | Açılması gerekiyorsa `add-border-data` |
 | `WARNING closed, expected data missing` | Kaynak bekleniyordu ama o saat için veri yok (ya da iptal, kapasite/fiyat yok) | O günü crawl et; hâlâ yoksa kullanıcıya bildir |
 | `MANUAL ignored, platform data used` | Aynı yön için hem platform hem MANUAL var | Bilgi amaçlı |
 | `WARNING random placeholder spot price` | O zonun spot fiyatı yok → 200-300 €/MWh arası rastgele değer | Sonuçta bu zon kullanıldıysa vurgula; gerçek fiyat için spot CSV'si (`add-border-data`) |
+| `WARNING infeasible: only N MW can flow into XK, demand D MW` | XK'ye giren hatların toplamı talebin altında → çözüm kesin infeasible | Talebi düşür ya da hangi XK hattının kapalı olduğunu (0 MW, eksik veri) kullanıcıya söyle |
 
 Raporu kullanıcıya özetlemeden sonuç yorumlama: eksik veri sonucu sessizce değiştirir.
 

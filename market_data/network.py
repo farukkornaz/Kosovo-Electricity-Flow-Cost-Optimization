@@ -33,7 +33,7 @@ BORDERS = {
     ("AL", "XK"): None,      # implicit allocation, no explicit daily auction
     ("BA", "HR"): "SEECAO",
     ("BA", "ME"): "SEECAO",
-    ("BA", "RS"): None,      # no daily auction found on JAO/SEECAO
+    ("BA", "RS"): "NOSBIH",  # run by NOSBiH itself, not on JAO/SEECAO
     ("BG", "GR"): None,      # no daily auction found on JAO/SEECAO
     ("BG", "MK"): "JAO",
     ("BG", "RO"): None,      # market coupled

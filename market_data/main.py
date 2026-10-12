@@ -1,6 +1,6 @@
-"""Crawl daily capacity auctions (JAO, SEECAO) and hourly spot prices into the market database.
+"""Crawl daily capacity auctions (JAO, SEECAO, NOSBIH) and hourly spot prices into the market database.
 
-    python main.py --from 2026-09-01 [--to 2026-09-30] [--refresh] [--db URL] [--price-api URL]
+    python main.py --from 2026-09-01 [--to 2026-09-30] [--source NOSBIH] [--refresh] [--db URL] [--price-api URL]
 
 Only auctions between network.COUNTRIES are stored. What is already in the database
 is skipped unless --refresh is given, so an interrupted backfill resumes where it
@@ -15,14 +15,15 @@ import db
 import network
 import spot_prices
 from jao import crawler as jao
+from nosbih import crawler as nosbih
 from seecao import crawler as seecao
 
 
-def crawl_auctions(conn, day: date, refresh: bool) -> str:
-    """Store one delivery day's modeled auctions; returns a one-line summary."""
+def crawl_auctions(conn, day: date, refresh: bool, sources=None) -> str:
+    """Store one delivery day's modeled auctions from `sources` (default: all); returns a one-line summary."""
     parts = []
-    for source, statuses in (("JAO", _jao_day(conn, day, refresh)), ("SEECAO", _seecao_day(conn, day, refresh))):
-        statuses = list(statuses)
+    for source in sources or AUCTION_PLATFORMS:
+        statuses = list(AUCTION_PLATFORMS[source](conn, day, refresh))
         skipped = statuses.count("skipped")
         parts.append(f"{source} {statuses.count('saved')}" + (f" (+{skipped} already stored)" if skipped else ""))
     return ", ".join(parts)
@@ -50,6 +51,19 @@ def _seecao_day(conn, day: date, refresh: bool):
             continue
         db.save_auction(conn, *rows)
         yield "saved"
+
+
+def _nosbih_day(conn, day: date, refresh: bool):
+    for url in nosbih.list_daily_auctions(day):
+        for rows in nosbih.to_rows(nosbih.fetch_auction(url)):
+            if not refresh and db.has_auction(conn, nosbih.SOURCE, rows[0]["auction_id"]):
+                yield "skipped"
+                continue
+            db.save_auction(conn, *rows)
+            yield "saved"
+
+
+AUCTION_PLATFORMS = {jao.SOURCE: _jao_day, seecao.SOURCE: _seecao_day, nosbih.SOURCE: _nosbih_day}
 
 
 def crawl_spot_prices(conn, start: date, end: date, refresh: bool, api_url: str) -> None:
@@ -80,6 +94,8 @@ def main() -> None:
     parser.add_argument("--from", "--date", dest="start", required=True, type=date.fromisoformat,
                         help="first delivery day (CET), YYYY-MM-DD")
     parser.add_argument("--to", dest="end", type=date.fromisoformat, help="last delivery day, inclusive (default: --from)")
+    parser.add_argument("--source", dest="sources", action="append", choices=list(AUCTION_PLATFORMS),
+                        help="crawl only this auction platform; repeatable (default: all). Spot prices are fetched either way")
     parser.add_argument("--refresh", action="store_true", help="re-download what is already stored")
     parser.add_argument("--db", help="PostgreSQL URL (default: DATABASE_URL or the credentials in .env)")
     parser.add_argument("--price-api", default=spot_prices.API_URL, help=f"price API (default: {spot_prices.API_URL})")
@@ -92,7 +108,7 @@ def main() -> None:
     crawl_spot_prices(conn, args.start, end, args.refresh, args.price_api)
     day = args.start
     while day <= end:
-        print(f"{day}: {crawl_auctions(conn, day, args.refresh)}", flush=True)
+        print(f"{day}: {crawl_auctions(conn, day, args.refresh, args.sources)}", flush=True)
         day += timedelta(days=1)
     print(f"Saved to {db.describe(conn)}")
     conn.close()

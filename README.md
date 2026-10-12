@@ -1,11 +1,11 @@
 # KosovoFlowOpt
 
-Kosova'ya (XK) elektrik ithalatının en ucuz yolunu bulur. JAO ve SEECAO'nun günlük sınır
-ötesi kapasite (CBC) ihaleleri ile saatlik spot fiyatlar PostgreSQL'e çekilir; seçilen bir
+Kosova'ya (XK) elektrik ithalatının en ucuz yolunu bulur. JAO, SEECAO ve NOSBiH'in (BA-RS) günlük
+sınır ötesi kapasite (CBC) ihaleleri ile saatlik spot fiyatlar PostgreSQL'e çekilir; seçilen bir
 gün ve saat için senaryo kurulur ve OR-Tools min cost flow ile çözülür.
 
 ```
-JAO + SEECAO ihaleleri ─┐
+JAO + SEECAO + NOSBiH ──┐
 Spot fiyat API'si ──────┼─→ PostgreSQL ─→ build_scenario.py ─→ senaryo JSON ─→ CostOptimizationProgram/main.py ─→ rota, maliyet, haritalar
 manual/*.csv ───────────┘
 ```
@@ -23,6 +23,7 @@ Bütün komutlar **proje kök dizininden** çalıştırılır.
 | Fiyat API'sini başlat (ayrı terminal) | `cd ~/lab/south-europe-energy-prices && .venv/bin/python api.py` |
 | Bir günü çek | `.venv/bin/python market_data/main.py --from 2026-10-01` |
 | Tarih aralığı çek | `.venv/bin/python market_data/main.py --from 2026-10-01 --to 2026-10-31` |
+| Sadece bir platformu çek | `.venv/bin/python market_data/main.py --from 2026-10-01 --source NOSBIH` |
 | Senaryo kur | `.venv/bin/python market_data/build_scenario.py --date 2026-08-01 --timetable 14:00-15:00 -o CostOptimizationProgram/output/scenarios/xk_20260801_1400.json` |
 | Senaryoyu çöz | `.venv/bin/python CostOptimizationProgram/main.py CostOptimizationProgram/output/scenarios/xk_20260801_1400.json` |
 | Elle veri ekle | `.venv/bin/python market_data/import_manual.py` |
@@ -81,10 +82,17 @@ Bu makinede hepsi yapıldı; yeniden kurulum gerekirse:
 .venv/bin/python market_data/main.py --from 2026-10-01                  # tek gün
 .venv/bin/python market_data/main.py --from 2026-10-01 --to 2026-10-31  # aralık (iki uç dahil)
 .venv/bin/python market_data/main.py --from 2026-10-01 --refresh        # kayıtlı olanı da yeniden indir
+.venv/bin/python market_data/main.py --from 2026-10-01 --source NOSBIH  # sadece bu platform (tekrarlanabilir: --source JAO --source SEECAO)
 ```
 
 - Önce aralığın bütün spot fiyatları, sonra gün gün ihaleler çekilir. Her gün için bir satır
-  yazar: `2026-10-01: JAO 12, SEECAO 16`. Normal bir günde 12 JAO + 16 SEECAO ihalesi var.
+  yazar: `2026-10-01: JAO 12, SEECAO 16, NOSBIH 2`. Normal bir günde 12 JAO + 16 SEECAO + 2 NOSBiH
+  ihalesi var.
+- `--source` sadece seçilen ihale platformlarını çeker (varsayılan: hepsi); spot fiyatlar yine
+  kontrol edilir. Tek bir platformu geriye doğru doldururken ya da JAO erişimi kestiğinde işe yarar.
+- **NOSBiH** (Bosna ISO'su) BA-RS sınırının ihalesini kendisi yapar, JAO/SEECAO'da yok. Sadece
+  sonuçları yayınlıyor, **teklif yok**; bu yüzden BA↔RS senaryoda takas fiyatında düz eğriyle
+  açılır. `participants` boş, `awarded_participants` = kapasite alan trader sayısı. Gün başına ~1 sn.
 - **Kaldığı yerden devam eder:** kayıtlı ihaleler ve spot fiyatı olan günler atlanır. Yarıda
   kesilen bir çekimi aynı komutla yeniden başlatman yeterli.
 - Yalnızca modellenen 12 ülke arasındaki ihaleler saklanır (`market_data/network.py`).
@@ -115,16 +123,16 @@ import sys; sys.path.insert(0, "market_data"); import db
 conn = db.connect(create=False)
 print(conn.execute("SELECT min(delivery_date), max(delivery_date), count(DISTINCT delivery_date) FROM auctions").fetchone())
 print(conn.execute("""SELECT delivery_date, source, count(*) FROM auctions GROUP BY 1, 2
-                      HAVING count(*) NOT IN (12, 16) ORDER BY 1""").fetchall())   # alışılmadık günler
+                      HAVING count(*) NOT IN (2, 12, 16) ORDER BY 1""").fetchall())   # alışılmadık günler
 EOF
 ```
 
-Şu an veritabanında: **2026-08-01 – 2026-09-30** (61 gün, 1.710 ihale, ~1,45 milyon teklif).
+Şu an veritabanında: **2026-08-01 – 2026-10-08** (69 gün, 2.072 ihale, ~1,64 milyon teklif).
 Bilinen boşluk: 2026-09-14'te AL spot fiyatı yok.
 
 ## 4. Elle veri eklemek (crawler'ın çekemediği sınırlar)
 
-Kapalı sınırlar (RS-XK, AL-XK, BA-RS, BG-GR...) ve API'de olmayan spot fiyatları (BA, TR)
+Kapalı sınırlar (RS-XK, AL-XK, BG-GR...) ve API'de olmayan spot fiyatları (BA, TR)
 için. Dosyayı `market_data/manual/<anlamlı_ad>.csv` olarak kaydet; bu CSV'ler commit edilir,
 verinin tek kopyası onlardır. Dosya türünü başlık satırı belirler:
 
@@ -136,17 +144,17 @@ spot:    zone,delivery_date,timetable,price_eur_mwh
 
 ```csv
 border,delivery_date,timetable,offered_capacity_mw,clearing_price_eur_mwh
-BA-RS,2026-09-01,*,300,4.50
-RS-BA,2026-09-01,*,250,1.20
+BG-GR,2026-09-01,*,300,4.50
+GR-BG,2026-09-01,*,250,1.20
 ```
 
-- `border` yönlüdür (`BA-RS` = BA'dan RS'ye), ters yön ayrı satırdır.
+- `border` yönlüdür (`BG-GR` = BG'den GR'ye), ters yön ayrı satırdır.
 - `timetable` CET saatidir (`14:00-15:00`); `*` o günün bütün saatleri demektir.
 - Teklif (`bids`) yoksa o hat düz eğriyle açılır (slope 0); hat olduğundan ucuz görünebilir.
 
 ```bash
 .venv/bin/python market_data/import_manual.py                                   # manual/ altındaki her şey
-.venv/bin/python market_data/import_manual.py market_data/manual/ba_rs_2026-09.csv
+.venv/bin/python market_data/import_manual.py market_data/manual/bg_gr_2026-09.csv
 ```
 
 Aynı yön ve saat için platform verisi varsa elle girilen yok sayılır. Yeni sınır ya da ülke
@@ -177,10 +185,12 @@ Kurulumdan sonra basılan rapor:
 | Satır | Anlamı |
 |---|---|
 | `Open: MK->XK SEECAO` | Hat açık, eğri o saatin tekliflerinden çıkarıldı |
-| `Open with flat curve (no bids)` | Açık ama teklif yok (slope 0), olduğundan ucuz görünebilir |
+| `Open with flat curve (no bids)` | Açık ama teklif yok (slope 0), olduğundan ucuz görünebilir (BA↔RS NOSBIH hep böyle) |
+| `Closed, 0 MW offered` | İhale yapıldı ama o saat 0 MW sunuldu → kapasite 0 (ör. MK↔XK, 2026-10-03'ten beri) |
 | `Closed, no daily auction known` | Bu sınırın bilinen bir günlük ihalesi yok → kapasite 0 |
 | `WARNING closed, expected data missing` | Veri bekleniyordu ama yok: o günü çek |
 | `WARNING random placeholder spot price` | Spot fiyatı yok, 200-300 €/MWh arası rastgele değer kullanıldı (BA, TR) |
+| `WARNING infeasible: only 156 MW can flow into XK, demand 400 MW` | XK'ye giren hatların toplam kapasitesi talebin altında: çözüm kesin infeasible. Toplam yetse bile daha uzaktaki hatlar yetmeyebilir; onu çözücü söyler |
 
 **2. Çöz:**
 
@@ -318,7 +328,7 @@ dokunmaz, her test `market_data_test` içinde kendi geçici şemasında çalış
 | `WARNING: price API at ... is down` | Fiyat API'sini başlat, aynı çekim komutunu tekrar çalıştır |
 | `ConnectionResetError` (JAO) | JAO erişimi kesti; bekle, aynı komutla devam et (bkz. bölüm 3) |
 | `has no market schema: crawl first` | Veritabanı boş; önce veri çek |
-| `schema version X, expected 3` | Veritabanında başka bir şemanın tabloları var; silmeden önce yedek al |
+| `schema version X, expected 4` | Veritabanında başka bir şemanın tabloları var; silmeden önce yedek al (sürüm 3 kendiliğinden 4'e yükseltilir) |
 | `... has data but is not in network.BORDERS` | Yeni bir sınırın verisi geldi; `network.py`'ye ekle |
 | `matches hours [...] (clock change day)` | Kış saatine geçiş günü `02:00-03:00`; başka saat seç |
 | `Ignoring fixed y limits ...` (matplotlib) | Zararsız uyarı |
@@ -331,12 +341,13 @@ docker-compose.yml, Dockerfile     PostgreSQL (db) ve Python ortamı (app)
 docker/initdb/                     test veritabanını kuran init script'i
 requirements.txt                   bütün bağımlılıklar (market_data + CostOptimizationProgram)
 market_data/                       veri katmanı
-  main.py                          JAO + SEECAO + spot fiyat crawler'ı
+  main.py                          JAO + SEECAO + NOSBiH + spot fiyat crawler'ı
   import_manual.py                 manual/*.csv → veritabanı
   build_scenario.py                veritabanı → tek saatlik senaryo JSON
   network.py                       modellenen ülkeler ve sınırlar (tek liste)
   db.py                            şema, bağlantı, kayıt fonksiyonları
-  jao/, seecao/, spot_prices.py    platform ve fiyat API istemcileri
+  jao/, seecao/, nosbih/          ihale platformu crawler'ları
+  spot_prices.py                   fiyat API istemcisi
   manual/                          elle toplanan CSV'ler (commit edilir)
   data/                            commit edilen örnek senaryo
 CostOptimizationProgram/           optimizasyon
