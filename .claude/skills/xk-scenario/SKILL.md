@@ -21,13 +21,15 @@ DB'de o gün yoksa önce `market-data-crawl`, bir sınır kapalı görünüyor v
 ## Tek saat
 
 ```bash
-.venv/bin/python market_data/build_scenario.py --date 2026-09-01 --timetable 14:00-15:00 [--demand 400] [--seed 42] [-o yol.json]
+.venv/bin/python market_data/build_scenario.py --date 2026-09-01 --timetable 14:00-15:00 [--demand-node XK] [--demand 400] [--seed 42] [-o yol.json]
 .venv/bin/python CostOptimizationProgram/main.py market_data/data/scenario_xk_demand_20260901_1400.json [--segments 10] [-o klasör]
 ```
 
 - `--timetable` CET/CEST'tir, `'HH:00-HH:00'` biçiminde (son saat `'23:00-24:00'`).
-- `--demand` XK talebi (MW, varsayılan 400). `--seed` yalnızca yer tutucu spot fiyatlarını etkiler.
-- Varsayılan çıktı `market_data/data/scenario_xk_demand_<tarih>_<hhmm>.json`. Bu klasör
+- `--demand-node` talep ülkesi (varsayılan XK; ör. `MK`), diğer ülkeler arz olur. `--demand` onun
+  talebi (MW, varsayılan 400). `--seed` yalnızca yer tutucu spot fiyatlarını etkiler; talep ülkesi
+  BA ya da TR ise diğerinin yer tutucu fiyatı değişir (rng çekiş sırası kayar).
+- Varsayılan çıktı `market_data/data/scenario_<ülke>_demand_<tarih>_<hhmm>.json` (ör. `scenario_xk_demand_...`). Bu klasör
   **commit ediliyor**; deneme amaçlı ya da toplu çalıştırmalarda `-o` ile scratchpad'e yaz.
 - `main.py` çıktıları `CostOptimizationProgram/output/` altına gider (git'te yok).
   Matplotlib'in `Ignoring fixed y limits...` uyarıları zararsızdır.

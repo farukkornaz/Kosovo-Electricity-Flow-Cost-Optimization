@@ -101,3 +101,19 @@ def test_spot_prices_entsoe_before_manual_then_placeholder(conn):
     prices = {n["id"]: n.get("unit_price") for n in scenario["nodes"]}
     assert prices["RS"] == 90.0 and prices["BA"] == 80.0
     assert "BA" not in report.placeholder_prices and "TR" in report.placeholder_prices
+
+
+def test_other_demand_node(conn):
+    store(conn, "SEECAO", "XK", "MK", capacity=150, price=5.0)
+    scenario, report = build_scenario(conn, DAY, HOUR, demand=400, seed=1, demand_node="MK")
+
+    nodes = {n["id"]: n for n in scenario["nodes"]}
+    assert nodes["MK"]["type"] == "demand" and nodes["MK"]["demand"] == 400
+    assert nodes["XK"]["type"] == "supply"
+    assert scenario["name"] == "scenario-mk-demand-20260901-1400"
+    assert report.infeasible == ["only 150 MW can flow into MK, demand 400 MW"]
+
+
+def test_unknown_demand_node_is_an_error(conn):
+    with pytest.raises(ValueError, match="not in network.COUNTRIES"):
+        build_scenario(conn, DAY, HOUR, demand=400, seed=1, demand_node="XX")
