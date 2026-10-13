@@ -176,9 +176,10 @@ ve spot fiyatları okur, senaryo JSON'unu yazar.
 |---|---|
 | `--date` | Teslim günü, `YYYY-MM-DD` |
 | `--timetable` | CET saati, `HH:00-HH:00`; son saat `23:00-24:00` |
-| `--demand` | Kosova talebi, MW (varsayılan 400) |
+| `--demand-node` | Talep ülkesi (varsayılan `XK`), ör. `--demand-node MK`. Diğer bütün ülkeler arz düğümü olur; senaryo adı ve varsayılan dosya adı buna göre değişir (`scenario_mk_demand_...`) |
+| `--demand` | Talep ülkesinin talebi, MW (varsayılan 400) |
 | `--seed` | Spot fiyatı olmayan zonlara (BA, TR) verilen rastgele yer tutucu fiyatın tohumu |
-| `-o` | Çıktı dosyası. **Manuel testlerde kullan:** verilmezse `market_data/data/` altına yazar ve o klasör git'e girer |
+| `-o` | Çıktı dosyası. **Manuel testlerde kullan:** verilmezse `market_data/data/scenario_<ülke>_demand_<tarih>_<hhmm>.json` olarak yazar ve o klasör git'e girer |
 
 Kurulumdan sonra basılan rapor:
 

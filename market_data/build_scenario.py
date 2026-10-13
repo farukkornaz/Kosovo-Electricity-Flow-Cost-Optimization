@@ -1,6 +1,9 @@
-"""Build a single-hour CostOptimizationProgram scenario (Kosovo demand) from the market database.
+"""Build a single-hour CostOptimizationProgram scenario from the market database.
 
-    python build_scenario.py --date 2026-09-01 --timetable 14:00-15:00 [--demand 400] [--seed 42]
+    python build_scenario.py --date 2026-09-01 --timetable 14:00-15:00 [--demand-node XK] [--demand 400] [--seed 42]
+
+The demand zone (Kosovo unless --demand-node says otherwise) needs `demand` MW; every
+other zone is a supply node.
 
 Every border in network.BORDERS becomes two arcs, one per direction. A direction is
 open when the database holds a result for that hour with capacity above 0: its linear
@@ -8,7 +11,7 @@ price curve is fitted to that hour's bids, or is flat at the clearing price when
 are none. Otherwise its capacity is 0. When both a platform and a MANUAL import cover a
 direction, the platform wins. Supply prices are that hour's spot prices (ENTSOE before
 MANUAL); zones without one get a random placeholder. A report lists what was used, and
-warns when the arcs into Kosovo cannot carry the demand.
+warns when the arcs into the demand zone cannot carry the demand.
 """
 
 import argparse
@@ -163,14 +166,17 @@ def load_spot_prices(conn: psycopg.Connection, day: date, timetable: str) -> dic
     return prices
 
 
-def build_scenario(conn: psycopg.Connection, day: date, timetable: str, demand: int, seed: int) -> tuple[dict, Report]:
+def build_scenario(conn: psycopg.Connection, day: date, timetable: str, demand: int, seed: int,
+                   demand_node: str = network.DEMAND_NODE) -> tuple[dict, Report]:
+    if demand_node not in network.COUNTRIES:
+        raise ValueError(f"demand node {demand_node!r} is not in network.COUNTRIES: {', '.join(network.COUNTRIES)}")
     rng = random.Random(seed)
     report = Report()
     spot = load_spot_prices(conn, day, timetable)
     nodes = []
     for node_id, (name, lat, lon, max_supply) in network.COUNTRIES.items():
         node = {"id": node_id, "name": name, "lat": lat, "lon": lon}
-        if node_id == network.DEMAND_NODE:
+        if node_id == demand_node:
             node |= {"type": "demand", "demand": demand}
         else:
             if node_id not in spot:
@@ -181,10 +187,10 @@ def build_scenario(conn: psycopg.Connection, day: date, timetable: str, demand: 
 
     arcs = build_arcs(conn, day, timetable, report)
     # An upper bound: the arcs further out can cut the flow below it.
-    import_capacity = sum(arc["curve"]["capacity"] for arc in arcs if arc["to"] == network.DEMAND_NODE)
+    import_capacity = sum(arc["curve"]["capacity"] for arc in arcs if arc["to"] == demand_node)
     if import_capacity < demand:
-        report.infeasible.append(f"only {import_capacity} MW can flow into {network.DEMAND_NODE}, demand {demand} MW")
-    name = f"scenario-xk-demand-{day:%Y%m%d}-{timetable[:5].replace(':', '')}"
+        report.infeasible.append(f"only {import_capacity} MW can flow into {demand_node}, demand {demand} MW")
+    name = f"scenario-{demand_node.lower()}-demand-{day:%Y%m%d}-{timetable[:5].replace(':', '')}"
     return {"name": name, "nodes": nodes, "arcs": arcs}, report
 
 
@@ -196,19 +202,24 @@ def dumps(scenario: dict) -> str:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=lambda prog: argparse.RawDescriptionHelpFormatter(prog, max_help_position=40),
+    )
     parser.add_argument("--date", required=True, type=date.fromisoformat, help="delivery day (CET), YYYY-MM-DD")
     parser.add_argument("--timetable", required=True, help="product hour (CET), e.g. 14:00-15:00")
-    parser.add_argument("--demand", type=int, default=400, help="Kosovo demand in MW (default: 400)")
+    parser.add_argument("--demand-node", type=str.upper, choices=list(network.COUNTRIES), default=network.DEMAND_NODE,
+                        metavar="ZONE", help=f"demand zone, one of {', '.join(network.COUNTRIES)} (default: {network.DEMAND_NODE})")
+    parser.add_argument("--demand", type=int, default=400, help="demand of the demand zone in MW (default: 400)")
     parser.add_argument("--seed", type=int, default=42, help="seed for placeholder prices of zones without spot prices")
     parser.add_argument("--db", help="PostgreSQL URL (default: DATABASE_URL or the credentials in .env)")
-    parser.add_argument("-o", "--output", type=Path, help="default: data/scenario_xk_demand_<date>_<hhmm>.json")
+    parser.add_argument("-o", "--output", type=Path, help="default: data/scenario_<zone>_demand_<date>_<hhmm>.json")
     args = parser.parse_args()
 
     conn = db.connect(args.db, create=False)
-    scenario, report = build_scenario(conn, args.date, args.timetable, args.demand, args.seed)
+    scenario, report = build_scenario(conn, args.date, args.timetable, args.demand, args.seed, args.demand_node)
     conn.close()
-    output = args.output or HERE / "data" / f"scenario_xk_demand_{args.date:%Y%m%d}_{args.timetable[:5].replace(':', '')}.json"
+    output = args.output or HERE / "data" / f"{scenario['name'].replace('-', '_')}.json"
     output.parent.mkdir(exist_ok=True)
     output.write_text(dumps(scenario), encoding="utf-8")
     print(f"Saved {output}: {len(scenario['nodes'])} nodes, {len(scenario['arcs'])} arcs")

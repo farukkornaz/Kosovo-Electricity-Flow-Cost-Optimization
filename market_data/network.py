@@ -8,9 +8,9 @@ otherwise its capacity is 0. The expected source only decides whether missing da
 is reported as a warning.
 """
 
-# id: (name, lat, lon, max_supply MW); max_supply values are placeholders.
+# id: (name, lat, lon, max_supply MW); max_supply values are placeholders, unused for the demand zone.
 COUNTRIES = {
-    "XK": ("Kosovo", 42.6, 20.9, None),
+    "XK": ("Kosovo", 42.6, 20.9, 100),
     "AL": ("Albania", 41.1, 20.0, 300),
     "MK": ("North Macedonia", 41.6, 21.7, 200),
     "ME": ("Montenegro", 42.7, 19.3, 200),
@@ -23,7 +23,7 @@ COUNTRIES = {
     "HR": ("Croatia", 45.6, 16.2, 600),
     "TR": ("Türkiye", 40.9, 29.0, 800),
 }
-DEMAND_NODE = "XK"
+DEMAND_NODE = "XK"  # default demand zone; build_scenario.py --demand-node picks another
 
 # (a, b) with a < b: expected source of the daily auction, or None.
 BORDERS = {
